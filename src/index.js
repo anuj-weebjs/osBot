@@ -2,7 +2,7 @@ const { Client, GatewayIntentBits, Collection, SlashCommandBuilder, EmbedBuilder
 const express = require('express');
 const fs = require('node:fs');
 const path = require('node:path');
-const config = require('./config.json');
+require('dotenv').config();
 
 
 // KEEP ALIVE
@@ -38,14 +38,13 @@ for (let eventFolder of eventsFolders) {
         let eventFilePath = path.join(eventFolderPath, eventFile);
         const eventName = path.basename(eventFolderPath);
         const event = require(eventFilePath);
-        console.log(event)
         if (event.once) {
             client.once(eventName, (...args) => event.execute(...args));
-        } else {
+        } else { 
             client.on(eventName, (...args) => event.execute(...args, client));
             // console.log('event.on')
         }
     }
 }
 
-client.login(config.token);
+client.login(process.env.TOKEN);

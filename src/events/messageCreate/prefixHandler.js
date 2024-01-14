@@ -4,7 +4,6 @@ const fs = require('node:fs');
 const prefix = 'os';
 module.exports = {
     execute: async (message, client) =>{
-        console.log(`message.content`)
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = await args.shift().toLowerCase();
         if(!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
