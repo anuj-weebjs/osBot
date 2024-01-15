@@ -1,3 +1,7 @@
 {
-    "PREFIX":"os"
+    "PREFIX":"os",
+    "activities":{
+        "name":"os Help"
+    },
+    "status":"dnd"
 }
