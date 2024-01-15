@@ -1,7 +1,8 @@
 const path = require('node:path');
 const fs = require('node:fs');
+const config = require('../../config.json');
 
-const prefix = 'os';
+const prefix = config.PREFIX;
 module.exports = {
     execute: async (message, client) =>{
         const args = await message.content.slice(prefix.length).trim().split(/ +/);

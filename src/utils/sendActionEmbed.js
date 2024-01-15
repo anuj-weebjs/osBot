@@ -11,7 +11,8 @@ async function sendEmbed(message, endpoint, title) {
     
     const Embed = new EmbedBuilder()
         .setColor('#FF6347')
-        .setTitle(title)
+        .setAuthor({name:title, iconURL:message.author.displayAvatarURL()})
+        // .setTitle(title)
         .setImage(gifData.url);
 
     message.channel.send({embeds:[Embed]});
