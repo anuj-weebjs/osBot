@@ -2,7 +2,7 @@ const send = require('../../../utils/sendActionEmbed');
 
 module.exports = {
     execute: async(message)=>{
-        send(message, 'blush', `${message.author.username} is Blushing `);
+        send(message, 'blush', `${message.author.globalName} is Blushing `);
     },
 
 };

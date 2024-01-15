@@ -11,7 +11,7 @@ module.exports = {
             message.reply(`INVAILD ARGS! use \`${prefix} shoot <arg>\``);
             return;
         }
-        send(message, 'shoot', `${message.author.username} Has pulled up Trigger! on ${args}`)
+        send(message, 'shoot', `${message.author.globalName} Has pulled up Trigger! on ${args}`)
 
     }
 }
