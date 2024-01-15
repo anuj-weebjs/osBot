@@ -11,7 +11,7 @@ module.exports = {
         }
         const mentionedUser = message.mentions.users.first();
 
-        send(message, 'poke', `\`Aww.. ${message.author.username} is Pokeing ${mentionedUser}\``)
+        send(message, 'poke', `\`Aww... ${message.author.username} is Pokeing ${mentionedUser}\``)
 
     }
 }
