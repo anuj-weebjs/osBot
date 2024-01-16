@@ -2,7 +2,6 @@ const send = require('../../../utils/sendActionEmbed');
 
 module.exports = {
     execute: async(message)=>{
-        send(message, 'sleep', `${message.author.globalName} is sleeping...`);
+        send(message, 'cry', `Nooo ${message.author.globalName} is Crying! Somebody should help him.`);
     },
-
 };
