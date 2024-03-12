@@ -3,13 +3,14 @@ const path = require('node:path');
 const fs = require('node:fs');
 const config = require('../../../config.json')
 
-let actionDir = path.join(__dirname, '..', '..', 'actions');
-function getActions() {
-    const rawActions = fs.readdirSync(actionDir)
-    const action = rawActions.map(element => `\`${element}\``);
-    return action
+let actionsDir = path.join(__dirname, '..', '..', 'actions');
+let emotionsDir = path.join(__dirname, '..', '..', 'emotions');
+let infoDir = path.join(__dirname, '..', '..', 'info');
+function getFileNames(dir) {
+    const rawActions = fs.readdirSync(dir)
+    const dirFiles = rawActions.map(element => `\`${element}\``);
+    return dirFiles;
 }
-console.log(getActions())
 
 
 module.exports = {
@@ -18,7 +19,13 @@ module.exports = {
             .setColor('#FF6347')
             .setTitle(`Available Commands`)
             .addFields(
-                {name: 'Action command', value: getActions().toString(), inline: false}
+                {name: 'Emotions', value: getFileNames(emotionsDir).toString(), inline: false}
+            )
+            .addFields(
+                {name: 'Actions', value: getFileNames(actionsDir).toString(), inline: false}
+            )
+            .addFields(
+                {name: 'Info', value: getFileNames(infoDir).toString(), inline: false}
             )
             .setFooter({text:`Example Usage: \`${config.PREFIX} <command> <args>\``});
 
