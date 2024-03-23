@@ -7,7 +7,7 @@ module.exports = {
     execute: async (message) => {
         const args = await message.content.slice(2).trim().split(/ +/);
         args.shift();
-        if (args.length != 1 && args.length > 1) {
+        if (args.length != 1 && args.length < 1) {
             message.reply(`INVAILD ARGS! use \`${prefix} poke <arg>\``);
             return;
         }
