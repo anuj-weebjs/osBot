@@ -1,5 +1,6 @@
 const send = require('../../../utils/sendActionEmbed');
 const config = require('../../../config.json');
+const getUserById = require('../../../utils/getUserById');
 
 const prefix = config.PREFIX;
 
@@ -11,7 +12,11 @@ module.exports = {
             message.reply(`INVAILD ARGS! use \`${prefix} shoot <arg>\``);
             return;
         }
-        send(message, 'shoot', `${message.author.globalName} Has pulled up Trigger! on ${args}`)
+        
+        const mentionedUser = await getUserById(message.mentions.users.first().toString());
+
+        send(message, 'shoot', `${message.author.globalName} Has pulled up Trigger! on ${mentionedUser.globalName}`)
 
     }
 }
+

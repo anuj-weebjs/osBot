@@ -1,10 +1,11 @@
+const client  = require('../../index');
 const path = require('node:path');
 const fs = require('node:fs');
 const config = require('../../config.json');
 
 const prefix = config.PREFIX;
 module.exports = {
-    execute: async (message, client) =>{
+    execute: async (message) =>{
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = await args.shift().toLowerCase();
         if(!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
@@ -30,7 +31,7 @@ module.exports = {
                     let command = require(commandFilePath);
                     if (msgCommand == commandFolder) {
                         try{
-                            command.execute(message, client, args, ...args);
+                            command.execute(message, ...args);
                         }catch(err){
                             console.log(err);
                             message.channel.send('There was an error executing that command.');

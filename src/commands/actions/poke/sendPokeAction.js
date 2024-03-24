@@ -1,19 +1,21 @@
-const config = require('../../../config.json');
 const send = require('../../../utils/sendActionEmbed');
+const config = require('../../../config.json');
+const getUserById = require('../../../utils/getUserById');
 
-let prefix = config.PREFIX; 
+const prefix = config.PREFIX;
 
 module.exports = {
-    execute: async (message) => {
-        const args = await message.content.slice(2).trim().split(/ +/);
+    execute: async(message)=>{
+        const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
-        if (args.length != 1 && args.length < 1) {
-            message.reply(`INVAILD ARGS! use \`${prefix} poke <arg>\``);
+        if(args.length != 1 && args.length < 1){
+            message.reply(`INVAILD ARGS! use \`${prefix} shoot <arg>\``);
             return;
         }
-        const mentionedUser = message.mentions.users.first();
+        
+        const mentionedUser = await getUserById(message.mentions.users.first().toString());
 
-        send(message, 'poke', `Aww... ${message.author.globalName} is Pokeing ${mentionedUser}`)
+        send(message, 'poke', `Aww... ${message.author.globalName} is Pokeing ${mentionedUser.globalName}`)
 
     }
 }

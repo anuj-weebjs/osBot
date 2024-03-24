@@ -48,3 +48,5 @@ for (let eventFolder of eventsFolders) {
 }
 
 client.login(process.env.TOKEN);
+
+module.exports = client;
