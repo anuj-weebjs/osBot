@@ -4,15 +4,23 @@
 # Setting up Locally
 <p><b>Node.js is nessesory to run The bot</b></p>
 
-- Star This repo
-- Download or clone this Repo to your local machine
-- Create a file named .env
-- Type TOKEN=(your token here) in .env file you've made earlier
-- Then open up src folder.
-- open up config.json file and change the value as you like.
-- Open up your terminal
-- Type `npm i` and hit enter
-- Then type `node src/index`
+- Star this repo
+- Download or clone this repo to your local machine
+- Open osBot folder that you've just cloned on your pc
+- Create a file named .env Then Type following
+```env
+TOKEN=YOURTOKENHERELIKETHIS
+```
+- Now open terminal in osBot folder and type following commands
+```cmd
+npm install
+```
+- And Finally Startup The Bot By typing following command in your terminal
+```cmd
+node src/index
+```
+- And all set!
+
 
 
 # For Contact
