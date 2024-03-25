@@ -1,7 +1,9 @@
+const index = require('../../../index');
+const client = index.client;
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    execute: async (message, client) =>{
+    execute: async (message) =>{
 
         const pingEmbed = new EmbedBuilder()
         .setColor('#FF6347')
