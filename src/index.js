@@ -27,6 +27,8 @@ const client = new Client({
 })
 
 
+// Events
+
 const eventsPath = path.join(__dirname, 'events');
 const eventsFolders = fs.readdirSync(eventsPath);
 
@@ -42,7 +44,6 @@ for (let eventFolder of eventsFolders) {
             client.once(eventName, (...args) => event.execute(...args));
         } else { 
             client.on(eventName, (...args) => event.execute(...args, client));
-            // console.log('event.on')
         }
     }
 }
