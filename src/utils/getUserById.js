@@ -1,4 +1,5 @@
-const client = require('../index');
+const index = require('../index');
+const client = index.client;
 
 async function getUserById(rawUserId) {
 

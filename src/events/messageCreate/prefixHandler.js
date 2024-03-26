@@ -1,11 +1,11 @@
-const client  = require('../../index');
+const index = require('../../index');
 const path = require('node:path');
 const fs = require('node:fs');
 const config = require('../../config.json');
 
 const prefix = config.PREFIX;
 module.exports = {
-    execute: async (message) =>{
+    execute: async (message, client) =>{
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = await args.shift().toLowerCase();
         if(!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
