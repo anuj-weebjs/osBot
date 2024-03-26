@@ -15,7 +15,7 @@ module.exports = {
         
         const mentionedUser = await getUserById(message.mentions.users.first().toString());
 
-        send(message, 'highfive', `${message.author.globalName} & ${mentionedUser.id} are sharing a High Five`);
+        send(message, 'highfive', `${message.author.globalName} & ${mentionedUser.globalName} are sharing a High Five`);
 
     }
 }
