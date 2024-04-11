@@ -7,7 +7,7 @@ const afkSchema = new mongoose.Schema({
     },
     reason: {
         type: String,
-        maxLength: 20,
+        maxLength: 220,
         default: "none"
     },
     createdAt: String
