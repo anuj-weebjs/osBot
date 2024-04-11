@@ -20,3 +20,6 @@ slap
 handhold
 thumbsup
 laugh
+wave
+
+queryEndpoint

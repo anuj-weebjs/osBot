@@ -1,23 +1,17 @@
+const path = require('node:path');
+const fs = require('node:fs');
 const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
-const mongoose = require('mongoose');
-const fs = require('node:fs');
-const path = require('node:path');
+const database = require('./database.js')
 require('dotenv').config();
 const token = process.env.TOKEN;
 const mongoDbConnectionString = process.env.MONGO_DB_CONNECTION_STRING;
 
-
-// CONNECT TO DB
-
-const db = connectDb(process.env.MONGO_DB_CONNECTION_STRING).then(() => console.log("Connected to DataBase")).catch((err) => { console.log("Failed to connect Database") });
-
-async function connectDb(connectionString) {
-    const connection = await mongoose.connect(connectionString);
-    return connection;
+async function connectdb(){
+    await database.main.connect(mongoDbConnectionString);
+    return 0;
 }
-
-
+connectdb();
 // KEEP ALIVE
 
 const app = express();
@@ -63,7 +57,8 @@ for (let eventFolder of eventsFolders) {
 
 client.login(process.env.TOKEN);
 
-module.exports = {
-    client,
-    db
-}
+// module.exports = {
+//     DB: db,
+//     CLIENT: client
+// }
+exports.client = client;
