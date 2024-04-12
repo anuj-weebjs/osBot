@@ -15,11 +15,15 @@ module.exports = {
             userIds.push(match[1]); // Extracting the numbers from each match
         }
         if(userIds.length == 0) return;
-        const queryResult = await database.main.readAfkData(userIds[0]);
+
+        const rawQueryResult = await database.main.readAfkData(userIds[0]);
+        const queryResult = rawQueryResult[0];
+        const reason = queryResult.reason;
+
         if(queryResult.length < 1) return;
 
-        if(queryResult[0].userId == userIds[0]){
-            message.reply(`Hey There! The user You're trying to Reach is Currently \`AFK\`(Away From Keyboard) Since <t:${queryResult[0].createdAt}>`);
+        if(queryResult.userId == userIds[0]){
+            message.reply(`Hey There! The user You're trying to Reach is Currently \`AFK\`(Away From Keyboard)\nSince <t:${queryResult.createdAt}>\nReason: \`${reason}\``);
         }else{
             return;
         }     

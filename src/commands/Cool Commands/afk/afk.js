@@ -21,7 +21,11 @@ module.exports = {
 
         if (args[0].toLowerCase() == "on") {
             args.shift();
-            const reason = args.join(" ");
+            if(args.length == 0){
+                var reason = "none"
+            }else {
+                var reason = args.join(" ");
+            }
             await database.main.deleteAfkData(userid);
             await database.main.writeAfkData(userid, reason, timeStamp);
 
