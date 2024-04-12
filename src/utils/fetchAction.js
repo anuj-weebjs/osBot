@@ -8,8 +8,8 @@ module.exports = {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            // console.log(data);
-            return data[0];
+            console.log(data.results[0]);
+            return data.results[0];
         } catch (error) {
             console.error(error);
             throw new Error('Error fetching data from the API');

@@ -4,13 +4,13 @@ const {fetchAction} = require('./fetchAction');
 async function sendEmbed(message, endpoint, title) {
     try {
         const gifData = await fetchAction(endpoint);
-        if (!gifData || !gifData.url) {
+        if (!gifData) {
             throw new Error('Error fetching GIF data');
         }
 
         const Embed = new EmbedBuilder()
         .setColor('#FF6347')
-        .setAuthor(title, message.author.displayAvatarURL())
+        .setAuthor({name:title, iconURL:message.author.displayAvatarURL()})
         .setImage(gifData.url);
 
         message.channel.send({ embeds: [Embed] });
