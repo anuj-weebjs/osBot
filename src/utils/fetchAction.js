@@ -8,7 +8,6 @@ module.exports = {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            console.log(data.results[0]);
             return data.results[0];
         } catch (error) {
             console.error(error);
