@@ -11,6 +11,11 @@
 ```env
 TOKEN=YOURTOKENHERELIKETHIS
 ```
+- Now We need Mongo DB Connection String
+- Type MONGO_DB_CONNECTION_STRING in .env file
+```env
+MONGO_DB_CONNECTION_STRING=YOURCONNECTIONSTRINGHERELIKETHIS
+```
 - Now open terminal in osBot folder and type following commands
 ```cmd
 npm install
