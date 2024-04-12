@@ -59,7 +59,7 @@ module.exports = {
 
 
         if (queryResult.userId == userIds[0]) {
-            message.reply(`Hey There! The user You're trying to Reach is Currently \`AFK\`(Away From Keyboard),\nFrom: <t:${queryResult.createdAt}R:>,\nReason: \`${reason}\``);
+            message.reply(`Hey There! The user You're trying to Reach is Currently \`AFK\`(Away From Keyboard),\nFrom: <t:${queryResult.createdAt}:R>,\nReason: \`${reason}\``);
         } else {
             return;
         }
