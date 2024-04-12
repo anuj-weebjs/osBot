@@ -6,6 +6,7 @@ const config = require('../../../config.json')
 let actionsDir = path.join(__dirname, '..', '..', 'actions');
 let emotionsDir = path.join(__dirname, '..', '..', 'emotions');
 let infoDir = path.join(__dirname, '..', '..', 'info');
+let coolCommandsDir = path.join(__dirname, '..', '..', 'Cool Commands');
 function getFileNames(dir) {
     const rawActions = fs.readdirSync(dir)
     const dirFiles = rawActions.map(element => `\`${element}\``);
@@ -18,6 +19,9 @@ module.exports = {
         const helpEmbed = new EmbedBuilder()
             .setColor('#FF6347')
             .setTitle(`Available Commands`)
+            .addFields(
+                {name: 'Cool Commands', value: getFileNames(coolCommandsDir).toString(), inline: false}
+            )
             .addFields(
                 {name: 'Emotions', value: getFileNames(emotionsDir).toString(), inline: false}
             )
