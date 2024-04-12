@@ -1,4 +1,3 @@
-const index = require('../..');
 const path = require('node:path');
 const fs = require('node:fs');
 const config = require('../../config.json');
