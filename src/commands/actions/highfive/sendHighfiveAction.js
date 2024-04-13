@@ -9,7 +9,7 @@ module.exports = {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
         if(args.length != 1 && args.length < 1){
-            message.reply(`INVAILD ARGS! use \`${prefix} shoot <arg>\``);
+            message.reply(`INVAILD ARGS! use \`${prefix} poke <arg>\``);
             return;
         }
         
