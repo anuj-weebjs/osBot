@@ -52,9 +52,12 @@ module.exports = {
             console.error(err);
             return;
         }
+
         if (rawQueryResult.length < 1) return;
 
         const queryResult = rawQueryResult[0];
+
+        if(!queryResult.userId) return;
         const reason = queryResult.reason;
 
 
