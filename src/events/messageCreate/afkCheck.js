@@ -10,8 +10,8 @@ module.exports = {
 
             try {
                 var rawQueryResult = await database.main.readAfkData(msg.author.id);
-                if (!rawQueryResult[0].reason) {
-                    throw new Error("There was an Error while retreving data from database")
+                if (!rawQueryResult[0]) {
+                    return;
                 }
             } catch (err) {
                 console.error(err);
@@ -57,7 +57,7 @@ module.exports = {
 
         const queryResult = rawQueryResult[0];
 
-        if(!queryResult.userId) return;
+        if (!queryResult.userId) return;
         const reason = queryResult.reason;
 
 
