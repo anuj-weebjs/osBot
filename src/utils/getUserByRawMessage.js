@@ -1,5 +1,5 @@
 const index = require('../index');
-const client = index._client;
+const client = index.client;
 
 async function getUserByRawMessage(rawUserId) {
 

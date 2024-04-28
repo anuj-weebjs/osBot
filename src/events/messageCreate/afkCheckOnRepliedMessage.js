@@ -13,7 +13,7 @@ module.exports = {
                 console.log(err);
             }
 
-            if (queryResult) return;
+            console.log(queryResult);
             if (queryResult.reason) {
                 if (queryResult.length < 1) return;
 
