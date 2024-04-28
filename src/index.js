@@ -2,6 +2,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
+const port = process.env.PORT || 4000;
 const database = require('./database.js')
 require('dotenv').config();
 const token = process.env.TOKEN;
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
         success: "true"
     });
 });
-app.listen(3010);
+app.listen(port);
 
 // BOT
 
