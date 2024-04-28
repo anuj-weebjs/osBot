@@ -1,3 +1,5 @@
+# [Invite](https://discord.com/oauth2/authorize?client_id=1227972298653302826&permissions=532576468032&scope=bot)</b>
+
 # osBot
 <b>It is a prefix based Discord Bot Created in Node.js</b>
 
