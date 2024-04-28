@@ -1,3 +1,4 @@
+const { query } = require('express');
 const afkModel = require('../../model/afkModel.js');
 
 module.exports = {
@@ -13,7 +14,8 @@ module.exports = {
                 console.log(err);
             }
 
-            console.log(queryResult);
+
+            if (queryResult == null) return;
             if (queryResult.reason) {
                 if (queryResult.length < 1) return;
 

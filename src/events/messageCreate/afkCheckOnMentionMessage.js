@@ -27,6 +27,7 @@ module.exports = {
             } catch (err) {
                 continue;
             }
+            if (queryResult == null) return;
 
             if (queryResult.length < 1) continue;
             if (!queryResult.userId) continue;
