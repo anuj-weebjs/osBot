@@ -1,21 +1,16 @@
 const index = require('../index');
 const client = index.client;
 
-async function getUserById(rawUserId) {
+async function getUserById(id) {
 
-    const mentionedUser = rawUserId;
-    const userIdRegExp = /<@(\d+)>/;
-    const userId = mentionedUser.match(userIdRegExp);
-    let user = await client.users.fetch(userId[1]);
+    let user = await client.users.fetch(id);
 
-    if(!user.globalName){
+    if (!user.globalName) {
         user.globalName = user.username;
     }
-    
+
     return user;
 
 }
 
 module.exports = getUserById;
-
-

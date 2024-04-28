@@ -15,24 +15,24 @@ function getFileNames(dir) {
 
 
 module.exports = {
-    execute: async(message) =>{
+    execute: async (message) => {
         const helpEmbed = new EmbedBuilder()
             .setColor('#FF6347')
             .setTitle(`Available Commands`)
             .addFields(
-                {name: 'Cool Commands', value: getFileNames(coolCommandsDir).toString(), inline: false}
+                { name: 'Cool Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
             .addFields(
-                {name: 'Emotions', value: getFileNames(emotionsDir).toString(), inline: false}
+                { name: 'Emotions', value: getFileNames(emotionsDir).toString(), inline: false }
             )
             .addFields(
-                {name: 'Actions', value: getFileNames(actionsDir).toString(), inline: false}
+                { name: 'Actions', value: getFileNames(actionsDir).toString(), inline: false }
             )
             .addFields(
-                {name: 'Info', value: getFileNames(infoDir).toString(), inline: false}
+                { name: 'Info', value: getFileNames(infoDir).toString(), inline: false }
             )
-            .setFooter({text:`Example Usage: \`${config.PREFIX} <command> <args>\``});
+            .setFooter({ text: `Example Usage: \`${config.PREFIX} <command> <args>\`` });
 
-        message.channel.send({ embeds: [helpEmbed]});
+        message.channel.send({ embeds: [helpEmbed] });
     }
 }

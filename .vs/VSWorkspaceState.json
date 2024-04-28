@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\commands",
+    "\\src\\commands\\actions\\highfive",
+    "\\src\\commands\\actions\\poke",
+    "\\src\\commands\\actions\\shoot",
+    "\\src\\commands\\Cool Commands",
+    "\\src\\commands\\Cool Commands\\afk",
+    "\\src\\commands\\emotions",
+    "\\src\\commands\\emotions\\blush"
+  ],
+  "SelectedNode": "\\src\\commands\\Cool Commands\\afk\\afk.js",
+  "PreviewInSolutionExplorer": false
+}

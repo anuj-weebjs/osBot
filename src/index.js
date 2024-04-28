@@ -7,7 +7,7 @@ require('dotenv').config();
 const token = process.env.TOKEN;
 const mongoDbConnectionString = process.env.MONGO_DB_CONNECTION_STRING;
 
-async function connectdb(){
+async function connectdb() {
     await database.main.connect(mongoDbConnectionString);
     return 0;
 }
@@ -33,6 +33,7 @@ const client = new Client({
     ]
 })
 
+exports.client = client;
 
 // Events
 
@@ -61,4 +62,4 @@ client.login(process.env.TOKEN);
 //     DB: db,
 //     CLIENT: client
 // }
-exports.client = client;
+
