@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\Cool Commands\\meme\\sendMeme.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\commands\\Cool Commands\\meme\\sendMeme.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\Cool Commands\\afk\\afk.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\commands\\Cool Commands\\afk\\afk.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -106,11 +110,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 277,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "afkCheckOnMentionMessage.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\events\\messageCreate\\afkCheckOnMentionMessage.js",
               "RelativeDocumentMoniker": "src\\events\\messageCreate\\afkCheckOnMentionMessage.js",
@@ -119,7 +123,19 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACoAAABGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-04-27T18:13:08.193Z",
-              "IsPinned": true,
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "sendMeme.js",
+              "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\Cool Commands\\meme\\sendMeme.js",
+              "RelativeDocumentMoniker": "src\\commands\\Cool Commands\\meme\\sendMeme.js",
+              "ToolTip": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\Cool Commands\\meme\\sendMeme.js",
+              "RelativeToolTip": "src\\commands\\Cool Commands\\meme\\sendMeme.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-04-28T17:37:36.187Z",
               "EditorCaption": ""
             },
             {
@@ -132,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "getUserById.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\utils\\getUserById.js",
               "RelativeDocumentMoniker": "src\\utils\\getUserById.js",
@@ -140,12 +156,11 @@
               "RelativeToolTip": "src\\utils\\getUserById.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:57:08.311Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:57:08.311Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "sendActionEmbed.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\utils\\sendActionEmbed.js",
               "RelativeDocumentMoniker": "src\\utils\\sendActionEmbed.js",
@@ -153,12 +168,11 @@
               "RelativeToolTip": "src\\utils\\sendActionEmbed.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:56:16.018Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:56:16.018Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "afkCheckOnEveryMessage.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\events\\messageCreate\\afkCheckOnEveryMessage.js",
               "RelativeDocumentMoniker": "src\\events\\messageCreate\\afkCheckOnEveryMessage.js",
@@ -166,12 +180,11 @@
               "RelativeToolTip": "src\\events\\messageCreate\\afkCheckOnEveryMessage.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-27T18:22:25.997Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-27T18:22:25.997Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "afkCheckOnRepliedMessage.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\events\\messageCreate\\afkCheckOnRepliedMessage.js",
               "RelativeDocumentMoniker": "src\\events\\messageCreate\\afkCheckOnRepliedMessage.js",
@@ -179,12 +192,11 @@
               "RelativeToolTip": "src\\events\\messageCreate\\afkCheckOnRepliedMessage.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-23T11:13:10.434Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-23T11:13:10.434Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "afk.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\Cool Commands\\afk\\afk.js",
               "RelativeDocumentMoniker": "src\\commands\\Cool Commands\\afk\\afk.js",
@@ -197,7 +209,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "sendBlushEmotion.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\emotions\\blush\\sendBlushEmotion.js",
               "RelativeDocumentMoniker": "src\\commands\\emotions\\blush\\sendBlushEmotion.js",
@@ -205,12 +217,11 @@
               "RelativeToolTip": "src\\commands\\emotions\\blush\\sendBlushEmotion.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAABcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:56:05.323Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:56:05.323Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "sendPing.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\mics\\ping\\sendPing.js",
               "RelativeDocumentMoniker": "src\\commands\\mics\\ping\\sendPing.js",
@@ -218,12 +229,11 @@
               "RelativeToolTip": "src\\commands\\mics\\ping\\sendPing.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACQAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-24T12:45:38.62Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-24T12:45:38.62Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "index.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\index.js",
               "RelativeDocumentMoniker": "src\\index.js",
@@ -231,12 +241,11 @@
               "RelativeToolTip": "src\\index.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACMAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-17T02:49:51.716Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-17T02:49:51.716Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "getUserByRawMessage.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\utils\\getUserByRawMessage.js",
               "RelativeDocumentMoniker": "src\\utils\\getUserByRawMessage.js",
@@ -244,12 +253,11 @@
               "RelativeToolTip": "src\\utils\\getUserByRawMessage.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAALAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:49:21.772Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:49:21.772Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "sendCuddleAction.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\actions\\cuddle\\sendCuddleAction.js",
               "RelativeDocumentMoniker": "src\\commands\\actions\\cuddle\\sendCuddleAction.js",
@@ -257,12 +265,11 @@
               "RelativeToolTip": "src\\commands\\actions\\cuddle\\sendCuddleAction.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:55:25.986Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:55:25.986Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "database.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\database.js",
               "RelativeDocumentMoniker": "src\\database.js",
@@ -270,12 +277,11 @@
               "RelativeToolTip": "src\\database.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-17T02:49:58.295Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-17T02:49:58.295Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "sendHighfiveAction.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\actions\\highfive\\sendHighfiveAction.js",
               "RelativeDocumentMoniker": "src\\commands\\actions\\highfive\\sendHighfiveAction.js",
@@ -283,12 +289,11 @@
               "RelativeToolTip": "src\\commands\\actions\\highfive\\sendHighfiveAction.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:55:43.963Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:55:43.963Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "sendPokeAction.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\actions\\poke\\sendPokeAction.js",
               "RelativeDocumentMoniker": "src\\commands\\actions\\poke\\sendPokeAction.js",
@@ -296,12 +301,11 @@
               "RelativeToolTip": "src\\commands\\actions\\poke\\sendPokeAction.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:55:50.066Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:55:50.066Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "sendShootAction.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\actions\\shoot\\sendShootAction.js",
               "RelativeDocumentMoniker": "src\\commands\\actions\\shoot\\sendShootAction.js",
@@ -309,12 +313,11 @@
               "RelativeToolTip": "src\\commands\\actions\\shoot\\sendShootAction.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:55:54.524Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:55:54.524Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "fetchAction.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\utils\\fetchAction.js",
               "RelativeDocumentMoniker": "src\\utils\\fetchAction.js",
@@ -322,12 +325,11 @@
               "RelativeToolTip": "src\\utils\\fetchAction.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-28T06:56:13.506Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-28T06:56:13.506Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "package.json",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\package.json",
               "RelativeDocumentMoniker": "package.json",
@@ -335,12 +337,11 @@
               "RelativeToolTip": "package.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-04-24T12:58:28.275Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-24T12:58:28.275Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "prefixHandler.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\events\\messageCreate\\prefixHandler.js",
               "RelativeDocumentMoniker": "src\\events\\messageCreate\\prefixHandler.js",
@@ -348,12 +349,11 @@
               "RelativeToolTip": "src\\events\\messageCreate\\prefixHandler.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAABRAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-21T17:47:08.769Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-21T17:47:08.769Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "TOS.md",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\TOS.md",
               "RelativeDocumentMoniker": "TOS.md",
@@ -361,12 +361,11 @@
               "RelativeToolTip": "TOS.md",
               "ViewState": "AQIAAAkAAAAAAAAAAAAAACQAAABrAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2024-04-26T06:48:48.746Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-26T06:48:48.746Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "userSchema.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\model\\userSchema.js",
               "RelativeDocumentMoniker": "src\\model\\userSchema.js",
@@ -374,12 +373,11 @@
               "RelativeToolTip": "src\\model\\userSchema.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-23T11:13:22.018Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-23T11:13:22.018Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "start.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\commands\\mics\\start\\start.js",
               "RelativeDocumentMoniker": "src\\commands\\mics\\start\\start.js",
@@ -387,8 +385,7 @@
               "RelativeToolTip": "src\\commands\\mics\\start\\start.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-23T11:04:40.658Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-23T11:04:40.658Z"
             }
           ]
         },
@@ -398,7 +395,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "afkModel.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\model\\afkModel.js",
               "RelativeDocumentMoniker": "src\\model\\afkModel.js",
@@ -406,12 +403,11 @@
               "RelativeToolTip": "src\\model\\afkModel.js",
               "ViewState": "AQIAABIAAAAAAAAAAAAAABIAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-23T11:13:20.007Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-23T11:13:20.007Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "economyModel.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\model\\economyModel.js",
               "RelativeDocumentMoniker": "src\\model\\economyModel.js",
@@ -424,7 +420,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "miscModel.js",
               "DocumentMoniker": "E:\\work\\Visual Studio\\Source\\Repos\\osBot\\src\\model\\miscModel.js",
               "RelativeDocumentMoniker": "src\\model\\miscModel.js",
@@ -432,8 +428,7 @@
               "RelativeToolTip": "src\\model\\miscModel.js",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-04-23T11:00:47.769Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-23T11:00:47.769Z"
             }
           ]
         }

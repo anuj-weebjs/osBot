@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const {fetchAction} = require('./fetchAction');
+const { fetchAction } = require('./fetchAction');
 
 async function sendEmbed(message, endpoint, title) {
     try {
@@ -9,9 +9,9 @@ async function sendEmbed(message, endpoint, title) {
         }
 
         const Embed = new EmbedBuilder()
-        .setColor('#ADD8E6')
-        .setAuthor({name:title, iconURL:message.author.displayAvatarURL(), url: gifData.url})
-        .setImage(gifData.url);
+            .setColor('#ADD8E6')
+            .setAuthor({ name: title, iconURL: message.author.displayAvatarURL(), url: gifData.url })
+            .setImage(gifData.url);
 
         message.channel.send({ embeds: [Embed] });
     } catch (error) {

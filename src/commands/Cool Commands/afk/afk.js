@@ -1,5 +1,5 @@
-const config = require('../../../config.json');
 const afkModel = require('../../../model/afkModel.js');
+const config = require('../../../config.json');
 
 const prefix = config.PREFIX;
 
