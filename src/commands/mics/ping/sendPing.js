@@ -11,7 +11,7 @@ module.exports = {
             .setTitle('Pong!')
             .setDescription('Loading...')
             .addFields(
-                { name: 'Ram', value: `${_memory.toString()}mb`, inline: false }
+                { name: 'Ram', value: `${_memory.toString()}mb`, inline: true }
             );
 
         message.channel.send({ embeds: [pingEmbed] }).then(sentMessage => {

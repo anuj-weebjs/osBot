@@ -5,7 +5,9 @@ const prefix = config.PREFIX;
 module.exports = {
     execute: async (message) => {
 
-        userDataInDataBase = await miscModel.findOne({ 'userInfo.id': message.author.id });
+        userDataInDataBase = await miscModel.findOne({ 'userId': message.author.id });
+
+        console.log(userDataInDataBase)
 
         if (!userDataInDataBase) {
             const a = message.createdTimestamp;
@@ -16,7 +18,7 @@ module.exports = {
                 createdAt: timeStamp
             })
             await userData.save();
-            message.channel.send(`Arraaa Nice to meet you <@${message.author.id}> :3 \nGet Started By Typing \`${prefix} help\``);
+            message.channel.send(`**Welcome** <@${message.author.id}> :3 \nGet Started By Typing \`${prefix} help\``);
         } else {
             message.channel.send(`Get Started By Typing \`${prefix} help\``);
         }
