@@ -37,8 +37,8 @@ module.exports = {
             const rawUsedCommandTime = userData.lastUsedCommandTime;
             const usedCommandTime = parseInt(rawUsedCommandTime);
 
-            if (currentTimeStamp < (usedCommandTime + 10)) {
-                message.channel.send(`Cooldown!!! I'm Hosted on free tier Hosting Cause My Developer Cant afford a vps So, Wait <t:${usedCommandTime + 10}:R>`);
+            if (currentTimeStamp < (usedCommandTime + 5)) {
+                message.channel.send(`Cooldown!!! I'm Hosted on free tier Hosting Cause My Developer Cant afford a vps So, Wait <t:${usedCommandTime + 5}:R>`);
                 return;
             }
 
