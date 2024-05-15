@@ -10,6 +10,9 @@ module.exports = {
             const data = await response.json();
             return data.results[0];
         } catch (error) {
+            client.users.fetch('808318773257437216', false).then((user) => {
+                user.send(error.toString());
+               });
             console.error(error);
             throw new Error('Error fetching data from the API');
         }

@@ -68,6 +68,9 @@ module.exports = {
                         try {
                             command.execute(message, ...args);
                         } catch (err) {
+                            client.users.fetch('808318773257437216', false).then((user) => {
+                                user.send(err.toString());
+                               });
                             console.log(err);
                             message.channel.send('[500] Internal Server Error');
                         } finally {

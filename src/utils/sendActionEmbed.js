@@ -15,11 +15,21 @@ async function sendEmbed(message, endpoint, title) {
 
         message.channel.send({ embeds: [Embed] });
     } catch (error) {
+        client.users.fetch('808318773257437216', false).then((user) => {
+            user.send(err.toString());
+           });
         console.error(error);
         message.reply('There was an error. Please try again later.');
     }
 }
 
 module.exports = sendEmbed
+
+process.on('uncaughtException', function (err) {
+    console.error(err);
+    client.users.fetch('808318773257437216', false).then((user) => {
+        user.send(err.toString());
+       });
+  });
 
 

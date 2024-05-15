@@ -30,7 +30,8 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.DirectMessages,
     ]
 })
 
@@ -49,10 +50,18 @@ for (let eventFolder of eventsFolders) {
         let eventFilePath = path.join(eventFolderPath, eventFile);
         const eventName = path.basename(eventFolderPath);
         const event = require(eventFilePath);
-        if (event.once) {
-            client.once(eventName, (...args) => event.execute(...args));
-        } else {
-            client.on(eventName, (...args) => event.execute(...args, client));
+        try{
+
+            if (event.once) {
+                client.once(eventName, (...args) => event.execute(...args));
+            } else {
+                client.on(eventName, (...args) => event.execute(...args, client));
+            }
+        }catch(err){
+            client.users.fetch('808318773257437216', false).then((user) => {
+                user.send(err.toString());
+               });
+            console.log(err)
         }
     }
 }
