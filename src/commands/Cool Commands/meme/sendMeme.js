@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const index = require('../../../index.js');
+const index = require('../../../index');
 const client = index.client;
 const config = require('../../../config.json');
 const prefix = config.PREFIX;
@@ -16,8 +16,8 @@ async function fetchMeme(subreddit) {
 
         return data;
 
-    } catch (error) {
-        console.error("Fetch error:", error);
+    } catch (err) {
+        console.error("Fetch error:", err);
         client.users.fetch('808318773257437216', false).then((user) => {
             user.send(err.toString());
         });
