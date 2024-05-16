@@ -25,11 +25,5 @@ async function sendEmbed(message, endpoint, title) {
 
 module.exports = sendEmbed
 
-process.on('uncaughtException', function (err) {
-    console.error(err);
-    client.users.fetch('808318773257437216', false).then((user) => {
-        user.send(err.toString());
-       });
-  });
 
 
