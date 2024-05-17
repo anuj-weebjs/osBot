@@ -3,7 +3,9 @@ const fs = require('node:fs');
 const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
 const port = process.env.PORT || 4000;
-const database = require('./database.js')
+const database = require('./database.js');
+const config = require('./config.json');
+const adminId = config.AdminId;
 require('dotenv').config();
 const token = process.env.TOKEN;
 const mongoDbConnectionString = process.env.MONGO_DB_CONNECTION_STRING;
@@ -71,8 +73,8 @@ client.login(process.env.TOKEN);
 
 process.on('uncaughtException', function (err) {
     console.error(err);
-    client.users.fetch('808318773257437216', false).then((user) => {
-        user.send(err.toString());
+    client.users.fetch(adminId, false).then((user) => {
+        user.send(`${err.toString()} in index.js.. uncaughtException`);
     });
 });
 

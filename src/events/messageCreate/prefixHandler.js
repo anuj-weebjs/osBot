@@ -1,12 +1,15 @@
 const path = require('node:path');
 const fs = require('node:fs');
 const config = require('../../config.json');
+const adminId = config.adminId;
 const miscModel = require('../../model/miscModel.js');
 //const { time } = require('../../../../TOS.md');
 
 const prefix = config.PREFIX;
 module.exports = {
     execute: async (message, client) => {
+        if (!message) return;
+
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = await args.shift().toLowerCase();
         if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
@@ -68,11 +71,11 @@ module.exports = {
                         try {
                             command.execute(message, ...args);
                         } catch (err) {
-                            client.users.fetch('808318773257437216', false).then((user) => {
-                                user.send(err.toString());
-                               });
+                            client.users.fetch(adminId, false).then((user) => {
+                                user.send(`${err.toString()} in prefixHandler.js.. Command: ${msgCommand} Message Guild: ${message.guild.name} Message Author:${message.author.username} | ${message.author.id}`);
+                            });
                             console.log(err);
-                            message.channel.send('[500] Internal Server Error');
+                            message.channel.send('[500] Internal Server Error.');
                         } finally {
                             if (msgCommand != 'start') {
                                 userData.lastUsedCommand = msgCommand;

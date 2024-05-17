@@ -3,6 +3,7 @@ const index = require('../../../index');
 const client = index.client;
 const config = require('../../../config.json');
 const prefix = config.PREFIX;
+const adminId = config.adminId;
 
 async function fetchMeme(subreddit) {
     try {
@@ -11,17 +12,21 @@ async function fetchMeme(subreddit) {
         if (!response) {
             throw new Error(`No Response from meme api`);
         }
+
         const data = await response.json();
-        data.code = 200;
+        if (response.status == 404) {
+            data.code = 404;
+        } else { 
+            data.code = 200;
 
+        }
         return data;
-
     } catch (err) {
-        console.error("Fetch error:", err);
-        client.users.fetch('808318773257437216', false).then((user) => {
-            user.send(err.toString());
-        });
-    }
+    console.error("Fetch error:", err);
+    client.users.fetch(adminId, false).then((user) => {
+        user.send(`${err.toString()} In sendMeme.js.. subreddit: ${subreddit}`);
+    });
+}
 }
 
 
@@ -51,6 +56,7 @@ module.exports = {
 
             if (meme.code == 404) {
                 Embed.setAuthor({ name: meme.message });
+                Embed.setDescription('error code: 404');
                 sentMessage.edit({ embeds: [Embed] });
                 return;
             }
