@@ -56,7 +56,7 @@ async function connect(CONNECTIONSTRING: any) {
 
 
 // Handeling
-const handlersPath = path.join(__dirname, 'handlers');
+const handlersPath = path.join(__dirname, 'Handlers');
 const handlers = fs.readdirSync(handlersPath);
 
 for( const handler of handlers) {
