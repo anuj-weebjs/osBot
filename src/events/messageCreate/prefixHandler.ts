@@ -11,6 +11,9 @@ module.exports = {
 
         if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
 
+        if(!message.channel.permissionsFor(client.user.id).has("SendMessages")){ //You can do the same for EmbedLinks, ReadMessageHistory and so on
+            return;
+        };
 
         var messageUserId = message.author.id;
         let userData = await miscModel.findOne({userId: messageUserId});
