@@ -35,6 +35,7 @@ app.get('/', (req: any, res: any)=>{
         running: true
     });
 });
+app.listen(port);
 
 // Connecting To Db
 
