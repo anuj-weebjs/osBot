@@ -28,7 +28,7 @@ var developerId = config.developerId;
 
 // Keep Alive
 const app = express();
-const port = 4010;
+const port = process.env.PORT || 4010;
 app.get('/', (req: any, res: any)=>{
     res.send({
         running: true
