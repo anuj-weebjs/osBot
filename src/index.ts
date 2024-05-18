@@ -9,6 +9,7 @@ var config = require('./../config.json');
 
 // Defining Variables
 var client = new Client({
+    allowedMentions: { parse: [] },
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,

@@ -9,11 +9,11 @@ module.exports = {
         const messageString = message.content;
 
         const regex = /<@(\d+)>/g;
-        let userIds = [];
+        let userIds: string[] = [];
         let match;
 
         while ((match = regex.exec(messageString)) !== null) {
-            userIds.push(match[1]); // Extracting the ids from each match
+            userIds.push(match[1]);
         }
 
         if (userIds.length == 0) return;
