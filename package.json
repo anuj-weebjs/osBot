@@ -10,7 +10,6 @@
   "description": "<b>It is a prefix based Discord Bot Created in Node.js</b>",
   "version": "2.0.0",
   "main": "dist/index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",

@@ -18,17 +18,17 @@ module.exports = {
                 .setThumbnail(message.guild.iconURL({ size: 256 }))
                 .setImage(message.guild.bannerURL({ size: 256 }))
                 .addFields(
-                    { name: 'Owner', value: `- ${owner.user.displayName} (${owner.user.id})` },
+                    { name: 'Owner', value: `${owner.user.displayName} (${owner.user.id})` },
                     {
                         name: "Channels",
-                        value: `- Text: ${channels.filter((c: any) => c.type === 0).size.toString()}\n- Voice: ${channels.filter((c: any) => c.type === 2).size.toString()}\n- Category: ${channels.filter((c: any) => c.type === 4).size.toString()}`,
+                        value: `Text: ${channels.filter((c: any) => c.type === 0).size.toString()}\nVoice: ${channels.filter((c: any) => c.type === 2).size.toString()}\nCategory: ${channels.filter((c: any) => c.type === 4).size.toString()}`,
                     },
-                    { name: 'Members', value: `- ${members.sort((a, b) => a.joinedTimestamp! - b.joinedTimestamp!).first(10).map(i => `<@${i.id}>`).join(", ")} ${members.size > 15 ? `and **${members.size - 15}** more` : ""}` },
+                    { name: 'Members', value: `${members.sort((a, b) => a.joinedTimestamp! - b.joinedTimestamp!).first(10).map(i => `<@${i.id}>`).join(", ")} ${members.size > 15 ? `and **${members.size - 15}** more` : ""}` },
                     {
                         name: `Roles (${roles?.size ?? "0"} in total)`,
-                        value: `- ${roles.size > 15 ? `${roles.first(15).map((i) => `<@&${i.id}>`).join(", ")} and **${roles?.size - 15}** more` : roles.first(15).map((i) => `<@&${i.id}>`).join(", ")} `,
+                        value: `${roles.size > 15 ? `${roles.first(15).map((i) => `<@&${i.id}>`).join(", ")} and **${roles?.size - 15}** more` : roles.first(15).map((i) => `<@&${i.id}>`).join(", ")} `,
                     },
-                    { name: 'Created', value: `- <t:${createdTimestamp}:F> (<t:${createdTimestamp}:R>)` }
+                    { name: 'Created', value: `<t:${createdTimestamp}:F> (<t:${createdTimestamp}:R>)` }
                 )
                 .setFooter({ text: 'Requested by ' + message.author.displayName, iconURL: message.author.displayAvatarURL() });
 
