@@ -1,4 +1,4 @@
-var afkModel = require('../../../model/afkModel.js');
+var afkDoc = require('../../../model/afkModel.js');
 var config = require('../../../../config.json')
 var prefix = config.PREFIX;
 
@@ -26,8 +26,8 @@ module.exports = {
                 _reason = args.join(" ");
             }
             try {
-                await afkModel.deleteMany({ userId: userid });
-                const newDoc = new afkModel({ userId: userid, reason: _reason, afkStartTime: timeStamp });
+                await afkDoc.deleteMany({ userId: userid });
+                const newDoc = new afkDoc({ userId: userid, reason: _reason, afkStartTime: timeStamp });
                 await newDoc.save();
             } catch (err) {
                 console.log("Error in afk.js " + err);
@@ -40,7 +40,7 @@ module.exports = {
                 message.reply(`AFK Status is Now \`On!\` reason: ${_reason}, Time: <t:${timeStamp}:R>`);
             }
         } else if (args[0].toLowerCase() == "off") {
-            await afkModel.deleteMany({ userId: userid });
+            await afkDoc.deleteMany({ userId: userid });
             message.reply(`AFK Status is Now \`Off!\``);
         }
 

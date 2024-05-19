@@ -1,4 +1,4 @@
-var miscModel = require('../../model/miscmodel');
+var miscDoc = require('../../model/miscmodel');
 var config = require('../../../config.json');
 var developerId = config.developerId;
 var prefix = config.PREFIX;
@@ -16,7 +16,7 @@ module.exports = {
         };
 
         var messageUserId = message.author.id;
-        let userData = await miscModel.findOne({userId: messageUserId});
+        let userData = await miscDoc.findOne({userId: messageUserId});
 
         if(!userData){
             if(msgCommand != 'start'){
