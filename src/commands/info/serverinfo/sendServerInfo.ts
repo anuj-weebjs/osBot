@@ -1,10 +1,11 @@
-const { EmbedBuilder } = require('discord.js');
+var { EmbedBuilder } = require('discord.js');
 module.exports = {
     execute: async (message: any) => {
         try {
-            const guild = message.guild;
+            const guild: any = message.guild;
             const owner = await guild.fetchOwner();
-            const createdTimestamp = parseInt(guild.createdAt / 1000);
+            const guildCreatedAt: number = parseInt(guild.createdAt);
+            const createdTimestamp = (guildCreatedAt / 1000) | 0;
             const ServerEmbed = new EmbedBuilder()
                 .setColor('#2B2D31')
                 .setTitle(`${guild.name} - Server info`)
