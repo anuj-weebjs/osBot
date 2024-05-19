@@ -1,4 +1,4 @@
-var afkModel = require('../../model/afkModel');
+var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
 
         for (let userid of userIds) {
             try {
-                var queryResult = await afkModel.findOne({ userId: userid });
+                var queryResult = await afkDoc.findOne({ userId: userid });
                 if (!queryResult) {
                     throw new Error("There was an Error while retreving data from database")
                 }

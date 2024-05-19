@@ -1,4 +1,4 @@
-var afkModel = require('../../model/afkModel.js');
+var afkDoc = require('../../model/afkModel.js');
 
 module.exports = {
     execute: async (message: any) => {
@@ -7,8 +7,8 @@ module.exports = {
 
         if (message.reference != null) {
             const msg = await message.channel.messages.fetch(message.reference.messageId)
+            var queryResult = await afkDoc.findOne({ userId: msg.author.id });
             try {
-                var queryResult = await afkModel.findOne({ userId: msg.author.id });
             } catch (err) {
                 console.log(err);
             }
