@@ -4,7 +4,7 @@ module.exports = {
         try {
             const guild: any = message.guild;
             const owner = await guild.fetchOwner();
-            const guildCreatedAt: number = parseInt(guild.createdAt);
+            const guildCreatedAt: number = guild.createdAt;
             const createdTimestamp = (guildCreatedAt / 1000) | 0;
             const ServerEmbed = new EmbedBuilder()
                 .setColor('#2B2D31')
