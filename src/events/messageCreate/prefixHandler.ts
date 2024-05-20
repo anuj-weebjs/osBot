@@ -6,7 +6,7 @@ var prefix = config.PREFIX;
 module.exports = {
     execute: async (message: any, client: any) => {
         if(!message) return;
-        const args = message.content.slice(prefix.length).trim().split(/ +/);
+        var args = message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = args.shift().toLowerCase();
 
         if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
@@ -51,7 +51,7 @@ module.exports = {
         const command = commands.get(msgCommand);
         if(!command) return;
         try{
-            await command.execute(message, client, ...args)
+            await command.execute(message, client, args,)
         } catch (err: any) {
             client.users.fetch(developerId, false).then((user: any)=>{
                 user.send(`

@@ -3,6 +3,11 @@ var miscDoc = require('../../../model/miscmodel');
 var prefix = config.PREFIX;
 
 module.exports = {
+    structure: {
+        name: "start",
+        description: "It is used for accepting TOS",
+        usage: `${prefix} start`
+    },
     execute: async (message: any) => {
 
         const userDataInDataBase = await miscDoc.findOne({ 'userId': message.author.id });

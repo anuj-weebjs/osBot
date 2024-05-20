@@ -1,8 +1,12 @@
 var afkDoc = require('../../model/afkModel');
-
+var {PREFIX} = require('../../../config.json')
 module.exports = {
     execute: async (message: any) => {
         if (message.author.bot) return;
+
+        const args = await message.content.slice(PREFIX.length).trim().split(/ +/);
+
+        if(args[0].toLowerCase() === 'afk') return;
 
         const userid = message.author.id;
         var queryResult = await afkDoc.findOne({ userId: userid });

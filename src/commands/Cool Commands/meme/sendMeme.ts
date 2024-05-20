@@ -29,6 +29,11 @@ async function fetchMeme(subreddit: string) {
 
 
 module.exports = {
+    structure:{
+        name: "meme",
+        description: "Get memes Through Reddit",
+        usage: `${prefix} meme <subreddit>`
+    },
     execute: async (message: any) => {
 
         const args = await message.content.slice(prefix.length).trim().split(/ +/);

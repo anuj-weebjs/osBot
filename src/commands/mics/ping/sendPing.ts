@@ -1,5 +1,13 @@
 var { EmbedBuilder} = require('discord.js');
+var config = require('../../../../config.json');
+var prefix = config.PREFIX;
+
 module.exports = {
+    structure: {
+        name: "ping",
+        description: "Get Bot's Status",
+        usage: `${prefix} dance`
+    },
     execute: async (message: any, client: any) => {
         const pingEmbed = new EmbedBuilder()
             .setColor('#FF6347')

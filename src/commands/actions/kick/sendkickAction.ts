@@ -5,6 +5,11 @@ var getUserById = require('../../../utils/getUserByRawMessage');
 var prefix = config.PREFIX;
 
 module.exports = {
+    structure:{
+        name: "kick",
+        description: "Kick Someone 🦵",
+        usage: `${prefix} kick <mention>`
+    },
     execute: async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();

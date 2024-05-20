@@ -1,6 +1,12 @@
 import { GuildMember, Message, EmbedBuilder } from "discord.js";
-
+var config = require('../../../../config.json');
+var prefix = config.PREFIX;
 module.exports = {
+    structure: {
+        name: "serverinfo",
+        description: "Get Info About Server",
+        usage: `${prefix} serverinfo`
+    },
     execute: async (message: Message) => {
         try {
             if (!message?.guild) {
