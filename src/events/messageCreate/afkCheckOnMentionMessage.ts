@@ -41,7 +41,7 @@ module.exports = {
                 if (queryResult.reason == 'none') {
                     message.reply(`${userData.globalName} Went \`AFK\` <t:${queryResult.afkStartTime}:R>`);
                 } else {
-                    message.reply(`${userData.globalName} Went \`AFK\` < t: ${queryResult.afkStartTime}: R > Because ${reason}`);
+                    message.reply(`${userData.globalName} Went \`AFK\` <t:${queryResult.afkStartTime}:R> Reason: ${reason}`);
                 }
             } else {
                 continue;
