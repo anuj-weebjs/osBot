@@ -1,8 +1,16 @@
 {
-    "PREFIX":"os",
+    "PREFIX":"o!",
     "activities":{
         "name":"os Help"
     },
     "status":"dnd",
-    "developerId": "808318773257437216"
+    "developerId": "808318773257437216",
+    "log":{
+        "guildId": "1226560136777044129",
+        "guildJoinChannelId": "1242333814878113802",
+        "guildLeaveChannelId": "1242333980540403794",
+        "executeChannelId":"1242346785091878932",
+        "uncaughtExceptionChannelId": "1242348697115688970",
+        "errorChannelId": "1242349431974793226"
+    }
 }

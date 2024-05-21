@@ -16,11 +16,13 @@ async function sendEmbed(message: any, endpoint: string, title: string) {
             .setImage(gifData.url);
 
         message.channel.send({ embeds: [Embed] });
-    } catch (error: any) {
-        client.users.fetch(developerId, false).then((user: any) => {
-            user.send(`${error.toString()} in send Action Embed`);
-           });
-        console.error(error);
+    } catch (err: any) {
+        let channel = await client.channels.cache.get(config.log.errorChannelId);
+            channel.send(`
+            Error: ${err.toString()}\n
+            In sendActionEmbed.ts `);
+            console.error(err);
+        console.error(err);
         message.reply('There was an error. Please try again later.');
     }
 }

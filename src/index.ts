@@ -30,7 +30,7 @@ var developerId = config.developerId;
 // Keep Alive
 const app = express();
 const port = process.env.PORT || 4010;
-app.get('/', (req: any, res: any)=>{
+app.get('/', (req: any, res: any) => {
     res.send({
         running: true
     });
@@ -61,7 +61,7 @@ async function connect(CONNECTIONSTRING: any) {
 const handlersPath = path.join(__dirname, 'Handlers');
 const handlers = fs.readdirSync(handlersPath);
 
-for( const handler of handlers) {
+for (const handler of handlers) {
     require(path.join(handlersPath, handler))(client);
 }
 
@@ -69,9 +69,10 @@ client.handleEvents(client);
 client.login(token);
 
 
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', async function (err) {
     console.error(err);
-    client.users.fetch(developerId, false).then((user: any) => {
-        user.send(`🔴UncaugthExecption: ${err.toString()}`);
-    });
+
+    let channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+    channel.send(`🔴UncaugthExecption: ${err.toString()}`);
+    
 });

@@ -8,11 +8,12 @@ module.exports = {
             }
             const data = await response.json();
             return data.results[0];
-        } catch (error: any) {
-            client.users.fetch('808318773257437216', false).then((user: any) => {
-                user.send(error.toString());
-               });
-            console.error(error);
+        } catch (err: any) {
+            let channel = await client.channels.cache.get(config.log.errorChannelId);
+            channel.send(`
+            Error: ${err.toString()}\n
+            In fetchAction.ts `);
+            console.error(err);
             throw new Error('Error fetching data from the API');
         }
     }

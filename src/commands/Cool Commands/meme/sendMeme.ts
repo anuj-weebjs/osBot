@@ -14,22 +14,24 @@ async function fetchMeme(subreddit: string) {
         const data = await response.json();
         if (response.status == 404) {
             data.code = 404;
-        } else { 
+        } else {
             data.code = 200;
 
         }
         return data;
     } catch (err: any) {
-    console.error("Fetch error:", err);
-    client.users.fetch(developerId, false).then((user: any) => {
-        user.send(`${err.toString()} In sendMeme.js.. subreddit: ${subreddit}`);
-    });
-}
+        console.error("Fetch error:", err);
+        let channel = await client.channels.cache.get(config.log.errorChannelId);
+        channel.send(`
+            Error: ${err.toString()}\n
+            In fetchAction.ts `);
+        console.error(err);
+    }
 }
 
 
 module.exports = {
-    structure:{
+    structure: {
         name: "meme",
         description: "Get memes Through Reddit",
         usage: `${prefix} meme <subreddit>`

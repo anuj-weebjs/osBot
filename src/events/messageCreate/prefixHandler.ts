@@ -5,21 +5,21 @@ var prefix = config.PREFIX;
 
 module.exports = {
     execute: async (message: any, client: any) => {
-        if(!message) return;
+        if (!message) return;
         var args = message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = args.shift().toLowerCase();
 
         if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
 
-        if(!message.channel.permissionsFor(client.user.id).has("SendMessages")){ //You can do the same for EmbedLinks, ReadMessageHistory and so on
+        if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) { //You can do the same for EmbedLinks, ReadMessageHistory and so on
             return;
         };
 
         var messageUserId = message.author.id;
-        let userData = await miscDoc.findOne({userId: messageUserId});
+        let userData = await miscDoc.findOne({ userId: messageUserId });
 
-        if(!userData){
-            if(msgCommand != 'start'){
+        if (!userData) {
+            if (msgCommand != 'start') {
                 await message.channel.send({
                     files: [
                         {
@@ -36,7 +36,7 @@ module.exports = {
         const rawCurrentTimeStamp: number = message.createdTimestamp;
         const currentTimeStamp: number = (rawCurrentTimeStamp / 1000) | 0;
 
-        if(msgCommand != 'start'){
+        if (msgCommand != 'start') {
             const rawUsedCommandTime = userData.lastUsedCommandTime;
             const usedCommandTime = parseInt(rawUsedCommandTime);
 
@@ -45,26 +45,30 @@ module.exports = {
                 return;
             }
         }
-       
 
-        const {commands} = client;
+
+        const { commands } = client;
         const command = commands.get(msgCommand);
-        if(!command) return;
-        try{
+        if (!command) return;
+        try {
             await command.execute(message, client, args,)
         } catch (err: any) {
-            client.users.fetch(developerId, false).then((user: any)=>{
-                user.send(`
-                🔴Error: ${err.toString()}\n
-                Command: ${msgCommand}\n
-                Guild: ${message.guild.name}
-                User: ${message.author.username} | ${message.author.id}
-                `)
-            })
+            let channel = await client.channels.cache.get(config.log.errorChannelId);
+            channel.send(`
+            Error: ${err.toString()}\n
+            raw Message: ${message.content}\n
+            Command: ${msgCommand}\n
+            Guild: ${message.guild.name} | ${message.guild.id}\n
+            User: ${message.author.username} | ${message.author.id}
+            `);
             console.log(err);
-            message.channel.send(`[500] Internal Server Error. Data has Been Sent to My Devlopers The issue will be fixed soon.`);
-        } finally{
-            if(msgCommand != 'start'){
+            
+            message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
+        } finally {
+            let channel = await client.channels.cache.get(config.log.executeChannelId);
+            channel.send(`-----------------\nraw Message: ${message.content}\nCommand Name: ${msgCommand}\nGuild: ${message.guild.name} | ${message.guild.id}\nUser: ${message.author.username} | ${message.author.id}`);
+
+            if (msgCommand != 'start') {
                 userData.lastUsedCommand = msgCommand;
                 userData.lastUsedCommandTime = currentTimeStamp;
                 await userData.save();
