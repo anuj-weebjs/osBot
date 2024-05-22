@@ -5,7 +5,8 @@ var developerId = config.developerId;
 
 async function fetchMeme(subreddit: string) {
     try {
-        const response = await fetch(`https://meme-api.com/gimme/${subreddit}`);
+        const url = "https://meme-api.com/gimme/" + subreddit;
+        const response = await fetch(url);
 
         if (!response) {
             throw new Error(`No Response from meme api`);
@@ -53,10 +54,22 @@ module.exports = {
         }
 
         message.channel.send({ embeds: [Embed] }).then(async (sentMessage: any) => {
+
+            
             if (args.length == 0) {
                 var meme = await fetchMeme("");
             } else {
-                var meme = await fetchMeme(args[0]);
+                let subreddit = args[0].toString();
+                let containInvaildChars = validateString(subreddit);
+                console.log(containInvaildChars)
+                if(!containInvaildChars){
+                    Embed.setAuthor({ name: "This Subreddit Contains Invalid Charecters" });
+                    Embed.setDescription('Error');
+                    sentMessage.edit({ embeds: [Embed] });
+                    return;
+                }
+
+                var meme = await fetchMeme(subreddit);
             }
 
             if (meme.code == 404) {
@@ -74,11 +87,19 @@ module.exports = {
 
             sentMessage.edit({ embeds: [Embed] });
 
-        }).catch((error: any) => {
-            console.log("Error sending or editing message: " + error);
-            message.channel.send("[500] Internal Server Error");
-        });
+        })
 
 
     }
 }  
+
+
+function validateString(input: string) {
+    var regex = /^[a-zA-Z0-9]+$/;
+    
+    if (regex.test(input)) {
+        return true;
+    } else {
+        return false;
+    }
+}

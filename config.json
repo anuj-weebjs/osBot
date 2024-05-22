@@ -1,7 +1,7 @@
 {
-    "PREFIX":"os",
+    "PREFIX":"!o",
     "activities":{
-        "name":"os Help"
+        "name":"!o Help"
     },
     "status":"dnd",
     "developerId": "808318773257437216",
