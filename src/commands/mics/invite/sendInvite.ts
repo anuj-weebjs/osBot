@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+var { Message } = require("discord.js");
 
 var {PREFIX} = require('../../../../config.json');
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
         Description: "Send's Bot Invite Links",
         usage:`${PREFIX} invite`
     },
-    execute: async(message: Message)=>{
+    execute: async(message: typeof Message)=>{
         message.channel.send(`https://discord.com/oauth2/authorize?client_id=1227972298653302826`);
     }
 } 

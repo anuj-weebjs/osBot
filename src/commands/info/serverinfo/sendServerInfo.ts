@@ -1,4 +1,4 @@
-import { GuildMember, Message, EmbedBuilder } from "discord.js";
+var { GuildMember, Message, EmbedBuilder } = require("discord.js");
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 module.exports = {
@@ -7,14 +7,14 @@ module.exports = {
         description: "Get Info About Server",
         usage: `${prefix} serverinfo`
     },
-    execute: async (message: Message) => {
+    execute: async (message: typeof Message) => {
         if (!message?.guild) {
             return message.channel.send({ content: `This command can only be executed in a server.` });
         };
         const owner = await message.guild.fetchOwner(),
             createdTimestamp: number = Math.floor(message.guild.createdTimestamp / 1000),
             channels = message.guild.channels.cache,
-            roles = message.guild.roles.cache.filter(i => i.id !== message.guild?.roles.everyone.id),
+            roles = message.guild.roles.cache.filter((i:any) => i.id !== message.guild?.roles.everyone.id),
             members = message.guild.members.cache;
 
         const ServerEmbed = new EmbedBuilder()
@@ -28,10 +28,10 @@ module.exports = {
                     name: "Channels",
                     value: `Text: ${channels.filter((c: any) => c.type === 0).size.toString()}\nVoice: ${channels.filter((c: any) => c.type === 2).size.toString()}\nCategory: ${channels.filter((c: any) => c.type === 4).size.toString()}`,
                 },
-                { name: 'Members', value: `${members.sort((a, b) => a.joinedTimestamp! - b.joinedTimestamp!).first(10).map(i => `<@${i.id}>`).join(", ")} ${members.size > 15 ? `and **${members.size - 15}** more` : ""}` },
+                { name: 'Members', value: `${members.sort((a: any, b: any) => a.joinedTimestamp! - b.joinedTimestamp!).first(10).map((i: any) => `<@${i.id}>`).join(", ")} ${members.size > 15 ? `and **${members.size - 15}** more` : ""}` },
                 {
                     name: `Roles (${roles?.size ?? "0"} in total)`,
-                    value: `${roles.size > 15 ? `${roles.first(15).map((i) => `<@&${i.id}>`).join(", ")} and **${roles?.size - 15}** more` : roles.first(15).map((i) => `<@&${i.id}>`).join(", ")} `,
+                    value: `${roles.size > 15 ? `${roles.first(15).map((i: any) => `<@&${i.id}>`).join(", ")} and **${roles?.size - 15}** more` : roles.first(15).map((i: any) => `<@&${i.id}>`).join(", ")} `,
                 },
                 { name: 'Created', value: `<t:${createdTimestamp}:F> (<t:${createdTimestamp}:R>)` }
             )

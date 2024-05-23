@@ -1,4 +1,4 @@
-import { User } from "discord.js";
+var { User } = require("discord.js");
 
 var miscDoc = require('../../model/miscmodel');
 var config = require('../../../config.json');
