@@ -1,3 +1,5 @@
+import { User } from "discord.js";
+
 var miscDoc = require('../../model/miscmodel');
 var config = require('../../../config.json');
 var developerId = config.developerId;
@@ -12,6 +14,14 @@ module.exports = {
         if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
 
         if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) { //You can do the same for EmbedLinks, ReadMessageHistory and so on
+            client.users.fetch(message.author.id, false).then((user: any) => {
+                user.send(`I don't Have Permissions To Send Messages In ${message.guild.name}`);
+            });
+            return;
+        };
+
+        if (!message.channel.permissionsFor(client.user.id).has("EmbedLinks")) {
+            message.channel.send(`❌I don't Have Permissions To Send EmbedLinks!`);
             return;
         };
 
@@ -20,6 +30,10 @@ module.exports = {
 
         if (!userData) {
             if (msgCommand != 'start') {
+                if (!message.channel.permissionsFor(client.user.id).has("AttachFiles")) {
+                    message.channel.send(`❌I don't Have Permissions To AttachFiles!`);
+                    return;
+                };
                 await message.channel.send({
                     files: [
                         {
@@ -62,7 +76,7 @@ module.exports = {
             User: ${message.author.username} | ${message.author.id}
             `);
             console.log(err);
-            
+
             message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
         } finally {
             let channel = await client.channels.cache.get(config.log.executeChannelId);
