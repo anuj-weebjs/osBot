@@ -13,6 +13,10 @@ const afkSchema = new mongoose.Schema({
         type: String,
         default: 0,
     },
+    pingedBy: {
+        type: Array,
+        default: []
+    }
 });
 
 var afkModel = mongoose.model('afkModel', afkSchema);

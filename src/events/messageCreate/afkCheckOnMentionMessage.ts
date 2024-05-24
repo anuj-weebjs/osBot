@@ -1,8 +1,10 @@
+var { Message } = require("discord.js");
+
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
 
 module.exports = {
-    execute: async (message:any) => {
+    execute: async (message: typeof Message) => {
         if (message.author.bot) return;
 
 
@@ -43,6 +45,25 @@ module.exports = {
                 } else {
                     message.reply(`${userData.globalName} Went \`AFK\` <t:${queryResult.afkStartTime}:R> Reason: ${reason}`);
                 }
+
+                if(queryResult?.pingedBy.length > 5){
+                    continue;
+                }
+
+                const rawCurrentTimeStamp: number = message.createdTimestamp;
+                const currentTimeStamp: number = (rawCurrentTimeStamp / 1000) | 0;
+
+
+                await afkDoc.findOneAndUpdate({ userId: userid }, {
+                    $push: {
+                        pingedBy: {
+                            username: message.author.username,
+                            channelId: message.channel.id,
+                            messageId: message.id,
+                            timestamp: currentTimeStamp,
+                        }
+                    }
+                })
             } else {
                 continue;
             }

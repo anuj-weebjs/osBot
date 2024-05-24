@@ -1,4 +1,4 @@
-var { User } = require("discord.js");
+var { User, Message } = require("discord.js");
 
 var miscDoc = require('../../model/miscmodel');
 var config = require('../../../config.json');
@@ -6,7 +6,7 @@ var developerId = config.developerId;
 var prefix = config.PREFIX;
 
 module.exports = {
-    execute: async (message: any, client: any) => {
+    execute: async (message: typeof Message, client: any) => {
         if (!message) return;
         var args = message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = args.shift().toLowerCase();

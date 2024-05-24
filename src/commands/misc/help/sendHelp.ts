@@ -8,6 +8,7 @@ let actionsDir = path.join(__dirname, '..', '..', 'actions');
 let emotionsDir = path.join(__dirname, '..', '..', 'emotes');
 let infoDir = path.join(__dirname, '..', '..', 'info');
 let coolCommandsDir = path.join(__dirname, '..', '..', 'Cool Commands');
+let miscDir = path.join(__dirname, '..', '..', 'misc');
 function getFileNames(dir: string) {
     const rawActions = fs.readdirSync(dir)
     const dirFiles = rawActions.map((element: any) => `\`${element}\``);
@@ -26,7 +27,10 @@ module.exports = {
         Embed.setColor('#FF6347');
         if (args.length < 1) {
 
-            Embed.setTitle(`Available Commands`)
+            Embed.setTitle(`Available Commands`);
+            Embed.addFields(
+                { name: 'Misc', value: getFileNames(miscDir).toString(), inline: true }
+            )
             Embed.addFields(
                 { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
