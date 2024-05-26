@@ -5,6 +5,7 @@ var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 
 let actionsDir = path.join(__dirname, '..', '..', 'actions');
+let countingDir = path.join(__dirname, '..', '..', 'Counting Activity');
 let emotionsDir = path.join(__dirname, '..', '..', 'emotes');
 let infoDir = path.join(__dirname, '..', '..', 'info');
 let coolCommandsDir = path.join(__dirname, '..', '..', 'Cool Commands');
@@ -24,12 +25,14 @@ module.exports = {
     },
     execute: async (message: any, client: any, args: string[]) => {
         const Embed = new EmbedBuilder();
-        Embed.setColor('#FF6347');
+        // Embed.setColor('#FF6347');
         if (args.length < 1) {
 
-            Embed.setTitle(`Available Commands`);
+            Embed.setTitle(`Available Commands`);Embed.addFields(
+                { name: 'Counting Activity', value: getFileNames(countingDir).toString(), inline: false }
+            )
             Embed.addFields(
-                { name: 'Misc', value: getFileNames(miscDir).toString(), inline: true }
+                { name: 'Misc', value: getFileNames(miscDir).toString(), inline: false }
             )
             Embed.addFields(
                 { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }

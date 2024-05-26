@@ -11,7 +11,6 @@ module.exports = {
 
         const userid = message.author.id;
         var queryResult = await afkDoc.findOne({ userId: userid });
-        console.log(queryResult);
 
         if (queryResult == null) return;
         if (queryResult.userId == userid) {

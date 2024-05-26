@@ -2,8 +2,8 @@ var { User, Message } = require("discord.js");
 
 var miscDoc = require('../../model/miscmodel');
 var config = require('../../../config.json');
-var developerId = config.developerId;
 var prefix = config.PREFIX;
+var developerId = config.developerId;
 
 module.exports = {
     execute: async (message: typeof Message, client: any) => {

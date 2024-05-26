@@ -1,9 +1,11 @@
+var { Message } = require("discord.js");
+
 var { EmbedBuilder } = require('discord.js');
 var { fetchAction } = require('./fetchAction');
 var {developerId} = require('../../config.json')
 var client = require('../index').client;
 
-async function sendEmbed(message: any, endpoint: string, title: string) {
+async function sendEmbed(message: typeof Message, endpoint: string, title: string) {
     try {
         const gifData = await fetchAction(endpoint);
         if (!gifData) {
