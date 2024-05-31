@@ -24,36 +24,23 @@ module.exports = {
                         //Is it the same user?
                         switch (queryResult.lastUserId == message.author.id) {
                             case true:
-                                message.reply(`\`${message.author.username} Has Ruined It! Next Number Is 1 \``);
-                                message.react('❌');
-                                queryResult.lastNumber = 0;
-                                queryResult.save();
+                                reject(message, `\`You cannot count twice! Now Next Number is 1\``, queryResult);
                                 break;
                             case false:
                                 //Is Number Correct?
                                 switch (queryResult.lastNumber + 1 == number) {
                                     case true:
-                                        queryResult.lastNumber = queryResult.lastNumber + 1;
-                                        queryResult.lastUserId = message.author.id;
-                                        await queryResult.save();
-                                        message.react('✅');
+                                        done(message, queryResult);
                                         break;
                                     case false:
-                                        message.reply(`\`${message.author.username} Has Ruined It! Next Number Is 1 \``);
-                                        message.react('❌');
-                                        queryResult.lastNum3ber = 0;
-                                        queryResult.save();
+                                        reject(message, `\`${message.author.username} Has Ruined It! Now Next Number is 1\``, queryResult);
                                         break;
                                 }
                                 break;
-                            // code block
                         }
                         break;
                     case true:
-                        message.reply(`\`${message.author.username} Has Ruined It! Next Number Is 1 \``);
-                        message.react('❌');
-                        queryResult.lastNumber = 0;
-                        queryResult.save();
+                        reject(message, `\`${message.author.username} Has Ruined It! Now Next Number is 1, You can Disable it by doing "${prefix} numbersonly"\``, queryResult);
                         break;
                 }
                 break;
@@ -64,25 +51,16 @@ module.exports = {
                         //Is it the same user?
                         switch (queryResult.lastUserId == message.author.id) {
                             case true:
-                                message.reply(`\`${message.author.username} Has Ruined It! Next Number Is 1 \``);
-                                message.react('❌');
-                                queryResult.lastNumber = 0;
-                                queryResult.save();
+                                reject(message, `\`You cannot count twice! Now Next Number is 1\``, queryResult);
                                 break;
                             case false:
                                 //Is Number Correct?
                                 switch (queryResult.lastNumber + 1 == number) {
                                     case true:
-                                        queryResult.lastNumber = queryResult.lastNumber + 1;
-                                        queryResult.lastUserId = message.author.id;
-                                        await queryResult.save();
-                                        message.react('✅');
+                                        done(message, queryResult);
                                         break;
                                     case false:
-                                        message.reply(`\`${message.author.username} Has Ruined It! Next Number Is 1 \``);
-                                        message.react('❌');
-                                        queryResult.lastNumber = 0;
-                                        queryResult.save();
+                                        reject(message, `\`${message.author.username} Has Ruined It! Now Next Number is 1\``, queryResult);
                                         break;
                                 }
                                 break;
@@ -96,4 +74,19 @@ module.exports = {
 
 
     }
+}
+
+async function reject(message: typeof Message, msg: string, doc: typeof countingDoc) {
+    message.react('❌');
+    doc.lastNumber = 0;
+    doc.lastUserId = "00000000000000"
+    await doc.save();
+    message.reply(msg);
+}
+
+async function done(message: typeof Message, doc: typeof countingDoc) {
+    doc.lastNumber = doc.lastNumber + 1;
+    doc.lastUserId = message.author.id;
+    await doc.save();
+    message.react('✅');
 }
