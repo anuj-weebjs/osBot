@@ -1,5 +1,6 @@
 var config = require('../../../config.json');
 var prefix = config.PREFIX;
+var { evaluate } = require('mathjs');
 
 
 var countingDoc = require('../../model/countingModel');
@@ -13,14 +14,20 @@ module.exports = {
         let queryResult = await countingDoc.findOne({ guildId: guildId });
         if (queryResult == null) return;
         if (channelId != queryResult.channelId) return;
-        let number = parseInt(message.content);
-
-        //NumbersOnly?
+        var number: any;
+        try{
+            number = evaluate(message.content);
+        }catch{
+            number = NaN;
+        }
+        
+        // NumbersOnly?
         switch (queryResult.numbersOnly) {
             case true:
                 //Is number?
                 switch (Number.isNaN(number)) {
                     case false:
+                        
                         //Is it the same user?
                         switch (queryResult.lastUserId == message.author.id) {
                             case true:
