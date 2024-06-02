@@ -16,17 +16,10 @@ module.exports = {
             return;
         }
 
-        if(oldDoc.numbersOnly){
-            oldDoc.numbersOnly = false;
-            await oldDoc.save();
-            message.channel.send(`Numbers Only Is Now Disabled!`);
-            return;
-        }else if (!oldDoc.numbersOnly){
-            oldDoc.numbersOnly = true;
-            await oldDoc.save();
-            message.channel.send(`Numbers Only Is Now Enabled!`);
-            return;
-        }
-
+        oldDoc.numbersOnly = !oldDoc.numbersOnly;
+        message.channel.send(`Numbers Only Is now ${oldDoc.numbersOnly ? 'Enabled' : 'Disabled'}`);
+        message.channel.send(oldDoc.numbersOnly.toString());
+        await oldDoc.save();
+        return;
     }
 }
