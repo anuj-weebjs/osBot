@@ -11,6 +11,7 @@ module.exports = {
     execute: async(message: typeof Message) =>{
         let guildId = message.guild.id;
         let oldDoc = await countingDoc.findOne({ guildId: guildId });
+        
         if(oldDoc == null){
             message.channel.send(`Counting Activiy is Not enabled In This server Please Enbale it by doing \`${PREFIX} counting enable\` In Counting Activity Channel`)
             return;

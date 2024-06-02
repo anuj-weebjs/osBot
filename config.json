@@ -1,9 +1,9 @@
 {
     "PREFIX":"os",
     "activities":{
-        "name":"os help"
+        "name":"Type os help"
     },
-    "status":"dnd",
+    "status":"idle",
     "developerId": "808318773257437216",
     "log":{
         "guildId": "1226560136777044129",
