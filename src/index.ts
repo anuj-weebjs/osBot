@@ -43,10 +43,11 @@ connect(dbConnectionString);
 
 
 async function connect(CONNECTIONSTRING: any) {
-    var connection = await connectDb(CONNECTIONSTRING).then(() => {
-        console.log("Connected to DataBase")
+    var connection = await connectDb(CONNECTIONSTRING).then(async () => {
+        console.log("Connected to DataBase");
     }).catch((err) => {
-        console.log("Failed to connect Database " + err)
+        console.log("Failed to connect Database " + err);
+        process.exit(1);
     });
 
     async function connectDb(connectionString: any) {
@@ -76,7 +77,7 @@ process.on('uncaughtException', async function (err) {
     channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
     if (!channel) {
         channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-        if(!channel){
+        if (!channel) {
             return;
         }
     }
