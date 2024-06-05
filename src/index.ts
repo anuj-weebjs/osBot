@@ -68,11 +68,19 @@ for (const handler of handlers) {
 client.handleEvents(client);
 client.login(token);
 
+let channel;
 
 process.on('uncaughtException', async function (err) {
     console.error(err);
 
-    let channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-    channel.send(`🔴UncaugthExecption: ${err.toString()}`);
-    
+    channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+    if (!channel) {
+        channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+        if(!channel){
+            return;
+        }
+    }
+
+    channel?.send(`🔴UncaugthExecption: ${err.toString()}`);
+
 });
