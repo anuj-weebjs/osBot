@@ -13,20 +13,13 @@ async function fetchMeme(subreddit: string) {
         }
 
         const data = await response.json();
-        if (response.status == 404) {
-            data.code = 404;
-        } else {
-            data.code = 200;
 
-        }
+        data.code = response.status;
         return data;
     } catch (err: any) {
         console.error("Fetch error:", err);
         let channel = await client.channels.cache.get(config.log.errorChannelId);
-        channel.send(`
-            Error: ${err.toString()}\n
-            In fetchAction.ts `);
-        console.error(err);
+        channel.send(`Error: ${err.toString()}\nIn fetchAction.ts`);
     }
 }
 
@@ -42,19 +35,15 @@ module.exports = {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
 
-
-
         const Embed = new EmbedBuilder();
         Embed.setColor('#ADD8E6')
         if (args.length == 0) {
             Embed.setDescription(`Loading...(hint: You can also specify subreddit by ${prefix} meme [subreddit]`);
         } else {
             Embed.setDescription(`Loading...`);
-
         }
 
         message.channel.send({ embeds: [Embed] }).then(async (sentMessage: any) => {
-
             
             if (args.length == 0) {
                 var meme = await fetchMeme("");
@@ -72,9 +61,9 @@ module.exports = {
                 var meme = await fetchMeme(subreddit);
             }
 
-            if (meme.code == 404) {
+            if (meme.code == 404 || meme.code == 403) {
                 Embed.setAuthor({ name: meme.message });
-                Embed.setDescription('error code: 404');
+                Embed.setDescription(`Error code: ${meme.code}`);
                 sentMessage.edit({ embeds: [Embed] });
                 return;
             }
