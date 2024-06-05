@@ -15,9 +15,10 @@ module.exports = {
         } else {
             var user = message.mentions.users.first() || message.guild.members.cache.get(messageArray[0])
         }
+        const createdTimestamp: number = Math.floor(user.createdAt / 1000);
 
         var ServerEmbed = new EmbedBuilder()
-            .setColor('#FF6347')
+            .setColor('#2B2D31')
             .setTitle(`${user.globalName} - User info`)
             .setThumbnail(user.displayAvatarURL({ size: 256 }))
             .addFields(
@@ -37,7 +38,7 @@ module.exports = {
                     inline: true,
                 },
                 { name: 'Roles Count', value: message.guild.members.cache.get(user.id).roles.cache.size.toString() || "No Roles!", inline: true },
-                { name: 'Created At', value: user.createdAt.toString() },
+                { name: 'Created At', value: `<t:${createdTimestamp}:F> (<t:${createdTimestamp}:R>)` },
             )
             .setFooter({ text: 'requested by ' + message.author.tag, iconUrl: message.author.displayAvatarURL() })
             .setTimestamp();
