@@ -9,16 +9,14 @@
 - Star this repo
 - Download or clone this repo to your local machine
 - Open osBot folder that you've just cloned on your pc
-- Create a file named .env Then Type following
+- Create a file named `.env` Then copy the content of `example.env` And Fill it.
+- It will look something like Following
 ```env
-TOKEN=YOURTOKENHERELIKETHIS
-```
-- Now We need Mongo DB Connection String
-- Type MONGO_DB_CONNECTION_STRING in .env file
-```env
-MONGO_DB_CONNECTION_STRING=YOURCONNECTIONSTRINGHERELIKETHIS
-```
-
+TOKEN=DISCORD-BOT-TOKEN-HERE
+MONGO_DB_CONNECTION_STRING=CONNECTION-STRING-HERE
+PORT=ANY-PORT-AS-YOU-LIKE
+``` 
+- <b>NOTE: </b>You need a enable Server Members Intent & Message Content Intent in order to bot work!
 - Now open terminal in osBot folder and type following commands To install Dependencies and Make a Build.
 ```terminal
 npm run build
