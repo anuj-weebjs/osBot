@@ -6,7 +6,7 @@ module.exports = {
 
         let channel = await client.channels.cache.get(config.log.guildJoinChannelId);
         let serverCount = client.guilds.cache.size;
-        channel.send(`Joined ${guild.name} Server, Server Count: ${serverCount}`);
+        channel.send(`Joined ${guild.name}, Server Count: ${serverCount}`);
 
 
     }

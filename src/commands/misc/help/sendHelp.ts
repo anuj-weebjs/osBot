@@ -28,14 +28,11 @@ module.exports = {
         // Embed.setColor('#FF6347');
         if (args.length < 1) {
 
-            Embed.setTitle(`Available Commands`);Embed.addFields(
-                { name: 'Counting Activity', value: getFileNames(countingDir).toString(), inline: false }
+            Embed.addFields(
+                { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
             Embed.addFields(
                 { name: 'Misc', value: getFileNames(miscDir).toString(), inline: false }
-            )
-            Embed.addFields(
-                { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
             Embed.addFields(
                 { name: 'Emotes', value: getFileNames(emotionsDir).toString(), inline: false }
@@ -45,6 +42,9 @@ module.exports = {
             )
             Embed.addFields(
                 { name: 'Info', value: getFileNames(infoDir).toString(), inline: false }
+            )
+            Embed.setTitle(`Available Commands`);Embed.addFields(
+                { name: 'Counting Activity', value: getFileNames(countingDir).toString(), inline: false }
             )
             Embed.setFooter({ text: `Do \`${config.PREFIX} help <command>\` To Get Info That Particular command` });
 

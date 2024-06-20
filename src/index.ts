@@ -2,7 +2,7 @@
 require('dotenv').config();
 var path = require('node:path');
 var fs = require('node:fs');
-var { Client, GatewayIntentBits, Collection } = require('discord.js');
+var { Client, GatewayIntentBits, Collection, WebhookClient } = require('discord.js');
 const express = require('express');
 var mongoose = require('mongoose');
 var config = require('./../config.json');

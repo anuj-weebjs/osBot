@@ -1,6 +1,7 @@
 var config = require('../../../config.json');
 var prefix = config.PREFIX;
 var { evaluate } = require('mathjs');
+var { WebhookClient } = require('discord.js')
 
 
 var countingDoc = require('../../model/countingModel');
@@ -15,85 +16,59 @@ module.exports = {
         if (queryResult == null) return;
         if (channelId != queryResult.channelId) return;
         var number: any;
-        try{
+        try {
             number = evaluate(message.content);
-        }catch{
+        } catch {
             number = NaN;
         }
-        
-        // NumbersOnly?
-        switch (queryResult.numbersOnly) {
-            case true:
-                //Is number?
-                switch (Number.isNaN(number)) {
+        await message.delete();
+        switch (Number.isNaN(number)) {
+            case false:
+                //Is it the same user?
+                switch (queryResult.lastUserId == message.author.id) {
+                    case true:
+                        break;
                     case false:
-                        
-                        //Is it the same user?
-                        switch (queryResult.lastUserId == message.author.id) {
+                        //Is Number Correct?
+                        switch (queryResult.lastNumber + 1 == number) {
                             case true:
-                                reject(message, `\`You cannot count twice! Now Next Number is 1\``, queryResult);
+                                done(message, client, queryResult);
                                 break;
                             case false:
-                                //Is Number Correct?
-                                switch (queryResult.lastNumber + 1 == number) {
-                                    case true:
-                                        done(message, queryResult);
-                                        break;
-                                    case false:
-                                        reject(message, `\`${message.author.username} Has Ruined It! Now Next Number is 1\``, queryResult);
-                                        break;
-                                }
                                 break;
                         }
-                        break;
-                    case true:
-                        reject(message, `\`${message.author.username} Has Ruined It! Now Next Number is 1, You can Disable it by doing "${prefix} numbersonly"\``, queryResult);
                         break;
                 }
                 break;
-            case false:
-                //Is number?
-                switch (Number.isNaN(number)) {
-                    case false:
-                        //Is it the same user?
-                        switch (queryResult.lastUserId == message.author.id) {
-                            case true:
-                                reject(message, `\`You cannot count twice! Now Next Number is 1\``, queryResult);
-                                break;
-                            case false:
-                                //Is Number Correct?
-                                switch (queryResult.lastNumber + 1 == number) {
-                                    case true:
-                                        done(message, queryResult);
-                                        break;
-                                    case false:
-                                        reject(message, `\`${message.author.username} Has Ruined It! Now Next Number is 1\``, queryResult);
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
-                    case true:
-                        break;
-                }
+            case true:
+                
                 break;
         }
-
 
     }
 }
 
-async function reject(message: typeof Message, msg: string, doc: typeof countingDoc) {
-    message.react('❌');
-    doc.lastNumber = 0;
-    doc.lastUserId = "00000000000000"
-    await doc.save();
-    message.reply(msg);
-}
+async function done(message: typeof Message, client: typeof Client, doc: typeof countingDoc) {
 
-async function done(message: typeof Message, doc: typeof countingDoc) {
     doc.lastNumber = doc.lastNumber + 1;
     doc.lastUserId = message.author.id;
     await doc.save();
-    message.react('✅');
+
+    const userId = message.author.id;
+    const channelId = message.channel.id;
+    const user = await client.users.fetch(userId);
+    const channel = await client.channels.fetch(channelId);
+
+
+    const webhook = await channel.createWebhook({
+        name: user.username,
+        avatar: user.displayAvatarURL({ format: 'png', dynamic: true }),
+    });
+    await webhook.send(message.content, {
+        username: user.globalName,
+        avatarURL: user.displayAvatarURL({ format: 'png', dynamic: true }),
+    });
+
+    await webhook.delete();
+    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix}" counting disable next number is ${doc.lastNumber}`);
 }
