@@ -5,6 +5,7 @@ var getUserById = require('../../utils/getUserById');
 
 module.exports = {
     execute: async (message: typeof Message) => {
+        if(!message) return;
         if (message.author.bot) return;
 
 

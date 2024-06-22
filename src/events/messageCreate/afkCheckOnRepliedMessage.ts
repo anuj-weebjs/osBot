@@ -2,6 +2,7 @@ var afkDoc = require('../../model/afkModel.js');
 
 module.exports = {
     execute: async (message: any) => {
+        if(!message) return;
         if (message.author.bot) return;
 
 

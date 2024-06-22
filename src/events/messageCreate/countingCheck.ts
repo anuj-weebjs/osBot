@@ -1,3 +1,5 @@
+import { MessageActivityType } from "discord.js";
+
 var config = require('../../../config.json');
 var prefix = config.PREFIX;
 var { evaluate } = require('mathjs');
@@ -7,6 +9,7 @@ var { WebhookClient } = require('discord.js')
 var countingDoc = require('../../model/countingModel');
 module.exports = {
     execute: async (message: typeof Message, client: any) => {
+        if (!message) return;
         if (message.author.bot) return;
         if (message.content.toLowerCase().startsWith(prefix)) return;
         let guildId = message.guild.id;
@@ -21,35 +24,43 @@ module.exports = {
         } catch {
             number = NaN;
         }
-        await message.delete();
         switch (Number.isNaN(number)) {
             case false:
                 //Is it the same user?
                 switch (queryResult.lastUserId == message.author.id) {
                     case true:
+                        await warn(message, `${message.author.username} You cannot Count twice!`);
                         break;
                     case false:
                         //Is Number Correct?
                         switch (queryResult.lastNumber + 1 == number) {
                             case true:
-                                done(message, client, queryResult);
+                                await done(message, client, queryResult);
                                 break;
                             case false:
+                                await warn(message,  `${message.author.username}, next number is ${queryResult.lastNumber + 1}`);
                                 break;
                         }
                         break;
                 }
                 break;
             case true:
-                
+                await warn(message, `uh oh ${message.author.username}, next number is ${queryResult.lastNumber + 1}`);
                 break;
         }
-
+        await message.delete();
+        return;
     }
 }
 
-async function done(message: typeof Message, client: typeof Client, doc: typeof countingDoc) {
+async function warn(message: typeof Message, msg: string) {
+    message.channel.send(`\`\`\`${msg}\`\`\``).then((msg: any) => {
+        setTimeout(() => msg.delete(), 3000)
+    })
+    return;
+}
 
+async function done(message: typeof Message, client: typeof Client, doc: typeof countingDoc) {
     doc.lastNumber = doc.lastNumber + 1;
     doc.lastUserId = message.author.id;
     await doc.save();
@@ -68,7 +79,7 @@ async function done(message: typeof Message, client: typeof Client, doc: typeof 
         username: user.globalName,
         avatarURL: user.displayAvatarURL({ format: 'png', dynamic: true }),
     });
-
     await webhook.delete();
-    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix}" counting disable next number is ${doc.lastNumber}`);
+    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix}" counting disable next number is ${doc.lastNumber + 1}`);
+    return;
 }

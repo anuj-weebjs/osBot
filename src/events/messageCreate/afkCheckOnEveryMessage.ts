@@ -3,6 +3,7 @@ var afkDoc = require('../../model/afkModel');
 var { PREFIX } = require('../../../config.json')
 module.exports = {
     execute: async (message: any) => {
+        if(!message) return;
         if (message.author.bot) return;
 
         const args = await message.content.slice(PREFIX.length).trim().split(/ +/);
