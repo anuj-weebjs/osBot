@@ -71,8 +71,8 @@ client.login(token);
 
 let channel;
 
-process.on('uncaughtException', async function (err) {
-    console.error(err);
+process.on('uncaughtException', async function (err, ori) {
+    console.error(err + ori);
 
     channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
     if (!channel) {
@@ -82,6 +82,5 @@ process.on('uncaughtException', async function (err) {
         }
     }
 
-    channel?.send(`🔴UncaugthExecption: ${err.toString()}`);
-
+    channel?.send(`Error: ${err.toString()}\nOrigin: ${ori.toString()}`);
 });

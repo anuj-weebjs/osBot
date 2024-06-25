@@ -1,9 +1,7 @@
-import { MessageActivityType } from "discord.js";
 
 var config = require('../../../config.json');
 var prefix = config.PREFIX;
 var { evaluate } = require('mathjs');
-var { WebhookClient } = require('discord.js')
 
 
 var countingDoc = require('../../model/countingModel');
@@ -48,6 +46,8 @@ module.exports = {
                 await warn(message, `uh oh ${message.author.username}, next number is ${queryResult.lastNumber + 1}`);
                 break;
         }
+
+
         await message.delete();
         return;
     }
