@@ -8,8 +8,8 @@ module.exports = {
 
         if (message.reference != null) {
             const msg = await message.channel.messages.fetch(message.reference.messageId)
-            var queryResult = await afkDoc.findOne({ userId: msg.author.id });
             try {
+            var queryResult = await afkDoc.findOne({ userId: msg.author.id });
             } catch (err) {
                 console.log(err);
             }

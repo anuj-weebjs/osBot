@@ -80,6 +80,6 @@ async function done(message: typeof Message, client: typeof Client, doc: typeof 
         avatarURL: user.displayAvatarURL({ format: 'png', dynamic: true }),
     });
     await webhook.delete();
-    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix}" counting disable next number is ${doc.lastNumber + 1}`);
+    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix} counting disable", next number is ${doc.lastNumber + 1}`);
     return;
 }

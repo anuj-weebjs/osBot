@@ -36,7 +36,7 @@ module.exports = {
 
             });
 
-            message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${PREFIX}" counting disable next number is 1`);
+            message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${PREFIX} counting disable", next number is 1`);
             message.channel.send(`Enabled Counting Activity In This Server Enjoy!`);
             await newDoc.save();
             return;
