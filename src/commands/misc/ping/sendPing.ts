@@ -1,5 +1,5 @@
 var { EmbedBuilder } = require('discord.js');
-var miscDoc = require('../../../model/miscmodel');
+var miscDoc = require('../../../model/userModel');
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 const ncpu = require("os").cpus().length;
