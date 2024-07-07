@@ -1,17 +1,67 @@
 var { User, Message } = require("discord.js");
 
-var miscDoc = require('../../model/miscmodel');
+var userDoc = require('../../model/userModel');
+var guildDoc = require('../../model/guildModel');
 var config = require('../../../config.json');
-var prefix = config.PREFIX;
 var developerId = config.developerId;
+var prefix;
 
+
+const cooldowns = new Map();
 module.exports = {
     execute: async (message: typeof Message, client: any) => {
         if (!message) return;
+        if(message.author.bot) return;
+
+        var messageUserId = message.author.id;
+        var userData = await userDoc.findOne({ userId: messageUserId });
+
+        if (!userData) {
+
+            const _userData = new userDoc({
+                userId: message.author.id,
+                joinedAt: new Date(),
+                customPrefixes: []
+            })
+            await _userData.save();
+            userData = await userDoc.findOne({ userId: messageUserId });
+        } 
+
+        var guildData = await guildDoc.findOne({ guildId: message.guild.id});
+        if(!guildData){
+            const _guildData = new guildDoc({
+                guildId: message.guild.id,
+                customPrefixes: []
+            });
+            await _guildData.save();
+            guildData = await guildDoc.findOne({ guildId: message.guild.id});
+        }
+        if (!Array.isArray(userData?.customPrefixes)) {
+            userData.customPrefixes = [];
+        }
+
+        if (!Array.isArray(guildData?.customPrefixes)) {
+            guildData.customPrefixes = [];
+        }
+
+        let prefixes = userData.customPrefixes.concat(guildData.customPrefixes);
+        if(userData.customPrefixes.length < 1){
+            prefix = config.PREFIX;
+        }
+        for(let i = 0; i < prefixes.length; i++){
+            if(message.content.startsWith(prefixes[i].prefix)){
+                prefix = prefixes[i].prefix; 
+            }else{
+            prefix = config.PREFIX; 
+            }
+        }
+
+
+        if (!message.content.toLowerCase().startsWith(prefix)) return;
+
         var args = message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = args.shift().toLowerCase();
 
-        if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
 
         if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) { //You can do the same for EmbedLinks, ReadMessageHistory and so on
             client.users.fetch(message.author.id, false).then((user: any) => {
@@ -25,40 +75,23 @@ module.exports = {
             return;
         };
 
-        var messageUserId = message.author.id;
-        let userData = await miscDoc.findOne({ userId: messageUserId });
 
-        if (!userData) {
-            if (msgCommand != 'start') {
-                if (!message.channel.permissionsFor(client.user.id).has("AttachFiles")) {
-                    message.channel.send(`❌I don't Have Permissions To AttachFiles!`);
-                    return;
-                };
-                await message.channel.send({
-                    files: [
-                        {
-                            attachment: 'TOS.md',
-                            name: 'TOS.md'
-                        }
-                    ],
-                    content: `In order to use the Bot you have to Accept TOS By Typing \`${prefix} start\``
-                });
-                return;
+        const now = Date.now();
+        const cooldownAmount = 3 * 1000; // 3 seconds cooldown
+
+        if (!cooldowns.has(message.author.id)) {
+            cooldowns.set(message.author.id, now);
+        } else {
+            const expirationTime = cooldowns.get(message.author.id) + cooldownAmount;
+
+            if (now < expirationTime) {
+                const timeLeft = (expirationTime - now) / 1000;
+                return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${msgCommand}\` command.`);
             }
+
+            cooldowns.set(message.author.id, now);
         }
 
-        const rawCurrentTimeStamp: number = message.createdTimestamp;
-        const currentTimeStamp: number = (rawCurrentTimeStamp / 1000) | 0;
-
-        if (msgCommand != 'start') {
-            const rawUsedCommandTime = userData.lastUsedCommandTime;
-            const usedCommandTime = parseInt(rawUsedCommandTime);
-
-            if (currentTimeStamp < (usedCommandTime + 5)) {
-                message.channel.send(`Cooldown!!! I'm Hosted on free tier Hosting Cause My Developer Cant afford a vps So, Wait <t:${usedCommandTime + 5}:R>`);
-                return;
-            }
-        }
 
 
         const { commands } = client;
@@ -81,12 +114,10 @@ module.exports = {
         } finally {
             let channel = await client.channels.cache.get(config.log.executeChannelId);
             channel.send(`-----------------\nraw Message: ${message.content}\nCommand Name: ${msgCommand}\nGuild: ${message.guild.name} | ${message.guild.id}\nUser: ${message.author.username} | ${message.author.id}`);
-
-            if (msgCommand != 'start') {
-                userData.lastUsedCommand = msgCommand;
-                userData.lastUsedCommandTime = currentTimeStamp;
-                await userData.save();
-            }
+            userData.lastUsedPrefix = prefix;
+            await userData.save();
         }
+
+        return;
     }
 }
