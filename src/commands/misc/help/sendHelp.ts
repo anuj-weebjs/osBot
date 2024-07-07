@@ -2,6 +2,7 @@ var { EmbedBuilder } = require('discord.js');
 var fs = require('node:fs');
 var path = require('node:path');
 var config = require('../../../../config.json');
+var userDoc = require('../../../model/userModel');
 var prefix = config.PREFIX;
 
 let actionsDir = path.join(__dirname, '..', '..', 'actions');
