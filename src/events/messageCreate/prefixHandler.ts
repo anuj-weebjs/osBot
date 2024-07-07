@@ -44,7 +44,7 @@ module.exports = {
             guildData.customPrefixes = [];
         }
 
-        let prefixes = userData.customPrefixes.concat(guildData.customPrefixes);
+        let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
         if(userData.customPrefixes.length < 1){
             prefix = config.PREFIX;
         }
@@ -55,7 +55,6 @@ module.exports = {
             prefix = config.PREFIX; 
             }
         }
-
 
         if (!message.content.toLowerCase().startsWith(prefix)) return;
 
