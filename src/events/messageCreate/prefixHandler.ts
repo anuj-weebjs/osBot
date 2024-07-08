@@ -4,12 +4,12 @@ var userDoc = require('../../model/userModel');
 var guildDoc = require('../../model/guildModel');
 var config = require('../../../config.json');
 var developerId = config.developerId;
-var prefix;
 
 
 const cooldowns = new Map();
 module.exports = {
     execute: async (message: typeof Message, client: any) => {
+        var prefix = null;
         if (!message) return;
         if(message.author.bot) return;
 
@@ -44,16 +44,23 @@ module.exports = {
             guildData.customPrefixes = [];
         }
 
-        let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
-        if(userData.customPrefixes.length < 1){
-            prefix = config.PREFIX;
+        // let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
+        var prefixes = [];
+        prefixes.push(`<@${config.clientId}>`, config.PREFIX);
+        for(let i = 0; i < userData.customPrefixes.length; i++){
+            prefixes.push(userData.customPrefixes[i].prefix);
         }
+        for(let i = 0; i < guildData.customPrefixes.length; i++){
+            prefixes.push(guildData.customPrefixes[i].prefix);
+        }
+
         for(let i = 0; i < prefixes.length; i++){
-            if(message.content.startsWith(prefixes[i].prefix)){
-                prefix = prefixes[i].prefix; 
-            }else{
-            prefix = config.PREFIX; 
+            if(message.content.startsWith(prefixes[i])){
+                prefix = prefixes[i];
             }
+        }
+        if(!prefix){
+            return;
         }
 
         if (!message.content.toLowerCase().startsWith(prefix)) return;

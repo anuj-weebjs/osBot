@@ -41,13 +41,22 @@ module.exports = {
 
             let user = await userDoc.findOne({userId: userId})
             let guild = await guildDoc.findOne({guildId: message.guild?.id});
+            
             let userPrefixes = user.customPrefixes;
             let serverPrefixes = guild.customPrefixes;
             embed.addFields({name: `Default Prefix`, value: `\`${config.PREFIX}\``})
-            embed.addFields({name: `Self Prefixes`, value: `${userPrefixes.map((a: any) => {let b = a.prefix; return`\`${b}\``;})}`})
+            if(userPrefixes.length > 0){
+                embed.addFields({name: `Self Prefixes`, value: `${userPrefixes.map((a: any) => {let b = a.prefix; return`\`${b}\``;})}`})
+            } else{
+                embed.addFields({name: `Self Prefixes`, value: 'NONE'});
+            }
+
             if(serverPrefixes.length > 0){
                 embed.addFields({name: `Server Prefixes`, value: `${serverPrefixes.map((a: any) => {let b = a.prefix; return`\`${b}\``;})}`})
+            }else{
+                embed.addFields({name: `Server Prefixes`, value: 'NONE'});
             }
+
             message.channel.send({embeds: [embed]});
             return;
         }
