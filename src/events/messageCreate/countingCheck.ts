@@ -27,7 +27,7 @@ module.exports = {
                 //Is it the same user?
                 switch (queryResult.lastUserId == message.author.id) {
                     case true:
-                        await warn(message, `${message.author.username} You cannot Count twice!`);
+                        await warn(message, `${message.author.username}, You cannot Count twice!`);
                         break;
                     case false:
                         //Is Number Correct?
