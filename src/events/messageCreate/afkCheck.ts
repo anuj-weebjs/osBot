@@ -1,5 +1,6 @@
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
+var {EmbedBuilder} = require('discord.js')
 
 module.exports = {
     execute: async (message: any) => {

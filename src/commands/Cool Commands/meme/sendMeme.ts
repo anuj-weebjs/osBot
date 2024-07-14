@@ -67,9 +67,9 @@ module.exports = {
                 sentMessage.edit({ embeds: [Embed] });
                 return;
             }
-
+            console.log(meme);
             Embed.setTitle(meme.title);
-            Embed.setDescription(`By ${meme.author} | ${meme.ups} Up Votes`);
+            Embed.setDescription(`By ${meme.author} | ${meme.ups} Up Votes ([link](${meme.postLink}))`);
             Embed.setImage(meme.preview[(meme.preview.length) - 1]);
             Embed.setFooter({ text: `From r/${meme.subreddit}` });
             Embed.setTimestamp();
