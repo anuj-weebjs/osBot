@@ -1,86 +1,101 @@
+import { TypeParameter } from "typescript";
 
-var config = require('../../../config.json');
-var prefix = config.PREFIX;
-var { evaluate } = require('mathjs');
+const { WebhookClient } = require('discord.js');
+const config = require('../../../config.json');
+const guildModel = require('../../model/guildModel');
+const countingDoc = require('../../model/countingModel');
+const { evaluate } = require('mathjs');
+const prefix = config.PREFIX;
 
-
-var countingDoc = require('../../model/countingModel');
 module.exports = {
-    execute: async (_message: typeof Message, client: any) => {
-        let message = _message;
-        if (!message) return;
-        if (message.author.bot) return;
-        if (message.content.toLowerCase().startsWith(prefix)) return;
-        let guildId = message.guild.id;
-        let channelId = message.channel.id;
+    execute: async (message: typeof Message, client: typeof Client) => {
+        if (!message || message.author.bot || message.content.toLowerCase().startsWith(prefix)) return;
 
-        let queryResult = await countingDoc.findOne({ guildId: guildId });
-        if (queryResult == null) return;
-        if (channelId != queryResult.channelId) return;
-        _message.delete();
-        var number: any;
+        const { guild, channel, author, content } = message;
+        const guildId = guild.id;
+        const channelId = channel.id;
+
+        let queryResult = await countingDoc.findOne({ guildId });
+        if (!queryResult || channelId !== queryResult.channelId) return;
+
+        await message.delete();
+
+        let number;
         try {
-            number = evaluate(message.content);
+            number = evaluate(content);
         } catch {
             number = NaN;
         }
-        switch (Number.isNaN(number)) {
-            case false:
-                //Is it the same user?
-                switch (queryResult.lastUserId == message.author.id) {
-                    case true:
-                        await warn(message, `${message.author.username}, You cannot Count twice!`);
-                        break;
-                    case false:
-                        //Is Number Correct?
-                        switch (queryResult.lastNumber + 1 == number) {
-                            case true:
-                                await done(message, client, queryResult);
-                                break;
-                            case false:
-                                await warn(message,  `${message.author.username}, next number is ${queryResult.lastNumber + 1}`);
-                                break;
-                        }
-                        break;
-                }
-                break;
-            case true:
-                await warn(message, `uh oh ${message.author.username}, next number is ${queryResult.lastNumber + 1}`);
-                break;
+
+        if (Number.isNaN(number)) {
+            await warn(message, `Uh oh ${author.username}, the next number is ${queryResult.lastNumber + 1}`);
+            return;
         }
 
+        if (queryResult.lastUserId === author.id) {
+            await warn(message, `${author.username}, you cannot count twice!`);
+            return;
+        }
 
-        return;
+        if (queryResult.lastNumber + 1 !== number) {
+            await warn(message, `${author.username}, the next number is ${queryResult.lastNumber + 1}`);
+            return;
+        }
+
+        await processCorrectNumber(message, client, queryResult);
     }
 }
 
-async function warn(message: typeof Message, msg: string) {
-    message.channel.send(`\`\`\`${msg}\`\`\``).then((msg: any) => {
-        setTimeout(() => msg.delete(), 3000)
-    })
-    return;
+async function warn(message: typeof Message, warningMessage: string) {
+    const warning = await message.channel.send(`\`\`\`${warningMessage}\`\`\``);
+    setTimeout(() => warning.delete(), 3000);
 }
 
-async function done(message: typeof Message, client: typeof Client, doc: typeof countingDoc) {
-    doc.lastNumber = doc.lastNumber + 1;
-    doc.lastUserId = message.author.id;
+async function processCorrectNumber(message: typeof Message, client: typeof Client, doc: typeof countingDoc) {
+    const { author, channel, content } = message;
+    const bot = client.user;
+
+    doc.lastNumber += 1;
+    doc.lastUserId = author.id;
     await doc.save();
 
-    const userId = message.author.id;
-    const channelId = message.channel.id;
-    const user = await client.users.fetch(userId);
-    const channel = await client.channels.fetch(channelId);
+    let guild = await guildModel.findOne({ guildId: channel.guild.id });
 
+    let webhook;
+    if (!guild || !guild.webhook || !guild.webhook.id || !guild.webhook.token) {
+        webhook = await createAndStoreWebhook(channel, bot);
+    } else {
+        webhook = new WebhookClient({
+            id: guild.webhook.id,
+            token: guild.webhook.token,
+        });
+    }
 
+    await webhook.send({
+        content,
+        username: author.globalName || author.username,
+        avatarURL: author.displayAvatarURL({ format: 'png', dynamic: true }),
+    });
+
+    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix} counting disable", the next number is ${doc.lastNumber + 1}`);
+}
+
+async function createAndStoreWebhook(channel: any, bot: any) {
     const webhook = await channel.createWebhook({
-        name: user.username,
-        avatar: user.displayAvatarURL({ format: 'png', dynamic: true }),
+        name: bot.username,
+        avatar: bot.displayAvatarURL({ format: 'png', dynamic: true }),
     });
-    await webhook.send(message.content, {
-        username: user.globalName,
-        avatarURL: user.displayAvatarURL({ format: 'png', dynamic: true }),
-    });
-    await webhook.delete();
-    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix} counting disable", next number is ${doc.lastNumber + 1}`);
-    return;
+
+    await guildModel.findOneAndUpdate(
+        { guildId: channel.guild.id },
+        {
+            $set: {
+                "webhook.id": webhook.id,
+                "webhook.token": webhook.token,
+            }
+        },
+        { new: true, upsert: true }
+    );
+
+    return webhook;
 }
