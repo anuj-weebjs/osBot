@@ -6,7 +6,8 @@ var { evaluate } = require('mathjs');
 
 var countingDoc = require('../../model/countingModel');
 module.exports = {
-    execute: async (message: typeof Message, client: any) => {
+    execute: async (_message: typeof Message, client: any) => {
+        let message = _message;
         if (!message) return;
         if (message.author.bot) return;
         if (message.content.toLowerCase().startsWith(prefix)) return;
@@ -16,6 +17,7 @@ module.exports = {
         let queryResult = await countingDoc.findOne({ guildId: guildId });
         if (queryResult == null) return;
         if (channelId != queryResult.channelId) return;
+        _message.delete();
         var number: any;
         try {
             number = evaluate(message.content);
@@ -48,7 +50,6 @@ module.exports = {
         }
 
 
-        await message.delete();
         return;
     }
 }
