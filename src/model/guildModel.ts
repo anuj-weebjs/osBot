@@ -12,6 +12,9 @@ const guildSchema = new mongoose.Schema({
     webhook: {
         id: String,
         token: String,
+    },
+    welcomeEmbed: {
+        
     }
 });
 
