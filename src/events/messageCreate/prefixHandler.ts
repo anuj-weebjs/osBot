@@ -55,7 +55,7 @@ module.exports = {
         }
 
         for(let i = 0; i < prefixes.length; i++){
-            if(message.content.toLowerCase().startsWith(prefixes[i])){
+            if(message.content.toLowerCase().startsWith(prefixes[i].toLowerCase())){
                 prefix = prefixes[i];
             }
         }
