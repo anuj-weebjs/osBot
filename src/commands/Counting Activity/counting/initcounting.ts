@@ -20,6 +20,11 @@ module.exports = {
             return;
         }
 
+        if(args.length < 1){
+            message.channel.send(`Invalid option. Use \`${PREFIX} counting enable\` to enable counting activity in this channel.`);
+            return
+        }
+
         let option = args[0].toLowerCase();
         let guildId = message.guild.id;
         let channelId = message.channel.id;
