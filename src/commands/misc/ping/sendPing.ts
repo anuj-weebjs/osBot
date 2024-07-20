@@ -65,15 +65,14 @@ module.exports = {
             const botLatency = sentMessage.createdTimestamp - message.createdTimestamp;
             const apiLatency = client.ws.ping;
 
-            // pingEmbed.setTitle('Pong!')
-            pingEmbed.setTitle()
+            pingEmbed.setTitle('Pong!')
             pingEmbed.addFields(
                 {
                     name: 'Bot Status',
                     value: `\`\`\`Response Latency: ${botLatency}ms\nAPI Latency: ${apiLatency}ms\nDatabase Latency: ${dbLatency?.toString()}ms\nUptime: ${uptime}\`\`\``
                 },
                 {
-                    name: `Server Status`,
+                    name: 'Server Status',
                     value: `\`\`\`Ram Usage: ${Math.round(process.memoryUsage().rss / (1024 * 1024)).toString()}mb\nCPU Usage: ${Math.round(getCpuUsage().total).toString()}%\`\`\``
                 }
             )
@@ -81,7 +80,6 @@ module.exports = {
             pingEmbed.setTimestamp();
             sentMessage.edit({ embeds: [pingEmbed] });
         }).catch((error: any) => {
-            throw new Error(`Error sending or editing message: ${error}`);
             console.log("Error sending or editing message: " + error);
         });
     }
