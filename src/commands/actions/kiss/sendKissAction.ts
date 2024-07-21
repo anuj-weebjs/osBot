@@ -13,12 +13,14 @@ module.exports = {
     execute: async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
-        if (args.length != 1 && args.length < 1) {
-            message.reply(`INVAILD ARGS! use \`${prefix} poke <arg>\``);
+
+        let mentionedUser = message.mentions.users.first();
+
+        if (args.length != 1 && args.length < 1 || !mentionedUser) {
+            message.reply(`INVAILD OPTIONS! use \`${prefix}kiss @user\``);
             return;
         }
 
-        const mentionedUser = await getUserById(message.mentions.users.first().toString());
 
         send(message, 'kiss', `${message.author.globalName} leans in, their lips meeting ${mentionedUser.globalName}'s in a fleeting moment of affection`);
 

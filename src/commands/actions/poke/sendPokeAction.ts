@@ -13,13 +13,9 @@ module.exports = {
     execute: async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
-        if (args.length != 1 && args.length < 1) {
-            sendInvaildMsg(message);
-            return;
-        }
+        let mentionedUser = message.mentions.users.first();
 
-        const mentionedUser = await getUserById(message.mentions.users.first().toString());
-        if(!mentionedUser){
+        if (args.length != 1 && args.length < 1 || !mentionedUser) {
             sendInvaildMsg(message);
             return;
         }
@@ -30,5 +26,5 @@ module.exports = {
 }
 
 async function sendInvaildMsg(message: typeof  Message){
-    message.reply(`INVAILD ARGS! use \`${prefix} shoot @mention\``);
+    message.reply(`INVAILD OPTIONS! use \`${prefix}poke @user\``);
 }
