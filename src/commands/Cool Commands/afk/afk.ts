@@ -6,7 +6,7 @@ module.exports = {
     structure: {
         name: "afk",
         description: "You can your status To Afk. So when someone pings you or replies to your message They will get notified That you are afk with the reason that You've Provided",
-        usage: `${prefix} afk <reason>`
+        usage: `${prefix}afk <reason>`
     },
     execute: async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);

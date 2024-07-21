@@ -5,7 +5,7 @@ module.exports = {
     structure: {
         name: "serverinfo",
         description: "Get Info About Server",
-        usage: `${prefix} serverinfo`
+        usage: `${prefix}serverinfo`
     },
     execute: async (message: typeof Message) => {
         if (!message?.guild) {

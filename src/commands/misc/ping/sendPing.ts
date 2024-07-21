@@ -27,7 +27,7 @@ module.exports = {
     structure: {
         name: "ping",
         description: "Get Bot's Status",
-        usage: `${prefix} dance`
+        usage: `${prefix}ping`
     },
     execute: async (message: any, client: any) => {
         let totalSeconds = (client.uptime / 1000);
@@ -50,7 +50,7 @@ module.exports = {
         }
 
         const pingEmbed = new EmbedBuilder()
-            .setColor('#2B2D31')
+            .setColor(config.embedColor.invisible)
             .setTitle('Loading...');
 
         message.channel.send({ embeds: [pingEmbed] }).then(async (sentMessage: any) => {

@@ -7,8 +7,8 @@ var prefix = config.PREFIX;
 module.exports = {
     structure:{
         name: "kiss",
-        description: "Kiss Someone 💋",
-        usage: `${prefix} kiss <mention>`
+        description: "Kiss your love :3",
+        usage: `${prefix}kiss <mention>`
     },
     execute: async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);

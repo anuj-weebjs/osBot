@@ -28,7 +28,7 @@ module.exports = {
     structure: {
         name: "meme",
         description: "Get memes Through Reddit",
-        usage: `${prefix} meme <subreddit>`
+        usage: `${prefix}meme <subreddit>`
     },
     execute: async (message: any) => {
 
@@ -36,7 +36,7 @@ module.exports = {
         args.shift();
 
         const Embed = new EmbedBuilder();
-        Embed.setColor('#ADD8E6')
+        Embed.setColor(config.embedColor.primary)
         if (args.length == 0) {
             Embed.setDescription(`Loading...(hint: You can also specify subreddit by ${prefix} meme [subreddit]`);
         } else {
@@ -50,7 +50,6 @@ module.exports = {
             } else {
                 let subreddit = args[0].toString();
                 let containInvaildChars = validateString(subreddit);
-                console.log(containInvaildChars)
                 if(!containInvaildChars){
                     Embed.setAuthor({ name: "This Subreddit Contains Invalid Charecters" });
                     Embed.setDescription('Error');
@@ -67,11 +66,10 @@ module.exports = {
                 sentMessage.edit({ embeds: [Embed] });
                 return;
             }
-            console.log(meme);
             Embed.setTitle(meme.title);
-            Embed.setDescription(`By ${meme.author} | ${meme.ups} Up Votes ([link](${meme.postLink}))`);
+            Embed.setURL(meme.postLink);
             Embed.setImage(meme.preview[(meme.preview.length) - 1]);
-            Embed.setFooter({ text: `From r/${meme.subreddit}` });
+            Embed.setFooter({ text: `r/${meme.subreddit} u/${meme.author}` });
             Embed.setTimestamp();
 
             sentMessage.edit({ embeds: [Embed] });

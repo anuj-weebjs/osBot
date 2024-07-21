@@ -22,13 +22,14 @@ module.exports = {
     structure: {
         name: "help",
         description: "Get Help",
-        usage: `${prefix} help`
+        usage: `${prefix}help`
     },
     execute: async (message: any, client: any, args: string[]) => {
         const Embed = new EmbedBuilder();
-        // Embed.setColor('#FF6347');
+        Embed.setColor('#ADD8E6');
         if (args.length < 1) {
 
+            Embed.setTitle(`Available Commands`);
             Embed.addFields(
                 { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
@@ -44,10 +45,10 @@ module.exports = {
             Embed.addFields(
                 { name: 'Info', value: getFileNames(infoDir).toString(), inline: false }
             )
-            Embed.setTitle(`Available Commands`);Embed.addFields(
+            Embed.addFields(
                 { name: 'Counting Activity', value: getFileNames(countingDir).toString(), inline: false }
             )
-            Embed.setFooter({ text: `Do \`${config.PREFIX} help <command>\` To Get Info That Particular command` });
+            Embed.setFooter({ text: `Do \`${config.PREFIX}help <command>\` To Get Info That Particular command` });
 
         } else {
             const { commands } = client;
@@ -61,6 +62,7 @@ module.exports = {
                 {name: 'Usage:', value: `\`\`\`${command.structure.usage}\`\`\``}
             );
         }
+        Embed.setTimestamp();
         message.channel.send({ embeds: [Embed] });
     }
 }

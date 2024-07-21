@@ -5,7 +5,7 @@ module.exports = {
     structure: {
         name: "userinfo",
         description: "Get Info About Yourself Or Somebody Else",
-        usage: `${prefix} userinfo <mention>`
+        usage: `${prefix}userinfo <mention>`
     },
     execute: async (message: any) => {
         const messageArray = message.content.slice(2).trim().split(/ +/);

@@ -1,13 +1,17 @@
-var { Message } = require("discord.js");
+var { Message, EmbedBuilder } = require("discord.js");
 
-var {PREFIX} = require('../../../../config.json');
+var config = require('../../../../config.json');
+var PREFIX = config.PREFIX;
 module.exports = {
     structure: {
         name: "invite",
         Description: "Send's Bot Invite Links",
-        usage:`${PREFIX} invite`
+        usage:`${PREFIX}invite`
     },
     execute: async(message: typeof Message)=>{
-        message.channel.send(`https://discord.com/oauth2/authorize?client_id=1227972298653302826`);
+        let embed = new EmbedBuilder();
+        embed.setColor(config.embedColor.primary);
+        embed.setDescription(`https://discord.com/oauth2/authorize?client_id=${config.clientId}`)
+        message.channel.send({embeds: [embed]});
     }
 } 

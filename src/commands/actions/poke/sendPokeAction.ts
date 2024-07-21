@@ -14,13 +14,21 @@ module.exports = {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
         if (args.length != 1 && args.length < 1) {
-            message.reply(`INVAILD ARGS! use \`${prefix} shoot <arg>\``);
+            sendInvaildMsg(message);
             return;
         }
 
         const mentionedUser = await getUserById(message.mentions.users.first().toString());
+        if(!mentionedUser){
+            sendInvaildMsg(message);
+            return;
+        }
 
         send(message, 'poke', `Aww... ${message.author.globalName} is Pokeing ${mentionedUser.globalName}`)
 
     }
+}
+
+async function sendInvaildMsg(message: typeof  Message){
+    message.reply(`INVAILD ARGS! use \`${prefix} shoot @mention\``);
 }

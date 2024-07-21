@@ -2,7 +2,7 @@ var { Message } = require("discord.js");
 
 var { EmbedBuilder } = require('discord.js');
 var { fetchAction } = require('./fetchAction');
-var {developerId} = require('../../config.json')
+var {developerId, embedColor} = require('../../config.json')
 var client = require('../index').client;
 
 async function sendEmbed(message: typeof Message, endpoint: string, title: string) {
@@ -13,7 +13,7 @@ async function sendEmbed(message: typeof Message, endpoint: string, title: strin
         }
 
         const Embed = new EmbedBuilder()
-            .setColor('#ADD8E6')
+            .setColor(embedColor.primary)
             .setAuthor({ name: title, iconURL: message.author.displayAvatarURL(), url: gifData.url })
             .setImage(gifData.url);
 

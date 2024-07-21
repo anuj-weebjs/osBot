@@ -8,7 +8,7 @@ module.exports = {
     structure:{
         name: "highfive",
         description: "Share HighFive With Someone!",
-        usage: `${prefix} highfive <mention>`
+        usage: `${prefix}highfive <mention>`
     },
     execute: async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);

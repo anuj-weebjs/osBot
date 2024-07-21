@@ -7,7 +7,7 @@ module.exports = {
     structure: {
         name: "counting",
         description: "Start Counting In Current Channel!",
-        usage: `${PREFIX} counting enable`
+        usage: `${PREFIX}counting enable`
     },
     execute: async (message: typeof Message, client: typeof Client, args: string[]) => {
         if (!message.member.permissions.has("Administrator")) {

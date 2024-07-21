@@ -1,6 +1,7 @@
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
 var {EmbedBuilder} = require('discord.js')
+var config = require('../../../config.json');
 
 module.exports = {
     execute: async (message: any) => {
@@ -24,7 +25,7 @@ async function afkCheckOnEveryMessage(message: typeof Message) {
     if (queryResult == null) return;
     if (queryResult.userId == userid) {
         const Embed = new EmbedBuilder();
-        Embed.setColor('#ADD8E6');
+        Embed.setColor(config.embedColor.primary);
         Embed.setAuthor({ name: `Welcome Back ${message.author.globalName}` });
         if (queryResult.pingedBy.length == 0) {
             Embed.setDescription(`You Were AFK From <t:${queryResult.afkStartTime}:R>`)
