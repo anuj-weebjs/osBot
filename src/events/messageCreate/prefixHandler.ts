@@ -1,4 +1,4 @@
-var { User, Message } = require("discord.js");
+var { User, Message, EmbedBuilder } = require("discord.js");
 
 var userDoc = require('../../model/userModel');
 var guildDoc = require('../../model/guildModel');
@@ -12,6 +12,13 @@ module.exports = {
         var prefix = null;
         if (!message) return;
         if(message.author.bot) return;
+
+        if(message.content == `<@${config.clientId}>`){
+            let embed = new EmbedBuilder();
+            embed.setDescription(`My default Prefix is \`${config.PREFIX}\`\nUse \`${config.PREFIX}help\`for help`);
+            message.channel.send({embeds: [embed]});
+            return;
+        }
 
         var messageUserId = message.author.id;
         var userData = await userDoc.findOne({ userId: messageUserId });

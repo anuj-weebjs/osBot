@@ -8,7 +8,6 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "eslint": "^9.7.0",
     "nodemon": "^3.1.3"
   },
   "name": "osbot",
@@ -19,7 +18,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "build": "npm i && tsc",
-    "dev": "nodemon --exec 'tsc && node dist/index' -e 'ts json'"
+    "dev linux": "nodemon --exec 'rm dist -rf && tsc && node dist/index' -e 'ts json'",
+    "dev windows": "nodemon --exec 'rd /s /q 'dist' && tsc && node dist/index' -e 'ts json'"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
     "afk-bot"
   ],
   "author": "@weeb.js",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/anuj-weebjs/osBot/issues"
   },
