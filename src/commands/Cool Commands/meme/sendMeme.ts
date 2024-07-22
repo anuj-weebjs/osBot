@@ -38,9 +38,9 @@ module.exports = {
         const Embed = new EmbedBuilder();
         Embed.setColor(config.embedColor.primary)
         if (args.length == 0) {
-            Embed.setDescription(`Loading...(hint: You can also specify subreddit by ${prefix} meme [subreddit]`);
+            Embed.setTitle(`Loading...(hint: You can also specify subreddit by ${prefix} meme [subreddit]`);
         } else {
-            Embed.setDescription(`Loading...`);
+            Embed.setTitle(`Loading...`);
         }
 
         message.channel.send({ embeds: [Embed] }).then(async (sentMessage: any) => {
@@ -52,16 +52,16 @@ module.exports = {
                 let containInvaildChars = validateString(subreddit);
                 if(!containInvaildChars){
                     Embed.setAuthor({ name: "This Subreddit Contains Invalid Charecters" });
-                    Embed.setDescription('Error');
+                    Embed.setTitle('Error');
                     sentMessage.edit({ embeds: [Embed] });
                     return;
                 }
-
+ 
                 var meme = await fetchMeme(subreddit);
             }
 
             if (meme.code == 404 || meme.code == 403) {
-                Embed.setAuthor({ name: meme.message });
+                Embed.setTitle(meme.message );
                 Embed.setDescription(`Error code: ${meme.code}`);
                 sentMessage.edit({ embeds: [Embed] });
                 return;
