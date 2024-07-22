@@ -6,11 +6,11 @@ module.exports = {
         description: "only Developer can use this",
         usage:".."
     },
-    execute: async(message: typeof Message)=>{
+    execute: async(message: typeof Message, client: typeof Client)=>{
 
         if(message.author.id == developerId){
             await message.channel.send("Shutting down");
-            process.exit(1);
+            client.destroy();
         }else{
             return;
         }
