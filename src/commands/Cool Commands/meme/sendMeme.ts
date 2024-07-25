@@ -1,9 +1,11 @@
+import { Message } from "discord.js";
+
 var { EmbedBuilder } = require('discord.js');
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 var developerId = config.developerId;
 
-async function fetchMeme(subreddit: string) {
+async function fetchMeme(subreddit: string): Promise<Meme> {
     try {
         const url = "https://meme-api.com/gimme/" + subreddit;
         const response = await fetch(url);
@@ -11,15 +13,14 @@ async function fetchMeme(subreddit: string) {
         if (!response) {
             throw new Error(`No Response from meme api`);
         }
-
-        const data = await response.json();
-
+        
+        const data: Meme = await response.json();
         data.code = response.status;
         return data;
     } catch (err: any) {
-        console.error("Fetch error:", err);
         let channel = await client.channels.cache.get(config.log.errorChannelId);
         channel.send(`Error: ${err.toString()}\nIn fetchAction.ts`);
+        throw err;
     }
 }
 
@@ -30,9 +31,9 @@ module.exports = {
         description: "Get memes Through Reddit",
         usage: `${prefix}meme <subreddit>`
     },
-    execute: async (message: any) => {
+    execute: async (message: Message) => {
 
-        const args = await message.content.slice(prefix.length).trim().split(/ +/);
+        const args = message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
 
         const Embed = new EmbedBuilder();
@@ -68,7 +69,8 @@ module.exports = {
             }
             Embed.setTitle(meme.title);
             Embed.setURL(meme.postLink);
-            Embed.setImage(meme.preview[(meme.preview.length) - 1]);
+            // Embed.setImage(meme.preview[(meme.preview.length) - 1]);
+            Embed.setImage(meme.url);
             Embed.setFooter({ text: `r/${meme.subreddit} u/${meme.author}` });
             Embed.setTimestamp();
 
@@ -89,4 +91,18 @@ function validateString(input: string) {
     } else {
         return false;
     }
+}
+
+interface Meme {
+    postLink: string,
+    subreddit: string,
+    title: string,
+    url: string,
+    nsfw: boolean,
+    spoiler: boolean,
+    author: string,
+    ups: number,
+    preview: string[],
+    code: number
+    message?: string,
 }
