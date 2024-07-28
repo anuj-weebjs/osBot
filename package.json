@@ -19,8 +19,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "build": "npm i && tsc",
-    "dev linux": "nodemon --exec 'rm dist -rf && tsc && node dist/index' -e 'ts json'",
-    "dev windows": "nodemon --exec 'rd /s /q 'dist' && tsc && node dist/index' -e 'ts json'"
+    "start:devLinux": "nodemon --exec 'rm dist -rf && tsc && node dist/index' -e 'ts json'",
+    "start:devWin": "nodemon --exec 'rd /s /q 'dist' && tsc && node dist/index' -e 'ts json'"
   },
   "repository": {
     "type": "git",

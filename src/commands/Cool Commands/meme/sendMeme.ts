@@ -1,6 +1,5 @@
-import { Message } from "discord.js";
+import { Message, ChannelType, EmbedBuilder} from "discord.js";
 
-var { EmbedBuilder } = require('discord.js');
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 var developerId = config.developerId;
@@ -32,11 +31,16 @@ module.exports = {
         usage: `${prefix}meme <subreddit>`
     },
     execute: async (message: Message) => {
+            if (message.channel.type !== ChannelType.GuildText) {
+                message.channel.send("This command Can Only be used in Server.")
+                return;
+            };
+         
 
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
 
-        const Embed = new EmbedBuilder();
+        const Embed: EmbedBuilder = new EmbedBuilder();
         Embed.setColor(config.embedColor.primary)
         if (args.length == 0) {
             Embed.setTitle(`Loading...(hint: You can also specify subreddit by ${prefix} meme [subreddit]`);
@@ -44,7 +48,7 @@ module.exports = {
             Embed.setTitle(`Loading...`);
         }
 
-        message.channel.send({ embeds: [Embed] }).then(async (sentMessage: any) => {
+        message.channel.send({ embeds: [Embed] }).then(async (sentMessage: Message) => { 
             
             if (args.length == 0) {
                 var meme = await fetchMeme("");
@@ -57,11 +61,22 @@ module.exports = {
                     sentMessage.edit({ embeds: [Embed] });
                     return;
                 }
- 
+                
                 var meme = await fetchMeme(subreddit);
             }
 
-            if (meme.code == 404 || meme.code == 403) {
+            if (message.channel.type !== ChannelType.GuildText) return;
+            if (meme.nsfw) { // Not safe for work i.e 18+
+                if(!message.channel.nsfw){ // Not nsfw channel
+                    Embed.setColor('Red')
+                    Embed.setAuthor({name: "This Meme Contains Nsfw Content."})
+                    Embed.setTitle("Make sure this is a nsfw Channel before using the same command again.")
+                    sentMessage.edit({embeds: [Embed]})
+                    return;
+                }
+            }
+            
+            if (meme.code != 200) {
                 Embed.setTitle(meme.message );
                 Embed.setDescription(`Error code: ${meme.code}`);
                 sentMessage.edit({ embeds: [Embed] });
@@ -69,7 +84,6 @@ module.exports = {
             }
             Embed.setTitle(meme.title);
             Embed.setURL(meme.postLink);
-            // Embed.setImage(meme.preview[(meme.preview.length) - 1]);
             Embed.setImage(meme.url);
             Embed.setFooter({ text: `r/${meme.subreddit} u/${meme.author}` });
             Embed.setTimestamp();
@@ -104,5 +118,5 @@ interface Meme {
     ups: number,
     preview: string[],
     code: number
-    message?: string,
+    message: string | null,
 }
