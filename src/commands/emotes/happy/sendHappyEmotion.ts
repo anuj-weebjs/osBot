@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var send = require('../../../utils/sendActionEmbed');
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
@@ -7,7 +9,7 @@ module.exports = {
         description: "Sends a Gif category: happy",
         usage: `${prefix}happy`
     },
-    execute: async(message:any)=>{
+    execute: async(message:Message)=>{
         send(message, 'happy', `${message.author.globalName}’s face lit up with a radiant smile, their eyes sparkling with the unmistakable glow of happiness`);
     },
 };

@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var afkDoc = require('../../../model/afkModel.js');
 var config = require('../../../../config.json')
 var prefix = config.PREFIX;
@@ -8,7 +10,7 @@ module.exports = {
         description: "You can your status To Afk. So when someone pings you or replies to your message They will get notified That you are afk with the reason that You've Provided",
         usage: `${prefix}afk <reason>`
     },
-    execute: async (message: any) => {
+    execute: async (message: Message) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const userid = message.author.id;
         var _reason: string;
@@ -38,7 +40,7 @@ module.exports = {
         }
 
         if (args.length < 1) {
-            message.reply(`AFK Status is Now \`On!\` reason: ${_reason}, Time: <t:${timeStamp}:R>. Btw You can provide a reason by doing \`${prefix} afk <reason>\``);
+            message.reply(`AFK Status is Now \`On!\` reason: ${_reason}, Time: <t:${timeStamp}:R>. Btw You can provide a reason by doing \`${prefix}afk <reason>\``);
         } else {
             message.reply(`AFK Status is Now \`On!\` reason: ${_reason}, Time: <t:${timeStamp}:R>`);
         }

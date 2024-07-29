@@ -1,4 +1,6 @@
-var { GuildMember, Message, EmbedBuilder } = require("discord.js");
+import { Message } from "discord.js";
+
+var { GuildMember, EmbedBuilder } = require("discord.js");
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 module.exports = {
@@ -7,7 +9,7 @@ module.exports = {
         description: "Get Info About Server",
         usage: `${prefix}serverinfo`
     },
-    execute: async (message: typeof Message) => {
+    execute: async (message: Message) => {
         if (!message?.guild) {
             return message.channel.send({ content: `This command can only be executed in a server.` });
         };

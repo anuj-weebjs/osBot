@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var send = require('../../../utils/sendActionEmbed');
 var config = require('../../../../config.json');
 var getUserById = require('../../../utils/getUserByRawMessage');
@@ -7,10 +9,10 @@ var prefix = config.PREFIX;
 module.exports = {
     structure: {
         name: "kick",
-        description: "Kick Someone 🦵",
+        description: "Kick Someone 🦵 (Not a moderation command)",
         usage: `${prefix}kick <mention>`
     },
-    execute: async (message: any) => {
+    execute: async (message: Message) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
 

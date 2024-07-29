@@ -1,3 +1,5 @@
+import { Client, Message } from "discord.js";
+
 var config = require('../../../../config.json');
 var developerId = config.developerId;
 module.exports = {
@@ -6,7 +8,7 @@ module.exports = {
         description: "only Developer can use this",
         usage:".."
     },
-    execute: async(message: typeof Message, client: typeof Client)=>{
+    execute: async(message: Message, client: Client)=>{
 
         if(message.author.id == developerId){
             await message.channel.send("Shutting down");

@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var send = require('../../../utils/sendActionEmbed');
 var config = require('../../../../config.json');
 var getUserById = require('../../../utils/getUserByRawMessage');
@@ -10,8 +12,8 @@ module.exports = {
         description: "Handshake with some Someone",
         usage: `${prefix}handshake <mention>`
     },
-    execute: async (message: any) => {
-        const args = await message.content.slice(prefix.length).trim().split(/ +/);
+    execute: async (message: Message) => {
+        const args =  message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
         let mentionedUser = message.mentions.users.first();
 

@@ -16,6 +16,7 @@
     },
     "embedColor":{
         "primary": "#ADD8E6",
-        "invisible": "#2B2D31"
+        "invisible": "#2B2D31",
+        "alert": "#ff6347"
     }
 }

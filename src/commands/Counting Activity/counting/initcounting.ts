@@ -1,4 +1,5 @@
-var { Message } = require('discord.js');
+import { ChannelType, Client, Message } from "discord.js";
+
 var { PREFIX } = require("../../../../config.json");
 var countingDoc = require('../../../model/countingModel');
 var guildModel = require('../../../model/guildModel');
@@ -9,23 +10,38 @@ module.exports = {
         description: "Start Counting In Current Channel!",
         usage: `${PREFIX}counting enable`
     },
-    execute: async (message: typeof Message, client: typeof Client, args: string[]) => {
+    execute: async (message: Message, client: Client, args: string[]) => {
+        if (!message) return;
+        if (!message.member) {
+            throw new Error("message.member is null in initcounting.ts:15");
+        }
+        if (message.channel.type !== ChannelType.GuildText) {
+            message.channel.send("This command Can Only be used in Server.")
+            return;
+        };
         if (!message.member.permissions.has("Administrator")) {
             message.reply(`Only Admins can run this command!`);
             return;
         }
+        if (!client.user) return;
 
-        if (!message.channel.permissionsFor(client.user.id).has("ManageWebhooks")) {
+        const permissions = message.channel.permissionsFor(client.user.id);
+        if (!permissions || !permissions.has("ManageWebhooks")) {
             message.channel.send(`❌ I don't have permissions to manage webhooks!`);
             return;
         }
 
-        if(args.length < 1){
-            message.channel.send(`Invalid option. Use \`${PREFIX} counting enable\` to enable counting activity in this channel.`);
+
+        if (args.length < 1) {
+            message.channel.send(`Invalid option. Use \`${PREFIX}counting enable\` to enable counting activity in this channel.`);
             return
         }
 
         let option = args[0].toLowerCase();
+        if (!message.guild) {
+            message.channel.send(`❌ This command can only be used in a server.`);
+            return;
+        }
         let guildId = message.guild.id;
         let channelId = message.channel.id;
 
@@ -41,7 +57,7 @@ module.exports = {
                 channelId,
             });
 
-            await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${PREFIX} counting disable", next number is 1`);
+            await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${PREFIX}counting disable", next number is 1`);
             message.channel.send(`Enabled counting activity in this server. Enjoy!`);
             await newDoc.save();
 
@@ -66,7 +82,7 @@ module.exports = {
             );
 
         } else {
-            message.channel.send(`Invalid option. Use \`${PREFIX} counting enable\` to enable counting activity in this channel.`);
+            message.channel.send(`Invalid option. Use \`${PREFIX}counting enable\` to enable counting activity in this channel.`);
         }
     }
 };

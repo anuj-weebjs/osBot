@@ -1,5 +1,4 @@
-import { Embed, Message } from "discord.js";
-import { server } from "typescript";
+import {  Message, Client } from "discord.js";
 
 var { EmbedBuilder } = require('discord.js');
 var guildDoc = require('../../../model/guildModel');
@@ -22,7 +21,7 @@ module.exports = {
         description: "Set Custom Prefix For your self or server!",
         usage: `${prefix}prefix [self|server] [add|remove] <prefix>\n${prefix}prefix list`
     },
-    execute: async (message: Message, client: typeof Client, args: any) => {
+    execute: async (message: Message, client: Client, args: any) => {
         const userId = message.author.id;
         let metaData: any = {
             prefixScope: null,
@@ -64,8 +63,9 @@ module.exports = {
 
         if (args.length < 3) {
             let embed = new EmbedBuilder();
-            embed.setColor('ff6347');
-            embed.setDescription(`Invalid Arguments!\nUsage: ${prefix}prefix [self|server] [add|remove] <prefix>\n${prefix}prefix list`)
+            embed.setColor(`${config.embedColor. alert}`);
+            embed.setTitle(`Invalid Arguments!`);
+            embed.setDescription(`Usage: ${prefix}prefix [self|server] [add|remove] <prefix>\n${prefix}prefix list`)
             message.channel.send({ embeds: [embed] });
             return;
         }
@@ -77,7 +77,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             let embed = new EmbedBuilder();
-            embed.setColor('ff6347');
+            embed.setColor(`${config.embedColor. alert}`);
             embed.setDescription(`Invalid Arguments!\nUsage: ${prefix}prefix [self|server] [add|remove] <prefix>\n${prefix}prefix list`)
             message.channel.send({ embeds: [embed] });
             return;
@@ -88,7 +88,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             let embed = new EmbedBuilder();
-            embed.setColor('ff6347');
+            embed.setColor(`${config.embedColor. alert}`);
             embed.setDescription(`Invalid Arguments!\nUsage: ${prefix}prefix [self|server] [add|remove] <prefix>\n${prefix}prefix list`)
             message.channel.send({ embeds: [embed] });
             return;
@@ -97,7 +97,7 @@ module.exports = {
         const customPrefix = args[2];
         if (customPrefix.length > 3) {
             let embed = new EmbedBuilder();
-            embed.setColor('ff6347');
+            embed.setColor(`${config.embedColor. alert}`);
             embed.setDescription('You cannot add a prefix of more than three letters.')
             message.channel.send({ embeds: [embed] });
             return;
@@ -114,7 +114,7 @@ module.exports = {
                     case 0: // Add
                         if (doc.customPrefixes.length >= 3) {
                             let embed = new EmbedBuilder();
-                            embed.setColor('ff6347');
+                            embed.setColor(`${config.embedColor. alert}`);
                             embed.setDescription(`You can't add more than three prefixes at once. Consider making a donation if you want more! Contact @weeb.js if you are interested.`)
                             message.channel.send({ embeds: [embed] });
                             return;
@@ -147,7 +147,7 @@ module.exports = {
                     case 1: // Remove
                         if (doc.customPrefixes.length < 1) {
                             let embed = new EmbedBuilder();
-                            embed.setColor('ff6347');
+                            embed.setColor(`${config.embedColor. alert}`);
                             embed.setDescription(`There is no custom prefix yet. Add one using ${prefix}prefix self add <prefix>.`)
                             message.channel.send({ embeds: [embed] });
                             return;
@@ -173,7 +173,7 @@ module.exports = {
                         }
                         if (!isDeleted) {
                             let embed = new EmbedBuilder();
-                            embed.setColor('ff6347');
+                            embed.setColor(`${config.embedColor. alert}`);
                             embed.setDescription(`There is no such prefix.`);
                             message.channel.send({ embeds: [embed] });
                         }
@@ -193,7 +193,7 @@ module.exports = {
 
                         if (guild.customPrefixes.length >= 3) {
                             let embed = new EmbedBuilder();
-                            embed.setColor('ff6347');
+                            embed.setColor(`${config.embedColor. alert}`);
                             embed.setDescription(`You can't add more than three prefixes at once. Consider making a donation if you want more! Contact @weeb.js if you are interested.`)
                             message.channel.send({ embeds: [embed] });
                             return;
@@ -228,7 +228,7 @@ module.exports = {
 
                         if (guild.customPrefixes.length < 1) {
                             let embed = new EmbedBuilder();
-                            embed.setColor('ff6347');
+                            embed.setColor(`${config.embedColor. alert}`);
                             embed.setDescription(`There is no custom prefix yet. Add one using ${prefix}prefix server add <prefix>.`)
                             message.channel.send({ embeds: [embed] });
                             return;
@@ -255,7 +255,7 @@ module.exports = {
                         }
                         if (!isDeleted) {
                             let embed = new EmbedBuilder();
-                            embed.setColor('ff6347');
+                            embed.setColor(`${config.embedColor. alert}`);
                             embed.setDescription(`There is no such Server prefix.`);
                             message.channel.send({ embeds: [embed] });
                         }

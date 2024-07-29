@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var config = require('../../../../config.json');
 var developerId = config.developerId;
 module.exports = {
@@ -6,11 +8,14 @@ module.exports = {
         description: "only Developer can use this",
         usage:".."
     },
-    execute: async(message: typeof Message, client: typeof Client)=>{
+    execute: async(message: Message)=>{
 
         if(message.author.id != developerId)return;
 
-        message.channel.send(`${message.channel.nsfw}`);
+
+        // Testing for Developer
+        
+        // message.channel.send(`${message.channel.nsfw}`);
     },
 
 };

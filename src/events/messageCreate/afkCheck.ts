@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
 var {EmbedBuilder} = require('discord.js')
@@ -16,7 +18,7 @@ module.exports = {
     }
 }
 
-async function afkCheckOnEveryMessage(message: typeof Message) {
+async function afkCheckOnEveryMessage(message:  any) {
     if (!message) return;
     if (message.author.bot) return;
     const userid = message.author.id;
@@ -28,9 +30,9 @@ async function afkCheckOnEveryMessage(message: typeof Message) {
         Embed.setColor(config.embedColor.primary);
         Embed.setAuthor({ name: `Welcome Back ${message.author.globalName}` });
         if (queryResult.pingedBy.length == 0) {
-            Embed.setDescription(`You Were AFK From <t:${queryResult.afkStartTime}:R>`)
+            Embed.setDescription(`Hey There, You were AFK From <t:${queryResult.afkStartTime}:R>`)
         } else {
-            Embed.setDescription(`You Were AFK From <t:${queryResult.afkStartTime}:R> & you've Pinged ${queryResult.pingedBy.length} Times`);
+            Embed.setDescription(`Hey There, You were AFK From <t:${queryResult.afkStartTime}:R> & you've Pinged ${queryResult.pingedBy.length} Times`);
             for (let i = 0; i < queryResult.pingedBy.length; i++) {
                 Embed.addFields({
                     name: `By @${queryResult.pingedBy[i].username}`,
@@ -46,7 +48,7 @@ async function afkCheckOnEveryMessage(message: typeof Message) {
     return;
 }
 
-async function afkCheckOnMentionMessage(message: typeof Message) {
+async function afkCheckOnMentionMessage(message: any) {
     if (!message) return;
     if (message.author.bot) return;
     const messageString = message.content;
@@ -113,10 +115,10 @@ async function afkCheckOnMentionMessage(message: typeof Message) {
 }
 
 
-async function afkCheckOnRepliedMessage(message: typeof Message) {
+async function afkCheckOnRepliedMessage(message:  any) {
     if (!message) return;
     if (message.author.bot) return;
-    if (message.reference != null) {
+    if (message?.reference) {
         const msg = await message.channel.messages.fetch(message.reference.messageId)
         try {
             var queryResult = await afkDoc.findOne({ userId: msg.author.id });

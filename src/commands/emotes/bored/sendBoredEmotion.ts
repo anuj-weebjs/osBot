@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var send = require('../../../utils/sendActionEmbed');
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
@@ -7,7 +9,7 @@ module.exports = {
         description: "Sends a Gif category: bored",
         usage: `${prefix}bored`
     },
-    execute: async(message:any)=>{
+    execute: async(message:Message)=>{
         send(message, 'bored', `${message.author.globalName} yawned and stared blankly, their eyes glazing over from the sheer monotony of the moment`);
     },
 };

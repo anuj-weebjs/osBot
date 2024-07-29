@@ -1,3 +1,5 @@
+import { Message } from "discord.js";
+
 var send = require('../../../utils/sendActionEmbed');
 var config = require('../../../../config.json');
 var getUserById = require('../../../utils/getUserByRawMessage');
@@ -10,13 +12,13 @@ module.exports = {
         description: "shoot Someone😨",
         usage: `${prefix}shoot <mention>`
     },
-    execute: async (message: any) => {
+    execute: async (message: Message) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
         let mentionedUser = message.mentions.users.first();
 
         if (args.length != 1 && args.length < 1 || !mentionedUser) {
-            message.reply(`INVAILD OPTIONS! use \`${prefix} shoot <arg>\``);
+            message.reply(`INVAILD OPTIONS! use \`${prefix}shoot <arg>\``);
             return;
         }
 

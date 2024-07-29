@@ -1,3 +1,5 @@
+import { Client, Message } from "discord.js";
+
 var { EmbedBuilder } = require('discord.js');
 var fs = require('node:fs');
 var path = require('node:path');
@@ -24,7 +26,7 @@ module.exports = {
         description: "Get Help",
         usage: `${prefix}help`
     },
-    execute: async (message: any, client: any, args: string[]) => {
+    execute: async (message: Message, client: any, args: string[]) => {
         const Embed = new EmbedBuilder();
         Embed.setColor('#ADD8E6');
         if (args.length < 1) {
