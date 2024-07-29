@@ -6,7 +6,7 @@
 ├── package.json
 ├── package-lock.json
 ├── README.md
-├── structure.md
+├── structure.txt
 ├── TOS.md
 ├── tsconfig.json
 └── src/
@@ -42,8 +42,10 @@
     │   │   └── counting/
     │   │       └── initcounting.ts
     │   ├── danger/
-    │   │   └── kill/
-    │   │       └── kill.ts
+    │   │   ├── kill/
+    │   │   │   └── kill.ts
+    │   │   └── test/
+    │   │       └── test.ts
     │   ├── emotes/
     │   │   ├── blush/
     │   │   │   └── sendBlushEmotion.ts
@@ -107,4 +109,4 @@
         ├── getUserByRawMessage.ts
         └── sendActionEmbed.ts
 
-49 directories, 59 files
+50 directories, 60 files

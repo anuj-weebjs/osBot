@@ -21,7 +21,8 @@
     "start": "node dist/index.js",
     "build": "npm i && tsc",
     "start:devLinux": "nodemon --exec 'rm dist -rf && tsc && node dist/index' -e 'ts json'",
-    "start:devWin": "nodemon --exec 'rd /s /q 'dist' && tsc && node dist/index' -e 'ts json'"
+    "start:devWin": "nodemon --exec 'rd /s /q 'dist' && tsc && node dist/index' -e 'ts json'",
+    "buildStructure": "tree >> structure.txt --filesfirst -F --gitignore"
   },
   "repository": {
     "type": "git",
