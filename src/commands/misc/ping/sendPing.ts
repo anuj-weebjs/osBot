@@ -1,8 +1,9 @@
-var { EmbedBuilder } = require('discord.js');
-var miscDoc = require('../../../model/userModel');
+require('dotenv').config();
+import { EmbedBuilder, Message, Client } from "discord.js";
+var { MongoClient } = require('mongodb');
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
-const ncpu = require("os").cpus().length;
+var url = process.env.MONGO_DB_CONNECTION_STRING;
 let previousTime = new Date().getTime();
 let previousUsage = process.cpuUsage();
 let lastUsage: any;
@@ -29,29 +30,23 @@ module.exports = {
         description: "Get Bot's Status",
         usage: `${prefix}ping`
     },
-    execute: async (message: any, client: any) => {
-        let totalSeconds = (client.uptime / 1000);
-        let days = Math.floor(totalSeconds / 86400);
-        totalSeconds %= 86400;
-        let hours = Math.floor(totalSeconds / 3600);
-        totalSeconds %= 3600;
-        let minutes = Math.floor(totalSeconds / 60);
-        let seconds = Math.floor(totalSeconds % 60);
-        let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
-
-        var dbLatency: number | undefined;
-        const before = Date.now();
-        const exisingDoc = await miscDoc({userId: message.author.id});
-        if(exisingDoc){
-            const after = Date.now();
-            dbLatency = after - before; 
-        }else{
-            dbLatency = undefined;
+    execute: async (message: Message, client: Client) => {
+        let uptime: string | undefined;
+        if(client.uptime){
+            let totalSeconds = (client.uptime / 1000);
+            let days = Math.floor(totalSeconds / 86400);
+            totalSeconds %= 86400;
+            let hours = Math.floor(totalSeconds / 3600);
+            totalSeconds %= 3600;
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = Math.floor(totalSeconds % 60);
+            uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
         }
 
+        
         const pingEmbed = new EmbedBuilder()
-            .setColor(config.embedColor.invisible)
-            .setTitle('Loading...');
+        .setColor(config.embedColor.invisible)
+        .setTitle('Loading...');
 
         message.channel.send({ embeds: [pingEmbed] }).then(async (sentMessage: any) => {
             if (!sentMessage || !sentMessage.createdTimestamp || !message.createdTimestamp) {
@@ -60,8 +55,9 @@ module.exports = {
                 sentMessage.edit({ embeds: [pingEmbed] });
                 return;
             }
-
             
+            
+            const dbLatency = await measurePing(url);
             const botLatency = sentMessage.createdTimestamp - message.createdTimestamp;
             const apiLatency = client.ws.ping;
 
@@ -76,11 +72,28 @@ module.exports = {
                     value: `\`\`\`Ram Usage: ${Math.round(process.memoryUsage().rss / (1024 * 1024)).toString()}mb\nCPU Usage: ${Math.round(getCpuUsage().total).toString()}%\`\`\``
                 }
             )
-            pingEmbed.setFooter({ text: 'requested by ' + message.author.tag, iconUrl: message.author.displayAvatarURL() });
+            pingEmbed.setFooter({ text: 'requested by ' + message.author.tag } );
             pingEmbed.setTimestamp();
             sentMessage.edit({ embeds: [pingEmbed] });
         }).catch((error: any) => {
             console.log("Error sending or editing message: " + error);
         });
     }
+}
+
+async function measurePing(uri: string | undefined) {
+    let latency: number | undefined;
+    const client = new MongoClient(uri);
+
+    try {
+        await client.connect();
+        const startTime = Date.now();
+        await client.db().command({ ping: 1 });
+        latency = Date.now() - startTime;
+    } catch (err) {
+        console.error(`Error measuring ping: ${err}`);
+    } finally {
+        await client.close();
+    }
+    return latency;
 }

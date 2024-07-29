@@ -1,3 +1,5 @@
+import { Connection } from "mongoose";
+
 // Imports
 require('dotenv').config();
 var path = require('node:path');
@@ -39,24 +41,21 @@ app.listen(port);
 
 // Connecting To Db
 
-connect(dbConnectionString);
+var db = connect(dbConnectionString);
 
-
-async function connect(CONNECTIONSTRING: any) {
-    var connection = await connectDb(CONNECTIONSTRING).then(async () => {
-        console.log("Connected to DataBase");
-    }).catch((err) => {
+async function connect(connectionString: string | undefined): Promise<Connection> {
+    try {
+        var connection = await mongoose.connect(connectionString);
+    } catch (err) {
         console.log("Failed to connect Database " + err);
         process.exit(1);
-    });
-
-    async function connectDb(connectionString: any) {
-        const connection = await mongoose.connect(connectionString);
-
-        return connection;
     }
-}
 
+
+    console.log("Connected to DataBase");
+    return connection;
+}
+exports.db = db;
 
 // Handeling
 const handlersPath = path.join(__dirname, 'Handlers');
