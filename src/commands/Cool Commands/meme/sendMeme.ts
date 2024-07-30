@@ -1,26 +1,28 @@
-import { Message, ChannelType, EmbedBuilder} from "discord.js";
+import { Message, ChannelType, EmbedBuilder } from "discord.js";
 
 var config = require('../../../../config.json');
+var index = require('../../../index');
 var prefix = config.PREFIX;
 var developerId = config.developerId;
 
 async function fetchMeme(subreddit: string): Promise<Meme> {
+    let data: any;
     try {
         const url = "https://meme-api.com/gimme/" + subreddit;
         const response = await fetch(url);
-
         if (!response) {
             throw new Error(`No Response from meme api`);
         }
-        
-        const data: Meme = await response.json();
+
+        data = await response.json();
         data.code = response.status;
-        return data;
     } catch (err: any) {
-        let channel = await client.channels.cache.get(config.log.errorChannelId);
-        channel.send(`Error: ${err.toString()}\nIn fetchAction.ts`);
-        throw err;
+        console.log(err);
+        data = {};
+        data.code = 500;
+        data.message = err.toString;
     }
+    return data;
 }
 
 
@@ -31,11 +33,11 @@ module.exports = {
         usage: `${prefix}meme <subreddit>`
     },
     execute: async (message: Message) => {
-            if (message.channel.type !== ChannelType.GuildText) {
-                message.channel.send("This command Can Only be used in Server.")
-                return;
-            };
-         
+        if (message.channel.type !== ChannelType.GuildText) {
+            message.channel.send("This command Can Only be used in Server.")
+            return;
+        };
+
 
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
@@ -48,36 +50,36 @@ module.exports = {
             Embed.setTitle(`Loading...`);
         }
 
-        message.channel.send({ embeds: [Embed] }).then(async (sentMessage: Message) => { 
-            
+        message.channel.send({ embeds: [Embed] }).then(async (sentMessage: Message) => {
+
             if (args.length == 0) {
                 var meme = await fetchMeme("");
             } else {
                 let subreddit = args[0].toString();
                 let containInvaildChars = validateString(subreddit);
-                if(!containInvaildChars){
+                if (!containInvaildChars) {
                     Embed.setAuthor({ name: "This Subreddit Contains Invalid Charecters" });
                     Embed.setTitle('Error');
                     sentMessage.edit({ embeds: [Embed] });
                     return;
                 }
-                
+
                 var meme = await fetchMeme(subreddit);
             }
 
             if (message.channel.type !== ChannelType.GuildText) return;
             if (meme.nsfw) { // Not safe for work i.e 18+
-                if(!message.channel.nsfw){ // Not nsfw channel
+                if (!message.channel.nsfw) { // Not nsfw channel
                     Embed.setColor('Red')
-                    Embed.setAuthor({name: "This Meme Contains Nsfw Content."})
+                    Embed.setAuthor({ name: "This Meme Contains Nsfw Content." })
                     Embed.setTitle("Make sure this is a nsfw Channel before using the same command again.")
-                    sentMessage.edit({embeds: [Embed]})
+                    sentMessage.edit({ embeds: [Embed] })
                     return;
                 }
             }
-            
+
             if (meme.code != 200) {
-                Embed.setTitle(meme.message );
+                Embed.setTitle(meme.message);
                 Embed.setDescription(`Error code: ${meme.code}`);
                 sentMessage.edit({ embeds: [Embed] });
                 return;
@@ -94,12 +96,12 @@ module.exports = {
 
 
     }
-}  
+}
 
 
 function validateString(input: string) {
     var regex = /^[a-zA-Z0-9]+$/;
-    
+
     if (regex.test(input)) {
         return true;
     } else {
