@@ -20,7 +20,7 @@ async function fetchMeme(subreddit: string): Promise<Meme> {
         console.log(err);
         data = {};
         data.code = 500;
-        data.message = err.toString;
+        data.message = err.toString();
     }
     return data;
 }
