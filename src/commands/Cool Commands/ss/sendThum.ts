@@ -19,7 +19,12 @@ module.exports = {
         }
         
         let rawUrl = args[0];
-        let encodedUrl = encodeURIComponent(args[0]);
+
+        if(!rawUrl.startsWith('http')){
+            rawUrl = 'https://' + rawUrl;
+        }
+
+        let encodedUrl = encodeURIComponent(rawUrl);
 
         const url = `https://image.thum.io/get/width/1920/?url=${encodedUrl}`;
         let res = await fetch(url);
