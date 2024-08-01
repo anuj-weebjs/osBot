@@ -1,7 +1,7 @@
 {
-    "PREFIX":"os",
+    "PREFIX":"o!",
     "activities":{
-        "name":"Type oshelp"
+        "name":"Type o!help"
     },
     "status":"dnd",
     "clientId": "1227972298653302826",

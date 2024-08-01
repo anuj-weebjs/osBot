@@ -53,7 +53,7 @@ module.exports = {
 
         // let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
         var prefixes = [];
-        prefixes.push(`<@${config.clientId}>`, config.PREFIX);
+        prefixes.push(`<@${config.clientId}>`, config.PREFIX, 'os');
         for(let i = 0; i < userData.customPrefixes.length; i++){
             prefixes.push(userData.customPrefixes[i].prefix);
         }
