@@ -27,8 +27,19 @@ module.exports = {
         let encodedUrl = encodeURIComponent(rawUrl);
 
         const url = `https://image.thum.io/get/width/1920/?url=${encodedUrl}`;
-        let res = await fetch(url);
+        let res:Response;
+        try {
+             res = await fetch(url);
+            
+        } catch (err) {
+            embed.setColor(config.embedColor.alert);
+            embed.setTitle(`[500] Internal Server Error`);
+            message.channel.send({embeds: [embed]});
+            return;
+            
+        }
         
+
         if(res.status != 200){
             embed.setTitle(`make sure That url is correct and it contains https://`);
             message.channel.send({embeds: [embed]});
@@ -38,7 +49,6 @@ module.exports = {
         embed.setTitle(rawUrl);
         embed.setURL(rawUrl);
         embed.setImage(url);
-
         message.channel.send({embeds: [embed]});
         return;
     }
