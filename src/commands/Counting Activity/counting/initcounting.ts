@@ -4,6 +4,13 @@ var { PREFIX } = require("../../../../config.json");
 var countingDoc = require('../../../model/countingModel');
 var guildModel = require('../../../model/guildModel');
 
+enum Option {
+    null = -1,
+    on,
+    off,
+}
+
+
 module.exports = {
     structure: {
         name: "counting",
@@ -37,7 +44,9 @@ module.exports = {
             return
         }
 
-        let option = args[0].toLowerCase();
+        // let option = args[0].toLowerCase();
+        var option = checkOption(args);
+
         if (!message.guild) {
             message.channel.send(`❌ This command can only be used in a server.`);
             return;
@@ -45,7 +54,7 @@ module.exports = {
         let guildId = message.guild.id;
         let channelId = message.channel.id;
 
-        if (option === 'enable') {
+        if (option === 0) {
             let oldDoc = await countingDoc.findOne({ guildId });
             if (oldDoc) {
                 message.reply(`Counting is already enabled in this channel.`);
@@ -64,7 +73,7 @@ module.exports = {
             const bot = client.user;
             await createAndStoreWebhook(message.channel, bot);
 
-        } else if (option === 'disable') {
+        } else if (option === 1) {
             let oldDoc = await countingDoc.findOne({ guildId });
             if (!oldDoc) {
                 message.reply(`Counting is already disabled in this channel.`);
@@ -81,8 +90,8 @@ module.exports = {
                 { new: true }
             );
 
-        } else {
-            message.channel.send(`Invalid option. Use \`${PREFIX}counting enable\` to enable counting activity in this channel.`);
+        } else if(option === -1) {
+            message.channel.send(`Invalid option. Use \`${PREFIX}counting [on|enable|start]\` to enable counting activity in this channel.`);
         }
     }
 };
@@ -105,4 +114,16 @@ async function createAndStoreWebhook(channel: any, bot: any) {
     );
 
     return webhook;
+}
+
+
+function checkOption(args: string[]): Option {
+    let _option = args[0].toLowerCase();
+    if (_option == 'on' || _option == 'enable' || _option == 'start') {
+        return Option.on;
+    } else if (_option == 'off' || _option == 'disable' || _option == 'stop') {
+        return Option.off;
+    }else{
+        return Option.null;
+    }
 }

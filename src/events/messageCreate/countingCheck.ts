@@ -1,11 +1,11 @@
-import { TypeParameter } from "typescript";
 
-const { WebhookClient } = require('discord.js');
-const config = require('../../../config.json');
-const guildModel = require('../../model/guildModel');
-const countingDoc = require('../../model/countingModel');
-const { evaluate } = require('mathjs');
-const prefix = config.PREFIX;
+
+var { WebhookClient } = require('discord.js');
+var config = require('../../../config.json');
+var guildModel = require('../../model/guildModel');
+var countingDoc = require('../../model/countingModel');
+var { evaluate } = require('mathjs');
+var prefix = config.PREFIX;
 
 module.exports = {
     execute: async (message: typeof Message, client: typeof Client) => {
