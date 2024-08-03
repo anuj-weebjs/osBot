@@ -50,7 +50,7 @@ module.exports = {
             Embed.addFields(
                 { name: 'Counting Activity', value: getFileNames(countingDir).toString(), inline: false }
             )
-            Embed.setFooter({ text: `Do \`${config.PREFIX}help <command>\` To Get Info That Particular command` });
+            Embed.setFooter({ text: `Type "${config.PREFIX}help <command>" To Get Info of That Particular command` });
 
         } else {
             const { commands } = client;

@@ -77,7 +77,7 @@ async function processCorrectNumber(message: typeof Message, client: typeof Clie
         avatarURL: author.displayAvatarURL({ format: 'png', dynamic: true }),
     });
 
-    await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix} counting disable", the next number is ${doc.lastNumber + 1}`);
+    await message.channel.setTopic(`Count to your heart's content! by OS Bot! The next number is ${doc.lastNumber + 1} (for Admins To disable it type "${prefix}counting disable")`);
 }
 
 async function createAndStoreWebhook(channel: any, bot: any) {
