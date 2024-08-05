@@ -8,7 +8,7 @@ var { evaluate } = require('mathjs');
 var prefix = config.PREFIX;
 
 module.exports = {
-    execute: async (message: typeof Message, client: typeof Client) => {
+    execute: async (message: typeof Message, client: any) => {
         if (!message || message.author.bot || message.content.toLowerCase().startsWith(prefix)) return;
 
         const { guild, channel, author, content } = message;
@@ -51,7 +51,7 @@ async function warn(message: typeof Message, warningMessage: string) {
     setTimeout(() => warning.delete(), 3000);
 }
 
-async function processCorrectNumber(message: typeof Message, client: typeof Client, doc: typeof countingDoc) {
+async function processCorrectNumber(message: typeof Message, client: any, doc: typeof countingDoc) {
     const { author, channel, content } = message;
     const bot = client.user;
 

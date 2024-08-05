@@ -28,7 +28,7 @@ module.exports = {
     },
     execute: async (message: Message, client: any, args: string[]) => {
         const Embed = new EmbedBuilder();
-        Embed.setColor('#ADD8E6');
+        Embed.setColor(config.embedColor.primary);
         if (args.length < 1) {
 
             Embed.setTitle(`Available Commands`);
@@ -55,14 +55,20 @@ module.exports = {
         } else {
             const { commands } = client;
             const command = commands.get(args.shift()?.toLowerCase());
-            if (!command) return;
-            Embed.setTitle(`**${command.structure.name}**`);
-            Embed.addFields(
-                {name: 'Description:', value: `\`\`\`${command.structure.description}\`\`\``}
-            );
-            Embed.addFields(
-                {name: 'Usage:', value: `\`\`\`${command.structure.usage}\`\`\``}
-            );
+            if (!command) {
+                Embed.setColor(config.embedColor.alert);
+                Embed.setTitle(`Command Not Found`);
+                Embed.setDescription(`Type ${prefix}help for list of available commands`);
+            }else{
+                
+                Embed.setTitle(`**${command.structure.name}**`);
+                Embed.addFields(
+                    {name: 'Description:', value: `\`\`\`${command.structure.description}\`\`\``}
+                );
+                Embed.addFields(
+                    {name: 'Usage:', value: `\`\`\`${command.structure.usage}\`\`\``}
+                );
+            }
         }
         Embed.setTimestamp();
         message.channel.send({ embeds: [Embed] });
