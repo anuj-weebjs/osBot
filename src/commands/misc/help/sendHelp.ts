@@ -1,6 +1,5 @@
-import { Client, Message } from "discord.js";
+import { Client, EmbedBuilder, Message } from "discord.js";
 
-var { EmbedBuilder } = require('discord.js');
 var fs = require('node:fs');
 var path = require('node:path');
 var config = require('../../../../config.json');
@@ -27,11 +26,11 @@ module.exports = {
         usage: `${prefix}help`
     },
     execute: async (message: Message, client: any, args: string[]) => {
-        const Embed = new EmbedBuilder();
+        const Embed: EmbedBuilder = new EmbedBuilder();
         Embed.setColor(config.embedColor.primary);
         if (args.length < 1) {
 
-            Embed.setTitle(`Available Commands`);
+            Embed.setTitle(`List of Available Commands`);
             Embed.addFields(
                 { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
@@ -50,6 +49,16 @@ module.exports = {
             Embed.addFields(
                 { name: 'Counting Activity', value: getFileNames(countingDir).toString(), inline: false }
             )
+            Embed.addFields({ name: '\u200B', value: '\u200B' },)
+            Embed.addFields(
+                {
+                        name: `Do you have some experience with typescript?`, value: `Why don't you Make contribution To the project on [Github](https://github.com/anuj-weebjs/osBot)?`
+                }
+            )
+            // Embed.addFields({
+            //     name: `Type "${config.PREFIX}help <command>"`, value:`To Get More Information about That command`
+            // });
+
             Embed.setFooter({ text: `Type "${config.PREFIX}help <command>" To Get Info of That Particular command` });
 
         } else {
@@ -70,7 +79,6 @@ module.exports = {
                 );
             }
         }
-        Embed.setTimestamp();
         message.channel.send({ embeds: [Embed] });
     }
 }
