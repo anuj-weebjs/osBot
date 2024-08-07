@@ -1,8 +1,7 @@
-import { Message } from "discord.js";
+import {  EmbedBuilder,  User, TimestampStyles } from "discord.js";
 
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
-var {EmbedBuilder} = require('discord.js')
 var config = require('../../../config.json');
 
 module.exports = {
@@ -18,7 +17,7 @@ module.exports = {
     }
 }
 
-async function afkCheckOnEveryMessage(message:  any) {
+async function afkCheckOnEveryMessage(message: any) {
     if (!message) return;
     if (message.author.bot) return;
     const userid = message.author.id;
@@ -32,7 +31,7 @@ async function afkCheckOnEveryMessage(message:  any) {
         if (queryResult.pingedBy.length == 0) {
             Embed.setDescription(`Hey There, You were AFK From <t:${queryResult.afkStartTime}:R>`)
         } else {
-            Embed.setDescription(`Hey There, You were AFK From <t:${queryResult.afkStartTime}:R> & you've Pinged ${queryResult.pingedBy.length} Times`);
+            Embed.setDescription(`Hey There, You were AFK From <t:${queryResult.afkStartTime}:${TimestampStyles.ShortTime}> & you're Pinged ${queryResult.pingedBy.length} Time(s)`);
             for (let i = 0; i < queryResult.pingedBy.length; i++) {
                 Embed.addFields({
                     name: `By @${queryResult.pingedBy[i].username}`,
@@ -82,12 +81,22 @@ async function afkCheckOnMentionMessage(message: any) {
 
 
         if (queryResult.userId == userid) {
-            const userData = await getUserById(userid);
-            if (queryResult.reason == 'none') {
-                message.reply(`${userData.globalName} Went \`AFK\` <t:${queryResult.afkStartTime}:R>`);
+            const userData: User = await getUserById(userid);
+            if (!userData) continue;
+            let embed: EmbedBuilder = new EmbedBuilder();
+            let name: string;
+            if (userData.globalName) {
+                name = userData.globalName;
             } else {
-                message.reply(`${userData.globalName} Went \`AFK\` <t:${queryResult.afkStartTime}:R> Reason: ${reason}`);
+                name = userData.username;
             }
+            embed.setColor(config.embedColor.primary);
+            embed.setAuthor({ name: `${name} is AFK`, iconURL: `${userData.avatarURL()}` });
+            embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
+            if (queryResult.reason != 'none') {
+                embed.setDescription(reason);
+            }
+            message.reply({embeds: [embed]});
 
             if (queryResult?.pingedBy.length > 5) {
                 continue;
@@ -115,7 +124,7 @@ async function afkCheckOnMentionMessage(message: any) {
 }
 
 
-async function afkCheckOnRepliedMessage(message:  any) {
+async function afkCheckOnRepliedMessage(message: any) {
     if (!message) return;
     if (message.author.bot) return;
     if (message?.reference) {
@@ -133,12 +142,26 @@ async function afkCheckOnRepliedMessage(message:  any) {
 
             const reason = queryResult.reason;
             if (message.author.id == queryResult.userId) return;
+
+            
             if (queryResult.userId == msg.author.id) {
-                if (queryResult.reason == 'none') {
-                    message.reply(`He/She Went AFK <t:${queryResult.afkStartTime}:R>`);
+                
+                const userData: User = await getUserById(queryResult.userId);
+                
+                let embed: EmbedBuilder = new EmbedBuilder();
+                let name: string;
+                if (userData.globalName) {
+                    name = userData.globalName;
                 } else {
-                    message.reply(`He/She Went AFK <t:${queryResult.afkStartTime}:R> Reason: ${reason}`);
+                    name = userData.username;
                 }
+                embed.setColor(config.embedColor.primary);
+                embed.setAuthor({ name: `${name} is AFK`, iconURL: `${userData.avatarURL()}` });
+                embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
+                if (queryResult.reason != 'none') {
+                    embed.setDescription(reason);
+                }
+                message.reply({embeds: [embed]});
             } else {
                 return;
             }

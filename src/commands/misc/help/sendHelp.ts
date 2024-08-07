@@ -55,9 +55,6 @@ module.exports = {
                         name: `Do you have some experience with typescript?`, value: `Why don't you Make contribution To the project on [Github](https://github.com/anuj-weebjs/osBot)?`
                 }
             )
-            // Embed.addFields({
-            //     name: `Type "${config.PREFIX}help <command>"`, value:`To Get More Information about That command`
-            // });
 
             Embed.setFooter({ text: `Type "${config.PREFIX}help <command>" To Get Info of That Particular command` });
 

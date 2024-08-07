@@ -1,6 +1,8 @@
+import { User } from "discord.js";
+
 var client = require('../index').client;
 
-var getUserById : any= async(id: string) => {
+async function getUserById (id: string): Promise<User> {
 
     let user = await client.users.fetch(id);
 
