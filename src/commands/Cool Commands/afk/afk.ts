@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, EmbedBuilder, TimestampStyles } from "discord.js";
 
 var afkDoc = require('../../../model/afkModel.js');
 var config = require('../../../../config.json')
@@ -22,7 +22,11 @@ module.exports = {
         }
 
         if(_reason.length > 220){
-            message.channel.send(`The Length of Reason Must be less than 220 letters(including spaces)`)
+            let embed: EmbedBuilder = new EmbedBuilder()
+            .setColor(config.embedColor.alert)
+            .setDescription(`The Length of Reason Must be less than 220 letters(including spaces)`)
+            .setTimestamp();
+            message.reply({embeds:[embed]});
             return;
         }
 
@@ -35,15 +39,33 @@ module.exports = {
             await newDoc.save();
         } catch (err) {
             console.log("Error in afk.js " + err);
-            message.channel.send("[500] Internal Server Error");
+            let embed: EmbedBuilder = new EmbedBuilder()
+            .setColor(config.embedColor.alert)
+            .setDescription(`[500] Internal Server Error`)
+            .setTimestamp();
+            message.channel.send({embeds: [embed]});
             return;
         }
 
-        if (args.length < 1) {
-            message.reply(`AFK Status is Now \`On!\` reason: ${_reason}, Time: <t:${timeStamp}:R>. Btw You can provide a reason by doing \`${prefix}afk <reason>\``);
-        } else {
-            message.reply(`AFK Status is Now \`On!\` reason: ${_reason}, Time: <t:${timeStamp}:R>`);
+        let embed: EmbedBuilder = new EmbedBuilder();
+        embed.setColor(config.embedColor.primary);
+        let name: string | null
+        if(message.author.globalName){
+            name = message.author.globalName;
+        }else{
+            name = message.author.username;
         }
+        embed.setAuthor({name: name, iconURL: `${message.author.avatarURL()}`});
+        if (args.length < 1) {
+            embed.setTitle(`Enabled AFK Status!`);
+            embed.setDescription(`You can also provide a reason by doing \`${prefix}afk <reason>\``)
+        } else {
+            embed.setTitle(`Enabled AFK Status!`);
+            embed.setDescription(`Reason: ${_reason}`)
+        }
+        embed.setTimestamp();
+        message.channel.send({embeds: [embed]});
+        return;
     }
 
 
