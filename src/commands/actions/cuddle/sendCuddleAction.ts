@@ -1,13 +1,13 @@
 import { Message } from "discord.js";
-
-var send = require('../../../utils/sendActionEmbed');
-var getUserById = require('../../../utils/getUserByRawMessage');
+import { sendActionEmbed } from '../../../utils/sendActionEmbed';
+// import * as getUserById from '../../../utils/getUserByRawMessage';
+// var send = require('../../../utils/sendActionEmbed');
 
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
 
 module.exports = {
-    structure:{
+    structure: {
         name: "cuddle",
         description: "Cuddle Someone",
         usage: `${prefix}cuddle <mention>`
@@ -22,7 +22,7 @@ module.exports = {
             return;
         }
 
-        send(message, 'cuddle', `${message.author.globalName} nestles into ${mentionedUser.globalName} with a cozy cuddle`);
+        sendActionEmbed(message, 'cuddle', `${message.author.globalName} nestles into ${mentionedUser.globalName} with a cozy cuddle`);
 
     }
 }

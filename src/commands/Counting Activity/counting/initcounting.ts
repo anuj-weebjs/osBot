@@ -11,13 +11,13 @@ enum Option {
 }
 
 
-module.exports = {
-    structure: {
+export const
+    structure = {
         name: "counting",
         description: "Start Counting In Current Channel!",
         usage: `${PREFIX}counting enable`
     },
-    execute: async (message: Message, client: Client, args: string[]) => {
+    execute = async (message: Message, client: Client, args: string[]) => {
         if (!message) return;
         if (!message.member) {
             throw new Error("message.member is null in initcounting.ts:15");
@@ -90,11 +90,10 @@ module.exports = {
                 { new: true }
             );
 
-        } else if(option === -1) {
+        } else if (option === -1) {
             message.channel.send(`Invalid option. Use \`${PREFIX}counting [on|enable|start]\` to enable counting activity in this channel.`);
         }
-    }
-};
+    };
 
 async function createAndStoreWebhook(channel: any, bot: any) {
     const webhook = await channel.createWebhook({
@@ -123,7 +122,7 @@ function checkOption(args: string[]): Option {
         return Option.on;
     } else if (_option == 'off' || _option == 'disable' || _option == 'stop') {
         return Option.off;
-    }else{
+    } else {
         return Option.null;
     }
 }

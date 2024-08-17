@@ -1,20 +1,18 @@
-import {  EmbedBuilder,  User, TimestampStyles } from "discord.js";
+import { EmbedBuilder, User, TimestampStyles } from "discord.js";
 
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
 var config = require('../../../config.json');
 
-module.exports = {
-    execute: async (message: any) => {
+export const execute = async (message: any) => {
 
-        if (!message) return;
-        if (message.author.bot) return;
+    if (!message) return;
+    if (message.author.bot) return;
 
-        afkCheckOnMentionMessage(message);
-        afkCheckOnEveryMessage(message);
-        afkCheckOnRepliedMessage(message);
-        return;
-    }
+    afkCheckOnMentionMessage(message);
+    afkCheckOnEveryMessage(message);
+    afkCheckOnRepliedMessage(message);
+    return;
 }
 
 async function afkCheckOnEveryMessage(message: any) {
@@ -96,7 +94,7 @@ async function afkCheckOnMentionMessage(message: any) {
             if (queryResult.reason != 'none') {
                 embed.setDescription(reason);
             }
-            message.reply({embeds: [embed]});
+            message.reply({ embeds: [embed] });
 
             if (queryResult?.pingedBy.length > 5) {
                 continue;
@@ -143,11 +141,11 @@ async function afkCheckOnRepliedMessage(message: any) {
             const reason = queryResult.reason;
             if (message.author.id == queryResult.userId) return;
 
-            
+
             if (queryResult.userId == msg.author.id) {
-                
+
                 const userData: User = await getUserById(queryResult.userId);
-                
+
                 let embed: EmbedBuilder = new EmbedBuilder();
                 let name: string;
                 if (userData.globalName) {
@@ -161,7 +159,7 @@ async function afkCheckOnRepliedMessage(message: any) {
                 if (queryResult.reason != 'none') {
                     embed.setDescription(reason);
                 }
-                message.reply({embeds: [embed]});
+                message.reply({ embeds: [embed] });
             } else {
                 return;
             }

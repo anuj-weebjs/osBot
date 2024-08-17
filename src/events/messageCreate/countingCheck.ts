@@ -7,43 +7,43 @@ var countingDoc = require('../../model/countingModel');
 var { evaluate } = require('mathjs');
 var prefix = config.PREFIX;
 
-module.exports = {
-    execute: async (message: typeof Message, client: any) => {
-        if (!message || message.author.bot || message.content.toLowerCase().startsWith(prefix)) return;
 
-        const { guild, channel, author, content } = message;
-        const guildId = guild.id;
-        const channelId = channel.id;
 
-        let queryResult = await countingDoc.findOne({ guildId });
-        if (!queryResult || channelId !== queryResult.channelId) return;
+export const execute = async (message: typeof Message, client: any) => {
+    if (!message || message.author.bot || message.content.toLowerCase().startsWith(prefix)) return;
 
-        await message.delete();
+    const { guild, channel, author, content } = message;
+    const guildId = guild.id;
+    const channelId = channel.id;
 
-        let number;
-        try {
-            number = evaluate(content);
-        } catch {
-            number = NaN;
-        }
+    let queryResult = await countingDoc.findOne({ guildId });
+    if (!queryResult || channelId !== queryResult.channelId) return;
 
-        if (Number.isNaN(number)) {
-            await warn(message, `Uh oh ${author.username}, the next number is ${queryResult.lastNumber + 1}`);
-            return;
-        }
+    await message.delete();
 
-        if (queryResult.lastUserId === author.id) {
-            await warn(message, `${author.username}, you cannot count twice!`);
-            return;
-        }
-
-        if (queryResult.lastNumber + 1 !== number) {
-            await warn(message, `${author.username}, the next number is ${queryResult.lastNumber + 1}`);
-            return;
-        }
-
-        await processCorrectNumber(message, client, queryResult);
+    let number;
+    try {
+        number = evaluate(content);
+    } catch {
+        number = NaN;
     }
+
+    if (Number.isNaN(number)) {
+        await warn(message, `Uh oh ${author.username}, the next number is ${queryResult.lastNumber + 1}`);
+        return;
+    }
+
+    if (queryResult.lastUserId === author.id) {
+        await warn(message, `${author.username}, you cannot count twice!`);
+        return;
+    }
+
+    if (queryResult.lastNumber + 1 !== number) {
+        await warn(message, `${author.username}, the next number is ${queryResult.lastNumber + 1}`);
+        return;
+    }
+
+    await processCorrectNumber(message, client, queryResult);
 }
 
 async function warn(message: typeof Message, warningMessage: string) {

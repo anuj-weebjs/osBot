@@ -6,24 +6,23 @@ var getUserById = require('../../../utils/getUserByRawMessage');
 
 var prefix = config.PREFIX;
 
-module.exports = {
-    structure:{
-        name: "highfive",
-        description: "Share HighFive With Someone!",
-        usage: `${prefix}highfive <mention>`
-    },
-    execute: async (message: Message) => {
-        const args = await message.content.slice(prefix.length).trim().split(/ +/);
-        args.shift();
-        let mentionedUser = message.mentions.users.first();
+export const structure = {
+    name: "highfive",
+    description: "Share HighFive With Someone!",
+    usage: `${prefix}highfive <mention>`
+}
 
-        if (args.length != 1 && args.length < 1 || !mentionedUser) {
-            message.reply(`INVAILD OPTIONS! use \`${prefix}highfive @user\``);
-            return;
-        }
+export const execute = async (message: Message) => {
+    const args = await message.content.slice(prefix.length).trim().split(/ +/);
+    args.shift();
+    let mentionedUser = message.mentions.users.first();
 
-
-        send(message, 'highfive', `${message.author.globalName} & ${mentionedUser.globalName} are sharing a High Five`);
-
+    if (args.length != 1 && args.length < 1 || !mentionedUser) {
+        message.reply(`INVAILD OPTIONS! use \`${prefix}highfive @user\``);
+        return;
     }
+
+
+    send(message, 'highfive', `${message.author.globalName} & ${mentionedUser.globalName} are sharing a High Five`);
+
 }

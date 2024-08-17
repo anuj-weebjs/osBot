@@ -2,6 +2,7 @@ import { Client, Message } from "discord.js";
 
 var config = require('../../../../config.json');
 var developerId = config.developerId;
+
 module.exports = {
     structure:{
         name:"kill",

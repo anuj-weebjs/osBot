@@ -2,7 +2,7 @@ import { User } from "discord.js";
 
 var client = require('../index').client;
 
-async function getUserById (id: string): Promise<User> {
+export const getUserById = async (id: string): Promise<User> =>{
 
     let user = await client.users.fetch(id);
 
@@ -13,5 +13,3 @@ async function getUserById (id: string): Promise<User> {
     return user;
 
 }
-
-module.exports = getUserById;

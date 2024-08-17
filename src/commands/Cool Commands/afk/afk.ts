@@ -4,13 +4,13 @@ var afkDoc = require('../../../model/afkModel.js');
 var config = require('../../../../config.json')
 var prefix = config.PREFIX;
 
-module.exports = {
-    structure: {
+export const
+    structure = {
         name: "afk",
         description: "You can your status To Afk. So when someone pings you or replies to your message They will get notified That you are afk with the reason that You've Provided",
         usage: `${prefix}afk <reason>`
     },
-    execute: async (message: Message) => {
+    execute = async (message: Message) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const userid = message.author.id;
         var _reason: string;
@@ -67,6 +67,3 @@ module.exports = {
         message.channel.send({embeds: [embed]});
         return;
     }
-
-
-}

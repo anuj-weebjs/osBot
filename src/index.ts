@@ -1,4 +1,8 @@
 import { Connection } from "mongoose";
+import { initializeConfig } from "./utils/config";
+import {config} from './config';
+
+initializeConfig(config);
 
 // Imports
 require('dotenv').config();
@@ -7,7 +11,7 @@ var fs = require('node:fs');
 var { Client, GatewayIntentBits, Collection, WebhookClient } = require('discord.js');
 const express = require('express');
 var mongoose = require('mongoose');
-var config = require('./../config.json');
+// var config = require('./../config.json');
 
 // Defining Variables
 var client = new Client({
@@ -21,7 +25,8 @@ var client = new Client({
     ]
 });
 // Exporting Client
-exports.client = client;
+// exports.client = client;
+export let _client = client; 
 client.commands = new Collection();
 
 const token = process.env.TOKEN;
@@ -55,7 +60,8 @@ async function connect(connectionString: string | undefined): Promise<Connection
     console.log("Connected to DataBase");
     return connection;
 }
-exports.db = db;
+// exports.db = db;
+export const _db = db;
 
 // Handeling
 const handlersPath = path.join(__dirname, 'Handlers');

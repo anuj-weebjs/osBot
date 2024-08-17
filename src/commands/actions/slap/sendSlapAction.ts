@@ -4,13 +4,13 @@ var getUserById = require('../../../utils/getUserByRawMessage');
 
 var prefix = config.PREFIX;
 
-module.exports = {
-    structure: {
+export const
+    structure = {
         name: "slap",
         description: "Slap Someone When Your Are Angry On Him/Her",
         usage: `${prefix}slap <mention>`
     },
-    execute: async (message: any) => {
+    execute = async (message: any) => {
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         args.shift();
 
@@ -25,5 +25,4 @@ module.exports = {
         send(message, 'slap', `${message.author.globalName}'s hand meets ${mentionedUser.globalName}'s cheek with a sharp slap, a moment of tension between them`);
 
     }
-}
 

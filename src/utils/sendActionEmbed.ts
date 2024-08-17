@@ -5,7 +5,7 @@ var { fetchAction } = require('./fetchAction');
 var {developerId, embedColor} = require('../../config.json')
 var client = require('../index').client;
 
-async function sendEmbed(message: Message, endpoint: string, title: string) {
+export const sendActionEmbed = async function (message: Message, endpoint: string, title: string): Promise<void> {
     if(!message){
         throw new Error("message object is null or undefined in sendActionEmbed.ts")
     }
@@ -31,8 +31,6 @@ async function sendEmbed(message: Message, endpoint: string, title: string) {
         message.reply('There was an error. Please try again later.');
     }
 }
-
-module.exports = sendEmbed
 
 
 

@@ -26,13 +26,13 @@ async function fetchMeme(subreddit: string): Promise<Meme> {
 }
 
 
-module.exports = {
-    structure: {
+export const
+    structure = {
         name: "meme",
         description: "Get memes Through Reddit",
         usage: `${prefix}meme <subreddit>`
     },
-    execute: async (message: Message) => {
+    execute = async (message: Message) => {
         if (message.channel.type !== ChannelType.GuildText) {
             message.channel.send("This command Can Only be used in Server.")
             return;
@@ -96,7 +96,6 @@ module.exports = {
 
 
     }
-}
 
 
 function validateString(input: string) {
