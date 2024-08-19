@@ -1,4 +1,3 @@
-import { Config } from './@types/config'
 
 const config: Config = {
     PREFIX: "o!",
