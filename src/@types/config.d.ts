@@ -3,10 +3,10 @@ declare global {
         PREFIX?: string
         activities?: Activities,
         status?: 'dnd' | 'online' | 'idle',
-        clientId: string | undefined,
-        developerId: string | undefined,
-        log: Log,
-        embedColor: EmbedColor
+        clientId?: string,
+        developerId?: string,
+        log?: Log,
+        embedColor?: EmbedColor
     }
 
 }
@@ -16,12 +16,12 @@ interface Activities {
 }
 
 interface Log {
-    guildId: string,
-    guildJoinChannelId: string | undefined,
-    guildLeaveChannelId: string | undefined,
-    executeChannelId: string | undefined,
-    uncaughtExceptionChannelId: string | undefined,
-    errorChannelId: string | undefined,
+    guildId?: string,
+    guildJoinChannelId?: string | undefined,
+    guildLeaveChannelId?: string | undefined,
+    executeChannelId?: string | undefined,
+    uncaughtExceptionChannelId?: string | undefined,
+    errorChannelId?: string | undefined,
 }
 
 
