@@ -1,6 +1,6 @@
 
 const config: Config = {
-    PREFIX: "o!",
+    // PREFIX: "o!",
     activities: {
         name: "Type o!help"
     },
@@ -10,7 +10,7 @@ const config: Config = {
     log: {
         guildId: "1226560136777044129",
         guildJoinChannelId: "1242333814878113802",
-        guildLeaveChannelId: "1242333980540403794",
+        // guildLeaveChannelId: "1242333980540403794",
         executeChannelId: "1242346785091878932",
         uncaughtExceptionChannelId: "1242348697115688970",
         errorChannelId: "1242349431974793226"
