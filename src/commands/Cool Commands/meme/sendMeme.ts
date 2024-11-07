@@ -33,6 +33,8 @@ module.exports = {
         usage: `${prefix}meme <subreddit>`
     },
     execute: async (message: Message) => {
+        if(!message.channel.isSendable()) return;
+        
         if (message.channel.type !== ChannelType.GuildText) {
             message.channel.send("This command Can Only be used in Server.")
             return;

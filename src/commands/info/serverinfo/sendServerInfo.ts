@@ -10,6 +10,8 @@ module.exports = {
         usage: `${prefix}serverinfo`
     },
     execute: async (message: Message) => {
+        if(!message.channel.isSendable())return;
+
         if (!message?.guild) {
             return message.channel.send({ content: `This command can only be executed in a server.` });
         };

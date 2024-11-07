@@ -9,7 +9,7 @@ module.exports = {
         usage:".."
     },
     execute: async(message: Message, client: Client)=>{
-
+        if(!message.channel.isSendable()) return;
         if(message.author.id == developerId){
             await message.channel.send("Shutting down");
             client.destroy();

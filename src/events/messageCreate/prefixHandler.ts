@@ -1,4 +1,4 @@
-var { User, Message, EmbedBuilder } = require("discord.js");
+import { Message, EmbedBuilder } from "discord.js";
 
 var userDoc = require('../../model/userModel');
 var guildDoc = require('../../model/guildModel');
@@ -8,10 +8,9 @@ var developerId = config.developerId;
 
 const cooldowns = new Map();
 module.exports = {
-    execute: async (message: typeof Message, client: any) => {
+    execute: async (message:  any, client: any) => {
         var prefix = null;
-        if (!message) return;
-        if(message.author.bot) return;
+        if (!message || message.author.bot || !message.channel.isSendable() || !message.channel.isDMBased() || !message.guild) return;
 
         if(message.content == `<@${config.clientId}>`){
             let embed = new EmbedBuilder();
@@ -72,7 +71,8 @@ module.exports = {
 
         if (!message.content.toLowerCase().startsWith(prefix)) return;
 
-        var args = message.content.slice(prefix.length).trim().split(/ +/);
+        var args: any;
+        args = message.content.slice(prefix.length).trim().split(/ +/);
         const msgCommand = args.shift().toLowerCase();
 
 

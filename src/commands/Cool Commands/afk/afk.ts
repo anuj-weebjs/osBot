@@ -11,6 +11,8 @@ module.exports = {
         usage: `${prefix}afk <reason>`
     },
     execute: async (message: Message) => {
+        if(!message.channel.isSendable()) return;
+
         const args = await message.content.slice(prefix.length).trim().split(/ +/);
         const userid = message.author.id;
         var _reason: string;

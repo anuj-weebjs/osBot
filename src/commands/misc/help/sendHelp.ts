@@ -26,6 +26,8 @@ module.exports = {
         usage: `${prefix}help`
     },
     execute: async (message: Message, client: any, args: string[]) => {
+        if(!message.channel.isSendable())return;
+
         const Embed: EmbedBuilder = new EmbedBuilder();
         Embed.setColor(config.embedColor.primary);
         if (args.length < 1) {

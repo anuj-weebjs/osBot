@@ -1,6 +1,6 @@
 
 
-var { WebhookClient } = require('discord.js');
+var { WebhookClient, Message } = require('discord.js');
 var config = require('../../../config.json');
 var guildModel = require('../../model/guildModel');
 var countingDoc = require('../../model/countingModel');

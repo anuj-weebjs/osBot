@@ -22,6 +22,10 @@ module.exports = {
         usage: `${prefix}prefix [self|server] [add|remove] <prefix>\n${prefix}prefix list`
     },
     execute: async (message: Message, client: Client, args: any) => {
+
+        if(!message || !message.channel.isSendable())return;
+
+
         const userId = message.author.id;
         let metaData: any = {
             prefixScope: null,

@@ -31,6 +31,8 @@ module.exports = {
         usage: `${prefix}ping`
     },
     execute: async (message: Message, client: Client) => {
+        if(!message || !message.channel.isSendable())return;
+
         let uptime: string | undefined;
         if(client.uptime){
             let totalSeconds = (client.uptime / 1000);

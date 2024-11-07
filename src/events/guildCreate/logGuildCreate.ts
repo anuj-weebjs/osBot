@@ -5,7 +5,7 @@ module.exports = {
     execute: async (guild:  Guild, client:  Client) => {
 
         const channel: Channel | null = await  client.channels.fetch(config.log.guildJoinChannelId);
-        if(!channel) return;
+        if(!channel || !channel.isSendable()) return;
         const serverCount = client.guilds.cache.size;
         
         if(!channel.isTextBased())return;

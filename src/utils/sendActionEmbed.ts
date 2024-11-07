@@ -6,7 +6,7 @@ var {developerId, embedColor} = require('../../config.json')
 var client = require('../index').client;
 
 async function sendEmbed(message: Message, endpoint: string, title: string) {
-    if(!message){
+    if(!message || !message.channel.isSendable()){
         throw new Error("message object is null or undefined in sendActionEmbed.ts")
     }
     try {
@@ -20,6 +20,8 @@ async function sendEmbed(message: Message, endpoint: string, title: string) {
             .setAuthor({ name: title, iconURL: message.author.displayAvatarURL(), url: gifData.url })
             .setImage(gifData.url);
 
+
+        
         message.channel.send({ embeds: [Embed] });
     } catch (err: any) {
         let channel = await client.channels.cache.get(config.log.errorChannelId);

@@ -11,6 +11,8 @@ module.exports = {
         usage:`${PREFIX}invite`
     },
     execute: async(message:  Message)=>{
+        if(!message.channel.isSendable())return;
+
         let embed = new EmbedBuilder();
         embed.setColor(config.embedColor.primary);
         embed.setDescription(`https://discord.com/oauth2/authorize?client_id=${config.clientId}`)

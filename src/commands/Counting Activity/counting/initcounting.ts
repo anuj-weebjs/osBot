@@ -18,7 +18,7 @@ module.exports = {
         usage: `${PREFIX}counting enable`
     },
     execute: async (message: Message, client: Client, args: string[]) => {
-        if (!message) return;
+        if (!message || !message.channel.isSendable()) return;
         if (!message.member) {
             throw new Error("message.member is null in initcounting.ts:15");
         }
