@@ -10,7 +10,7 @@ const cooldowns = new Map();
 module.exports = {
     execute: async (message:  any, client: any) => {
         var prefix = null;
-        if (!message || message.author.bot || !message.channel.isSendable() || !message.channel.isDMBased() || !message.guild) return;
+        if (!message || message.author.bot || !message.channel.isSendable() || message.channel.isDMBased() || !message.guild) return;
 
         if(message.content == `<@${config.clientId}>`){
             let embed = new EmbedBuilder();
