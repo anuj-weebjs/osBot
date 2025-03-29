@@ -65,10 +65,11 @@ for (const handler of handlers) {
     require(path.join(handlersPath, handler))(client);
 }
 
-client.handleEvents(client);
+client.handleEvents(client); 
 client.login(token);
 
-// let channel;
+
+// let channel;     
 
 // process.on('uncaughtException', async function (err, ori) {
 //     console.error(err + ori);

@@ -1,17 +1,19 @@
 {
   "dependencies": {
+    "bun": "^1.2.7",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "encodeurl": "^2.0.0",
     "express": "^4.19.2",
     "mathjs": "^13.0.3",
     "mongodb": "^6.8.0",
-    "mongoose": "^8.5.1",
-    "typescript": "^5.5.4"
+    "mongoose": "^8.5.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.12",
-    "nodemon": "^3.1.4"
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.8.2"
   },
   "name": "osbot",
   "description": "<b>It is a prefix based Discord Bot Created in Node.js</b>",
@@ -21,7 +23,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "build": "npm i && tsc",
-    "dev": "nodemon --exec \"tsc && node  dist/index.js\" -e \"ts json\"",
+    "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js -e ts,json\"",
     "buildStructure": "tree >> structure.txt --filesfirst -F --gitignore"
   },
   "repository": {

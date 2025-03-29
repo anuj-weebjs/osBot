@@ -126,7 +126,8 @@ module.exports = {
             message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
         } finally {
             let channel = await client.channels.cache.get(config.log.executeChannelId);
-            channel.send(`-----------------\nraw Message: ${message.content}\nCommand Name: ${msgCommand}\nGuild: ${message.guild.name} | ${message.guild.id}\nUser: ${message.author.username} | ${message.author.id}`);
+            // channel.send(`-----------------\nRaw Message: ${message.content}\nCommand Name: ${msgCommand}\nGuild: ${message.guild.name} | ${message.guild.id}\nUser: ${message.author.username} | ${message.author.id}\n-----------------`);
+            channel.send(`${message.toString()}`);
             userData.lastUsedPrefix = prefix;
             await userData.save();
         }
