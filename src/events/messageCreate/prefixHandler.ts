@@ -8,39 +8,45 @@ var developerId = config.developerId;
 
 const cooldowns = new Map();
 module.exports = {
-    execute: async (message:  any, client: any) => {
+    execute: async (message: Message, client: any) => {
         var prefix = null;
         if (!message || message.author.bot || !message.channel.isSendable() || message.channel.isDMBased() || !message.guild) return;
 
-        if(message.content == `<@${config.clientId}>`){
+        const guildId = message.guild.id;
+        const guildName = message.guild.name;
+        const authorId = message.author.id;
+        const authorUsername = message.author.username;
+        const msgContent = message.content;
+
+        if (msgContent == `<@${config.clientId}>`) {
             let embed = new EmbedBuilder();
             embed.setDescription(`My default Prefix is \`${config.PREFIX}\`\nUse \`${config.PREFIX}help\`for help`);
-            message.channel.send({embeds: [embed]});
+            message.channel.send({ embeds: [embed] });
             return;
         }
 
-        var messageUserId = message.author.id;
+        var messageUserId = authorId;
         var userData = await userDoc.findOne({ userId: messageUserId });
 
         if (!userData) {
 
             const _userData = new userDoc({
-                userId: message.author.id,
+                userId: authorId,
                 joinedAt: new Date(),
                 customPrefixes: []
             })
             await _userData.save();
             userData = await userDoc.findOne({ userId: messageUserId });
-        } 
+        }
 
-        var guildData = await guildDoc.findOne({ guildId: message.guild.id});
-        if(!guildData){
+        var guildData = await guildDoc.findOne({ guildId: guildId });
+        if (!guildData) {
             const _guildData = new guildDoc({
-                guildId: message.guild.id,
+                guildId: guildId,
                 customPrefixes: []
             });
             await _guildData.save();
-            guildData = await guildDoc.findOne({ guildId: message.guild.id});
+            guildData = await guildDoc.findOne({ guildId: guildId });
         }
         if (!Array.isArray(userData?.customPrefixes)) {
             userData.customPrefixes = [];
@@ -53,32 +59,33 @@ module.exports = {
         // let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
         var prefixes = [];
         prefixes.push(`<@${config.clientId}>`, config.PREFIX, 'os');
-        for(let i = 0; i < userData.customPrefixes.length; i++){
+        for (let i = 0; i < userData.customPrefixes.length; i++) {
             prefixes.push(userData.customPrefixes[i].prefix);
         }
-        for(let i = 0; i < guildData.customPrefixes.length; i++){
+        for (let i = 0; i < guildData.customPrefixes.length; i++) {
             prefixes.push(guildData.customPrefixes[i].prefix);
         }
 
-        for(let i = 0; i < prefixes.length; i++){
-            if(message.content.toLowerCase().startsWith(prefixes[i].toLowerCase())){
+        for (let i = 0; i < prefixes.length; i++) {
+            if (msgContent.toLowerCase().startsWith(prefixes[i].toLowerCase())) {
                 prefix = prefixes[i].toLowerCase();
             }
         }
-        if(!prefix){
+        if (!prefix) {
             return;
         }
 
-        if (!message.content.toLowerCase().startsWith(prefix)) return;
+        if (!msgContent.toLowerCase().startsWith(prefix)) return;
 
         var args: any;
-        args = message.content.slice(prefix.length).trim().split(/ +/);
+        args = msgContent.slice(prefix.length).trim().split(/ +/);
         const msgCommand = args.shift().toLowerCase();
 
 
         if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) { //You can do the same for EmbedLinks, ReadMessageHistory and so on
-            client.users.fetch(message.author.id, false).then((user: any) => {
-                user.send(`I don't Have Permissions To Send Messages In ${message.guild.name}`);
+            client.users.fetch(authorId, false).then((user: any) => {
+                if(!message.guild)return;
+                user.send(`I don't Have Permissions To Send Messages In ${guildName}`);
             });
             return;
         };
@@ -92,17 +99,17 @@ module.exports = {
         const now = Date.now();
         const cooldownAmount = 3 * 1000; // 3 seconds cooldown
 
-        if (!cooldowns.has(message.author.id)) {
-            cooldowns.set(message.author.id, now);
+        if (!cooldowns.has(authorId)) {
+            cooldowns.set(authorId, now);
         } else {
-            const expirationTime = cooldowns.get(message.author.id) + cooldownAmount;
+            const expirationTime = cooldowns.get(authorId) + cooldownAmount;
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
                 return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${msgCommand}\` command.`);
             }
 
-            cooldowns.set(message.author.id, now);
+            cooldowns.set(authorId, now);
         }
 
 
@@ -116,18 +123,33 @@ module.exports = {
             let channel = await client.channels.cache.get(config.log.errorChannelId);
             channel.send(`
             Error: ${err.toString()}\n
-            raw Message: ${message.content}\n
+            raw Message: ${msgContent}\n
             Command: ${msgCommand}\n
-            Guild: ${message.guild.name} | ${message.guild.id}\n
-            User: ${message.author.username} | ${message.author.id}
+            Guild: ${guildName} | ${guildId}\n
+            User: ${authorUsername} | ${authorId}
             `);
             console.log(err);
 
             message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
         } finally {
             let channel = await client.channels.cache.get(config.log.executeChannelId);
-            // channel.send(`-----------------\nRaw Message: ${message.content}\nCommand Name: ${msgCommand}\nGuild: ${message.guild.name} | ${message.guild.id}\nUser: ${message.author.username} | ${message.author.id}\n-----------------`);
-            channel.send(`${message.toString()}`);
+            const logEmbed = new EmbedBuilder()
+                .setColor('Green')
+                .setAuthor({ name: `${authorUsername}`, iconURL: `${message.author.avatarURL()}`})
+                .setTitle(message.guild.name)
+                .setThumbnail(message.guild.iconURL()) 
+                .setDescription(msgContent)
+                .addFields(
+                    { name: 'Global Name', value: `${message.author.globalName}`, inline: true },
+                    { name: 'Username', value: authorUsername, inline: true },
+                    { name: 'User Id', value: authorId, inline: true },
+                    // { name: '\u200B', value: '\u200B' },
+                    { name: 'Gulid Name', value: guildName, inline: true },
+                    { name: 'Gulid Id', value: guildId, inline: true },
+                )
+                .setTimestamp();
+            // channel.send(`-----------------\nRaw Message: ${msgContent}\nCommand Name: ${msgCommand}\nGuild: ${guildName} | ${guildId}\nUser: ${authorUsername} | ${authorId}\n-----------------`);
+            channel.send({ embeds: [logEmbed] });
             userData.lastUsedPrefix = prefix;
             await userData.save();
         }
