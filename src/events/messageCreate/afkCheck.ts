@@ -128,7 +128,7 @@ async function afkCheckOnRepliedMessage(message: any) {
     if (!message) return;
     if (message.author.bot) return;
     if (message?.reference) {
-        const msg = await message.channel.messages.fetch(message.reference.messageId)
+        const msg = await message.channel.messages.fetch(message.reference.messageId);
         try {
             var queryResult = await afkDoc.findOne({ userId: msg.author.id });
         } catch (err) {
