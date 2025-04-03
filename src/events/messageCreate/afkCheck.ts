@@ -1,4 +1,4 @@
-import {  EmbedBuilder,  User, TimestampStyles } from "discord.js";
+import {  EmbedBuilder,  User, TimestampStyles, Message } from "discord.js";
 
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');

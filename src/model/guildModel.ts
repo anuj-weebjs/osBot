@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { Model, Models, Schema } from 'mongoose';
 
-const guildSchema = new mongoose.Schema({
+const guildSchema: Schema = new mongoose.Schema({
     guildId: {
         type: String,
         required: true
@@ -13,10 +14,7 @@ const guildSchema = new mongoose.Schema({
         id: String,
         token: String,
     },
-    welcomeEmbed: {
-        
-    }
 });
 
 var guildModel = mongoose.model('guildModel', guildSchema);
-module.exports = guildModel;
+export{guildModel}

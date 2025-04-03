@@ -1,16 +1,16 @@
 import { Connection } from "mongoose";
+import { Client, GatewayIntentBits, Collection, EmbedBuilder} from 'discord.js';
 
 // Imports
 require('dotenv').config();
 var path = require('node:path');
 var fs = require('node:fs');
-var { Client, GatewayIntentBits, Collection, WebhookClient } = require('discord.js');
 const express = require('express');
 var mongoose = require('mongoose');
 var config = require('./../config.json');
 
 // Defining Variables
-var client = new Client({
+var client: any = new Client({
     allowedMentions: { parse: [] },
     intents: [
         GatewayIntentBits.Guilds,
@@ -69,18 +69,22 @@ client.handleEvents(client);
 client.login(token);
 
 
-// let channel;     
+let channel;     
 
-// process.on('uncaughtException', async function (err, ori) {
-//     console.error(err + ori);
+process.on('uncaughtException', async function (err, ori) {
+    console.error(err + ori);
 
-//     channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-//     if (!channel) {
-//         channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-//         if (!channel) {
-//             return;
-//         }
-//     }
+    channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+    if (!channel) {
+        channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+        if (!channel) {
+            return;
+        }
+    }
 
-//     channel?.send(`Error: ${err.toString()}\nOrigin: ${ori.toString()}`);
-// });
+    const logEmbed = new EmbedBuilder()
+        .setColor("Red")
+        .setDescription(`Cause: ${err.cause?.toString()}\nName: ${err.name.toString()}\nStack: ${err.stack?.toString()}`);
+
+    channel?.send({embeds: [logEmbed]});
+});

@@ -1,7 +1,7 @@
 import { Message, EmbedBuilder } from "discord.js";
+import { guildModel as guildDoc } from "../../model/guildModel";
 
 var userDoc = require('../../model/userModel');
-var guildDoc = require('../../model/guildModel');
 var config = require('../../../config.json');
 var developerId = config.developerId;
 
@@ -39,7 +39,7 @@ module.exports = {
             userData = await userDoc.findOne({ userId: messageUserId });
         }
 
-        var guildData = await guildDoc.findOne({ guildId: guildId });
+        var guildData: any = await guildDoc.findOne({ guildId: guildId });
         if (!guildData) {
             const _guildData = new guildDoc({
                 guildId: guildId,
@@ -53,7 +53,9 @@ module.exports = {
         }
 
         if (!Array.isArray(guildData?.customPrefixes)) {
-            guildData.customPrefixes = [];
+            if (guildData) {
+                guildData.customPrefixes = [];
+            }
         }
 
         // let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
@@ -62,9 +64,15 @@ module.exports = {
         for (let i = 0; i < userData.customPrefixes.length; i++) {
             prefixes.push(userData.customPrefixes[i].prefix);
         }
-        for (let i = 0; i < guildData.customPrefixes.length; i++) {
-            prefixes.push(guildData.customPrefixes[i].prefix);
+
+        if (guildData) {
+
+            for (let i = 0; i < guildData.customPrefixes.length; i++) {
+                prefixes.push(guildData.customPrefixes[i].prefix);
+            }
+
         }
+
 
         for (let i = 0; i < prefixes.length; i++) {
             if (msgContent.toLowerCase().startsWith(prefixes[i].toLowerCase())) {
@@ -84,7 +92,7 @@ module.exports = {
 
         if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) { //You can do the same for EmbedLinks, ReadMessageHistory and so on
             client.users.fetch(authorId, false).then((user: any) => {
-                if(!message.guild)return;
+                if (!message.guild) return;
                 user.send(`I don't Have Permissions To Send Messages In ${guildName}`);
             });
             return;
@@ -135,9 +143,9 @@ module.exports = {
             let channel = await client.channels.cache.get(config.log.executeChannelId);
             const logEmbed = new EmbedBuilder()
                 .setColor('Green')
-                .setAuthor({ name: `${authorUsername}`, iconURL: `${message.author.avatarURL()}`})
+                .setAuthor({ name: `${authorUsername}`, iconURL: `${message.author.avatarURL()}` })
                 .setTitle(message.guild.name)
-                .setThumbnail(message.guild.iconURL()) 
+                .setThumbnail(message.guild.iconURL())
                 .setDescription(msgContent)
                 .addFields(
                     { name: 'Global Name', value: `${message.author.globalName}`, inline: true },
