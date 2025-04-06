@@ -1,6 +1,6 @@
 import { Message, EmbedBuilder } from "discord.js";
-import { guildModel as guildDoc } from "../../model/guildModel";
 
+var guildDoc  = require("../../model/guildModel");
 var userDoc = require('../../model/userModel');
 var config = require('../../../config.json');
 var developerId = config.developerId;

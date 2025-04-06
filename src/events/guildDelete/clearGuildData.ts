@@ -1,6 +1,6 @@
 import { Client, Events, Guild } from "discord.js";
 var config = require('../../../config.json');
-import {guildModel} from '../../model/guildModel';
+var guildModel = require('../../model/guildModel');
 
 
 module.exports = {

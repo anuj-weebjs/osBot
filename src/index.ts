@@ -72,7 +72,7 @@ client.login(token);
 let channel;     
 
 process.on('uncaughtException', async function (err, ori) {
-    console.error(err + ori);
+    console.error(err);
 
     channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
     if (!channel) {
