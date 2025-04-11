@@ -20,7 +20,7 @@ var client: any = new Client({
         GatewayIntentBits.DirectMessages,
     ]
 });
-// Exporting Client
+
 exports.client = client;
 client.commands = new Collection();
 
