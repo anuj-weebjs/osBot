@@ -5,6 +5,6 @@ module.exports = {
     execute(client: any){
         client.handleCommands();
         client.user.setPresence({activities:[{name: config.activities.name}], status: config.status});
-        console.log(`Logged In as ${client.user.tag}\nActivity: ${config.activities.name}\nStatus: ${config.status}`);
+        console.log(`Logged In as ${client.user.tag}`);
     }
 };
