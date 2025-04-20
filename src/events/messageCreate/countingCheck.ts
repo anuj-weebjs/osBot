@@ -83,7 +83,7 @@ async function processCorrectNumber(message: typeof Message, client: any, doc: t
     doc.lastUserId = author.id;
     await doc.save();
     
-    await message.channel.setTopic(`Count to your heart's content! by OS Bot! The next number is ${doc.lastNumber + 1}")`);
+    await message.channel.setTopic(`Count to your heart's content! by OS Bot! The next number is ${doc.lastNumber + 1}`);
     return;
 }
 
