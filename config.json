@@ -12,7 +12,7 @@
         "guildLeaveChannelId": "1355664325108305921",
         "executeChannelId":"1355664554461364264",
         "uncaughtExceptionChannelId": "1355664835035009034",
-        "errorChannelId": "1S355664886658629702"
+        "errorChannelId": "1355664886658629702"
     },
     "embedColor":{
         "primary": "#ADD8E6",
