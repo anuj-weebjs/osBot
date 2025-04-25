@@ -29,7 +29,7 @@ module.exports = {
             changeNick = false;
 
             const note = await message.channel.send(`Auto AFK Nickname Feature wont work. Please Put my role Above yours to make it workable.`);
-            setTimeout(() => note.delete(), 3000);
+            setTimeout(() => note.delete(), 7000);
 
         }
 
