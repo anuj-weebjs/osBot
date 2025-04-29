@@ -1,4 +1,5 @@
 import { EmbedBuilder, User, TimestampStyles, Message, Client } from "discord.js";
+import { text } from "stream/consumers";
 
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
@@ -94,9 +95,8 @@ async function afkCheckOnMentionMessage(message: any) {
             }
             embed.setColor(config.embedColor.primary);
             embed.setAuthor({ name: `${name} is AFK`, iconURL: `${userData.avatarURL()}` });
-            embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
             if (queryResult.reason != 'none') {
-                embed.setDescription(reason);
+                embed.setDescription(`Reason: ${reason}`);
             }
             message.reply({ embeds: [embed] });
 
@@ -159,9 +159,9 @@ async function afkCheckOnRepliedMessage(message: any) {
                 }
                 embed.setColor(config.embedColor.primary);
                 embed.setAuthor({ name: `${name} is AFK`, iconURL: `${userData.avatarURL()}` });
-                embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
+                // embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
                 if (queryResult.reason != 'none') {
-                    embed.setDescription(reason);
+                        embed.setDescription(`Reason: ${reason}`);
                 }
                 message.reply({ embeds: [embed] });
             } else {

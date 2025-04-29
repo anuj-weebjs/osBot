@@ -71,20 +71,20 @@ client.login(token);
 
 let channel;     
 
-// process.on('uncaughtException', async function (err, ori) {
-//     console.error(err);
+process.on('uncaughtException', async function (err, ori) {
+    console.error(err);
 
-//     channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-//     if (!channel) {
-//         channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-//         if (!channel) {
-//             return;
-//         }
-//     }
+    channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+    if (!channel) {
+        channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
+        if (!channel) {
+            return;
+        }
+    }
 
-//     const logEmbed = new EmbedBuilder()
-//         .setColor("Red")
-//         .setDescription(`Cause: ${err.cause?.toString()}\nName: ${err.name.toString()}\nStack: ${err.stack?.toString()}`);
+    const logEmbed = new EmbedBuilder()
+        .setColor("Red")
+        .setDescription(`Cause: ${err.cause?.toString()}\nName: ${err.name.toString()}\nStack: ${err.stack?.toString()}`);
 
-//     channel?.send({embeds: [logEmbed]});
-// });
+    channel?.send({embeds: [logEmbed]});
+});
