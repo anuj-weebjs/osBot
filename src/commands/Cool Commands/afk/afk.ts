@@ -35,18 +35,25 @@ module.exports = {
 
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const userid = message.author.id;
+
+
         var _reason: string | undefined;
+        var hasMatch: boolean = false;
         args.shift();
         if (args.length == 0) {
             _reason = undefined;
         } else {
+            const regex = /@everyone|<\@\d+>|<\@\&\d+>/;
             _reason = args.join(" ");
+            hasMatch = regex.test(_reason);
         }
 
-        if (_reason && _reason.length > 220) {
+        if (_reason && _reason.length > 220 || hasMatch) {
+
+
             let embed: EmbedBuilder = new EmbedBuilder()
                 .setColor(config.embedColor.alert)
-                .setDescription(`The Length of Reason Must be less than 220 letters(including spaces)`)
+                .setDescription(`The Length of Reason Must be less than 220 letters(including spaces) and also it shouldn't be containing any mentions`)
                 .setTimestamp();
             message.reply({ embeds: [embed] });
             return;
@@ -87,7 +94,7 @@ module.exports = {
 
             if (changeNick) {
                 const member = message.guild.members.cache.get(message.author.id);
-                if(!member){
+                if (!member) {
                     throw new Error("Member is empty");
                 }
                 await member.setNickname(`[AFK] ${authorName}`);
@@ -96,11 +103,11 @@ module.exports = {
         } catch (err) {
 
             if (message.author.id === message.guild.ownerId) {
-                
+
                 const note = await message.reply(`❌  I can't change the server owner's nickname to mark AFK.`);
                 setTimeout(() => note.delete(), 7000);
 
-            }else{
+            } else {
 
                 const note = await message.reply(`❌ Unable to change Nickname back to normal. Please try to put my role Above yours to make it workable.`);
                 setTimeout(() => note.delete(), 7000);

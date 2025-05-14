@@ -1,6 +1,6 @@
 import { Message, EmbedBuilder } from "discord.js";
 
-var guildDoc  = require("../../model/guildModel");
+var guildDoc = require("../../model/guildModel");
 var userDoc = require('../../model/userModel');
 var config = require('../../../config.json');
 var developerId = config.developerId;
@@ -130,12 +130,14 @@ module.exports = {
         } catch (err: any) {
             let channel = await client.channels.cache.get(config.log.errorChannelId);
             channel.send(`
-            Error: ${err.toString()}\n
-            raw Message: ${msgContent}\n
-            Command: ${msgCommand}\n
-            Guild: ${guildName} | ${guildId}\n
-            User: ${authorUsername} | ${authorId}
-            `);
+    Error: ${err.toString()}
+    Stack: ${err.stack}
+    Raw Message: ${msgContent}
+    Command: ${msgCommand}
+    Args: ${args.join(' ')}
+    Guild: ${guildName} | ${guildId}
+    User: ${authorUsername} | ${authorId}
+`);
             console.log(err);
 
             message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
@@ -143,7 +145,7 @@ module.exports = {
             let channel = await client.channels.cache.get(config.log.executeChannelId);
             const logEmbed = new EmbedBuilder()
                 .setColor('Green')
-                .setAuthor({ name: `${authorUsername}`, iconURL: `${message.author.avatarURL()}` })
+                .setAuthor({ name: `${authorUsername}`, iconURL: validateIconURL(message.author.avatarURL()) })
                 .setTitle(message.guild.name)
                 .setThumbnail(message.guild.iconURL())
                 .setDescription(msgContent)
@@ -163,5 +165,15 @@ module.exports = {
         }
 
         return;
+    }
+}
+
+function validateIconURL(url: string | null): string | undefined {
+    if (!url || url === 'null') return undefined;
+    try {
+        new URL(url);
+        return url;
+    } catch {
+        return undefined;
     }
 }

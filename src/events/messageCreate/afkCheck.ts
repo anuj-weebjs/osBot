@@ -44,7 +44,7 @@ async function afkCheckOnEveryMessage(message: any, client: any) {
         }
         
         setDefaultUserName(message, queryResult, client);
-        message.reply({ embeds: [Embed] });
+       await safeReply(message, { embeds: [Embed] });
         await afkDoc.deleteMany({ userId: userid });
     }
     return;
@@ -94,11 +94,11 @@ async function afkCheckOnMentionMessage(message: any) {
                 name = userData.username;
             }
             embed.setColor(config.embedColor.primary);
-            embed.setAuthor({ name: `${name} is AFK`, iconURL: `${userData.avatarURL()}` });
+            embed.setAuthor({ name: `${name} is AFK`, iconURL: validateIconURL(userData.avatarURL()) });
             if (queryResult.reason != 'none') {
                 embed.setDescription(`Reason: ${reason}`);
             }
-            message.reply({ embeds: [embed] });
+           await safeReply(message, { embeds: [embed] });
 
             if (queryResult?.pingedBy.length > 10) {
                 continue;
@@ -158,12 +158,12 @@ async function afkCheckOnRepliedMessage(message: any) {
                     name = userData.username;
                 }
                 embed.setColor(config.embedColor.primary);
-                embed.setAuthor({ name: `${name} is AFK`, iconURL: `${userData.avatarURL()}` });
+                embed.setAuthor({ name: `${name} is AFK`, iconURL: validateIconURL(userData.avatarURL()) });
                 // embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
                 if (queryResult.reason != 'none') {
                         embed.setDescription(`Reason: ${reason}`);
                 }
-                message.reply({ embeds: [embed] });
+                await safeReply(message, { embeds: [embed] });
             } else {
                 return;
             }
@@ -211,4 +211,29 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
 
     }
     return
+}
+
+function validateIconURL(url: string | null): string | undefined {
+    if (!url || url === 'null') return undefined;
+    try {
+        new URL(url);
+        return url;
+    } catch {
+        return undefined;
+    }
+}
+
+async function safeReply(message: any, options: any): Promise<void> {
+    try {
+        if (message.reference?.messageId) {
+            await message.channel.messages.fetch(message.reference.messageId);
+        }
+        await message.reply(options);
+    } catch (error: any) {
+        if (error.code === 10008) { // Unknown Message
+            await message.channel.send(options);
+        } else {
+            console.error('Error sending reply:', error);
+        }
+    }
 }

@@ -13,6 +13,11 @@ const guildSchema = new mongoose.Schema({
         id: String,
         token: String,
     },
+    bump: {
+        channelId: String,
+        pingRoleIds: [],
+        lastbumped: Date
+    }
 });
 
 var guildModel = mongoose.model('guildModel', guildSchema);

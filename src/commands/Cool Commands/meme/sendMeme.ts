@@ -1,8 +1,8 @@
 import { Message, ChannelType, EmbedBuilder } from "discord.js";
 
 var config = require('../../../../config.json');
-var index = require('../../../index');
 var prefix = config.PREFIX;
+var index = require('../../../index');
 var developerId = config.developerId;
 
 async function fetchMeme(subreddit: string): Promise<Meme> {
