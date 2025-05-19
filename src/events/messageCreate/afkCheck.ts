@@ -11,8 +11,8 @@ module.exports = {
         if (!message) return;
         if (message.author.bot) return;
 
-        afkCheckOnMentionMessage(message);
         afkCheckOnEveryMessage(message, client);
+        afkCheckOnMentionMessage(message);
         afkCheckOnRepliedMessage(message);
         return;
     }
@@ -29,11 +29,17 @@ async function afkCheckOnEveryMessage(message: any, client: any) {
     if (queryResult.userId == userid) {
         const Embed = new EmbedBuilder();
         Embed.setColor(config.embedColor.primary);
-        Embed.setAuthor({ name: `Welcome Back ${message.author.globalName}` });
+        Embed.setAuthor({ name: `Yo ${message.author.globalName}` });
         if (queryResult.pingedBy.length == 0) {
-            Embed.setDescription(`You were AFK From <t:${queryResult.afkStartTime}:R>`)
+            // Embed.setDescription(`You were AFK From <t:${queryResult.afkStartTime}:R>`)
+            Embed.addFields({
+                name: `Welcome Back!`,
+                value: `You were AFK From <t:${queryResult.afkStartTime}:R> :3`,
+                inline: false
+            })
+
         } else {
-            Embed.setDescription(`Hey There, You were AFK From <t:${queryResult.afkStartTime}:${TimestampStyles.ShortTime}> & you're Pinged ${queryResult.pingedBy.length} Time(s)`);
+            Embed.setDescription(`Welcome Back! You were AFK From <t:${queryResult.afkStartTime}:${TimestampStyles.ShortTime}> & you're Pinged ${queryResult.pingedBy.length} Time(s)`);
             for (let i = 0; i < queryResult.pingedBy.length; i++) {
                 Embed.addFields({
                     name: `By @${queryResult.pingedBy[i].username}`,
@@ -42,9 +48,9 @@ async function afkCheckOnEveryMessage(message: any, client: any) {
                 })
             }
         }
-        
+
         setDefaultUserName(message, queryResult, client);
-       await safeReply(message, { embeds: [Embed] });
+        await safeReply(message, { embeds: [Embed] });
         await afkDoc.deleteMany({ userId: userid });
     }
     return;
@@ -93,12 +99,18 @@ async function afkCheckOnMentionMessage(message: any) {
             } else {
                 name = userData.username;
             }
+
             embed.setColor(config.embedColor.primary);
-            embed.setAuthor({ name: `${name} is AFK`, iconURL: validateIconURL(userData.avatarURL()) });
+            
+            let titleStr = `${name} is AFK`
+            
             if (queryResult.reason != 'none') {
-                embed.setDescription(`Reason: ${reason}`);
+                titleStr = `${name} is ${reason}`
             }
-           await safeReply(message, { embeds: [embed] });
+            
+            embed.setAuthor({ name: titleStr, iconURL: validateIconURL(userData.avatarURL()) });
+            embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
+            await safeReply(message, { embeds: [embed] });
 
             if (queryResult?.pingedBy.length > 10) {
                 continue;
@@ -158,11 +170,13 @@ async function afkCheckOnRepliedMessage(message: any) {
                     name = userData.username;
                 }
                 embed.setColor(config.embedColor.primary);
-                embed.setAuthor({ name: `${name} is AFK`, iconURL: validateIconURL(userData.avatarURL()) });
+                let titleStr = `${name} is AFK`;
                 // embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
                 if (queryResult.reason != 'none') {
-                        embed.setDescription(`Reason: ${reason}`);
+                    titleStr = `${name} is ${reason}`
                 }
+                embed.setAuthor({ name: titleStr, iconURL: validateIconURL(userData.avatarURL()) });
+                embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
                 await safeReply(message, { embeds: [embed] });
             } else {
                 return;
@@ -173,12 +187,12 @@ async function afkCheckOnRepliedMessage(message: any) {
 }
 
 async function setDefaultUserName(message: any, queryResult: any, client: Client): Promise<void> {
-    
+
     const clientPerms = message.guild.members.me.permissions.has("ManageNicknames");
 
 
     if (!clientPerms) {
-        
+
         message.channel.send('I don\'t have permission to change your nickname!');
         return
 
@@ -195,7 +209,7 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
     }
 
     let authorName = message.author.username;
-    if(message.author.globalName){
+    if (message.author.globalName) {
         authorName = message.author.globalName;
     }
 
@@ -204,7 +218,7 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
         if (changeNick) {
             await message.member.setNickname(authorName);
         }
-        
+
     } catch (err) {
         const note = await message.reply(`Unable to change Nickname back to normal. Please try to put my role Above yours to make it workable.`);
         setTimeout(() => note.delete(), 7000);

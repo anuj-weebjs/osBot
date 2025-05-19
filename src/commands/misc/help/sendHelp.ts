@@ -7,10 +7,10 @@ var userDoc = require('../../../model/userModel');
 var prefix = config.PREFIX;
 
 let actionsDir = path.join(__dirname, '..', '..', 'actions');
-let countingDir = path.join(__dirname, '..', '..', 'Counting Activity');
+let countingDir = path.join(__dirname, '..', '..', 'fun');
 let emotionsDir = path.join(__dirname, '..', '..', 'emotes');
 let infoDir = path.join(__dirname, '..', '..', 'info');
-let coolCommandsDir = path.join(__dirname, '..', '..', 'Cool Commands');
+let coolCommandsDir = path.join(__dirname, '..', '..', 'useful');
 let miscDir = path.join(__dirname, '..', '..', 'misc');
 function getFileNames(dir: string) {
     const rawActions = fs.readdirSync(dir)
@@ -54,7 +54,7 @@ module.exports = {
             Embed.addFields({ name: '\u200B', value: '\u200B' },)
             Embed.addFields(
                 {
-                        name: `Do you have some experience with typescript?`, value: `Why don't you Make contribution To the project on [Github](https://github.com/anuj-weebjs/osBot)?`
+                        name: `Written in Typescript`, value: `Contribute to this project on [github](https://github.com/anuj-weebjs/osBot) *pwease*`
                 }
             )
 

@@ -12,29 +12,31 @@ module.exports = {
     },
     execute: async (message: Message, client: any) => {
         if (!message.channel.isSendable() || !message.guild || message.channel.isDMBased() || !message.guild.members.me || !message.member?.roles.highest.position) return;
-
-        const clientPerms = message.guild.members.me.permissions.has("ManageNicknames");
-
-
-        if (!clientPerms) {
-
-            message.channel.send('I don\'t have permission to change your nickname!');
-            return
-
-        }
-
-        let changeNick = true;
-
-        if (message.member?.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) {
-            changeNick = false;
-
-            const note = await message.channel.send(`Auto AFK Nickname Feature wont work. Please Put my role Above yours to make it workable.`);
-            setTimeout(() => note.delete(), 7000);
-
-        }
-
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const userid = message.author.id;
+
+
+        const clientPerms = message.guild.members.me.permissions;
+        let changeNick = false;
+
+
+        if (clientPerms.has("ManageNicknames")) {
+            changeNick = true;
+    
+            if (message.member?.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) {
+                changeNick = false;
+    
+                const note = await message.channel.send(`Auto AFK Nickname Feature wont work. Please Put my role Above yours to make it workable.`);
+                setTimeout(() => note.delete(), 7000);
+    
+            }
+            
+        }else{
+            changeNick = false;
+            message.channel.send('I don\'t have permission to change your nickname!');
+        }
+
+
 
 
         var _reason: string | undefined;
