@@ -1,5 +1,5 @@
 import { EmbedBuilder, User, TimestampStyles, Message, Client } from "discord.js";
-import { text } from "stream/consumers";
+import { errorLog } from "../../utils/sendLog";
 
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
@@ -142,19 +142,23 @@ async function afkCheckOnRepliedMessage(message: any) {
     if (!message) return;
     if (message.author.bot) return;
     if (message?.reference?.messageId) {
-        const msg = await message.channel.messages.fetch(message.reference.messageId);
+        let msg;
+        let queryResult;
         try {
-            var queryResult = await afkDoc.findOne({ userId: msg.author.id });
+            msg = await message.channel.messages.fetch(message.reference.messageId);
+            queryResult = await afkDoc.findOne({ userId: msg.author.id });
         } catch (err) {
+            errorLog(err, message);
             console.log(err);
         }
 
 
-        if (queryResult == null) return;
+        if (queryResult == null || !msg || !queryResult) return;
         if (queryResult.reason) {
             if (queryResult.length < 1) return;
 
             const reason = queryResult.reason;
+            
             if (message.author.id == queryResult.userId) return;
 
 
@@ -232,7 +236,8 @@ function validateIconURL(url: string | null): string | undefined {
     try {
         new URL(url);
         return url;
-    } catch {
+    } catch(err) {
+        errorLog(err);
         return undefined;
     }
 }
@@ -247,6 +252,7 @@ async function safeReply(message: any, options: any): Promise<void> {
         if (error.code === 10008) { // Unknown Message
             await message.channel.send(options);
         } else {
+            errorLog(`safeReply function in events/messageCreate/afkCheck.ts\nError: ${error}`, message);
             console.error('Error sending reply:', error);
         }
     }

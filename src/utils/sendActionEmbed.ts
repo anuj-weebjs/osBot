@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { errorLog } from "./sendLog";
 
 var { EmbedBuilder } = require('discord.js');
 var { fetchAction } = require('./fetchAction');
@@ -24,11 +25,7 @@ async function sendEmbed(message: Message, endpoint: string, title: string) {
         
         message.channel.send({ embeds: [Embed] });
     } catch (err: any) {
-        let channel = await client.channels.cache.get(config.log.errorChannelId);
-            channel.send(`
-            Error: ${err.toString()}\n
-            In sendActionEmbed.ts `);
-            console.error(err);
+        errorLog(err, message)
         console.error(err);
         message.reply('There was an error. Please try again later.');
     }

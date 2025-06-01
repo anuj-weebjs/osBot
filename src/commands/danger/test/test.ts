@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { errorLog } from "../../../utils/sendLog";
 
 var config = require('../../../../config.json');
 var developerId = config.developerId;
@@ -12,6 +13,7 @@ module.exports = {
 
         if(message.author.id != developerId)return;
 
+        errorLog("pong!", message)
 
         // Testing for Developer
         

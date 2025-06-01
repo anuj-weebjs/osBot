@@ -1,3 +1,5 @@
+import { errorLog } from "./sendLog";
+
 var client = require('../index').client;
 module.exports = {
     fetchAction: async (endpoint: string): Promise<object> => {
@@ -9,11 +11,7 @@ module.exports = {
             const data = await response.json();
             return data.results[0];
         } catch (err: any) {
-            let channel = await client.channels.cache.get(config.log.errorChannelId);
-            channel.send(`
-            Error: ${err.toString()}\n
-            In fetchAction.ts `);
-            console.error(err);
+            errorLog(err)
             throw new Error('Error fetching data from the API');
         }
     }

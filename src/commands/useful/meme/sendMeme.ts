@@ -1,4 +1,5 @@
 import { Message, ChannelType, EmbedBuilder } from "discord.js";
+import { errorLog } from "../../../utils/sendLog";
 
 var config = require('../../../../config.json');
 var prefix = config.PREFIX;
@@ -21,6 +22,7 @@ async function fetchMeme(subreddit: string): Promise<Meme> {
         data = {};
         data.code = 500;
         data.message = err.toString();
+        errorLog(err);
     }
     return data;
 }

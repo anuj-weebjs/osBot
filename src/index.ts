@@ -57,7 +57,7 @@ async function connect(connectionString: string | undefined): Promise<Connection
 exports.db = db;
 
 // Handeling
-const handlersPath = path.join(__dirname, 'Handlers');
+const handlersPath = path.join(__dirname, 'handler');
 const handlers = fs.readdirSync(handlersPath);
 
 for (const handler of handlers) {
