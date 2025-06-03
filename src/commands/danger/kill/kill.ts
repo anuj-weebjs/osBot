@@ -12,7 +12,7 @@ module.exports = {
         if(!message.channel.isSendable()) return;
         if(message.author.id == developerId){
             await message.channel.send("Shutting down");
-            client.destroy();
+            await client.destroy();
             process.exit(1);
         }else{
              message.channel.send("https://tenor.com/view/aww-hell-nahh-aww-hell-aww-hell-nahh-gif-9659330954843262630")
