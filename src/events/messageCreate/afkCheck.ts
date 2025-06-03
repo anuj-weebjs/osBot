@@ -245,6 +245,7 @@ function validateIconURL(url: string | null): string | undefined {
 async function safeReply(message: any, options: any): Promise<void> {
     try {
         if (message.reference?.messageId) {
+            
             await message.channel.messages.fetch(message.reference.messageId);
         }
         await message.reply(options);

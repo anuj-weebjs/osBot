@@ -11,9 +11,17 @@ module.exports = {
     },
     execute: async(message: Message)=>{
 
-        if(message.author.id != developerId)return;
+        if(message.author.id == developerId){
+           
+        console.log(message.reference)
 
-        errorLog("pong!", message)
+
+        }else{
+            if(!message.channel.isSendable()) return;
+
+            message.channel.send('only developer can use this command')
+        };
+
 
         // Testing for Developer
         

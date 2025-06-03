@@ -11,7 +11,7 @@ async function errorLog(err: any, message?: Message) {
 
     const embed = new EmbedBuilder()
     .setColor("Red")
-    .setDescription(err)
+    .setDescription(`${err}`)
     if(message && message.guild){
 
         embed.addFields([
