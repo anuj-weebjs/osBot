@@ -15,8 +15,9 @@ async function errorLog(err: any, message?: Message) {
     if(message && message.guild){
 
         embed.addFields([
-            {name: "message text:", value: message.content },
+            {name: "message text:", value: `${message.content}` },
             {name: "message author:", value: `${message.author.username}`},
+            {name: "message id", value: `${message.id}`},
             {name: "server name:", value: `${message.guild.name}`},
             {name: "server owner id:", value: `${message.guild.ownerId}`},
 
