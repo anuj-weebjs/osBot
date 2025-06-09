@@ -32,9 +32,9 @@ module.exports = {
         Embed.setColor(config.embedColor.primary);
         if (args.length < 1) {
 
-            Embed.setTitle(`List of Available Commands`);
+            Embed.setTitle(`h-here's the list of commands and categories :3`);
             Embed.addFields(
-                { name: 'Useful Commands', value: getFileNames(coolCommandsDir).toString(), inline: false }
+                { name: 'Frequently Used', value: getFileNames(coolCommandsDir).toString(), inline: false }
             )
             Embed.addFields(
                 { name: 'Misc', value: getFileNames(miscDir).toString(), inline: false }
@@ -54,11 +54,12 @@ module.exports = {
             Embed.addFields({ name: '\u200B', value: '\u200B' },)
             Embed.addFields(
                 {
-                        name: `Written in Typescript`, value: `Contribute to this project on [github](https://github.com/anuj-weebjs/osBot) *pwease*`
+                        name: `written in typescript `, value: `Help us by contributing the project on [github](https://github.com/anuj-weebjs/osBot) *pwease~*`
                 }
             )
 
             Embed.setFooter({ text: `Type "${config.PREFIX}help <command>" To Get Info of That Particular command` });
+            Embed.setThumbnail("https://c.tenor.com/IaHOpRGFFNwAAAAC/tenor.gif")
 
         } else {
             const { commands } = client;
