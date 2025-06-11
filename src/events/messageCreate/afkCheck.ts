@@ -109,7 +109,7 @@ async function afkCheckOnMentionMessage(message: any) {
             }
             
             embed.setAuthor({ name: titleStr, iconURL: validateIconURL(userData.avatarURL()) });
-            embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
+            // embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
             await safeReply(message, { embeds: [embed] });
 
             if (queryResult?.pingedBy.length > 10) {
@@ -180,7 +180,7 @@ async function afkCheckOnRepliedMessage(message: any) {
                     titleStr = `${name} is ${reason}`
                 }
                 embed.setAuthor({ name: titleStr, iconURL: validateIconURL(userData.avatarURL()) });
-                embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
+                // embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
                 await safeReply(message, { embeds: [embed] });
             } else {
                 return;
@@ -190,7 +190,7 @@ async function afkCheckOnRepliedMessage(message: any) {
     return;
 }
 
-async function setDefaultUserName(message: any, queryResult: any, client: Client): Promise<void> {
+async function setDefaultUserName(message: any, queryResult: any, client: Client,): Promise<void> {
 
     const clientPerms = message.guild.members.me.permissions.has("ManageNicknames");
 
@@ -211,16 +211,12 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
         setTimeout(() => note.delete(), 7000);
 
     }
-
-    let authorName = message.author.username;
-    if (message.author.globalName) {
-        authorName = message.author.globalName;
-    }
-
+    
+    console.log(queryResult.oldServerNickname)
 
     try {
         if (changeNick) {
-            await message.member.setNickname(authorName);
+            await message.member?.setNickname(queryResult.oldServerNickname);
         }
 
     } catch (err) {

@@ -64,15 +64,19 @@ module.exports = {
         const a = message.createdTimestamp;
         const timeStamp = (a / 1000) | 0;
 
-        let authorName = message.author.username;
+        let authorName = message.author.displayName;
 
-        if (message.author.globalName) {
-            authorName = message.author.globalName;
+
+        if (message.member.nickname) {
+            authorName = message.member.nickname;
+
+            console.log(authorName)
+            
         }
 
         try {
             await afkDoc.deleteMany({ userId: userid });
-            const newDoc = new afkDoc({ userId: userid, reason: _reason, afkStartTime: timeStamp, });
+            const newDoc = new afkDoc({ userId: userid, reason: _reason, afkStartTime: timeStamp, oldServerNickname: message.member.nickname });
             await newDoc.save();
         } catch (err) {
             console.log("Error in afk.js " + err);

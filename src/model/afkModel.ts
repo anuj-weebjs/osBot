@@ -16,6 +16,10 @@ const afkSchema = new mongoose.Schema({
     pingedBy: {
         type: Array,
         default: []
+    },
+    oldServerNickname: {
+        type: String,
+        deafult: null
     }
 });
 
