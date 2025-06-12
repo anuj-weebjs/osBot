@@ -1,3 +1,5 @@
+import { boolean } from "mathjs";
+
 var mongoose = require('mongoose');
 
 const afkSchema = new mongoose.Schema({
@@ -17,9 +19,17 @@ const afkSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    hasChangedNick: {
+        type: boolean,
+        default: false
+    },
     oldServerNickname: {
         type: String,
         deafult: null
+    },
+    afkGuildId: {
+        type: String,
+        required: [true]
     }
 });
 

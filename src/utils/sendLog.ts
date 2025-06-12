@@ -11,7 +11,7 @@ async function errorLog(err: any, message?: Message) {
 
     const embed = new EmbedBuilder()
     .setColor("Red")
-    .setDescription(`${err}`)
+    .setDescription(`${err.toString()}`)
     if(message && message.guild){
 
         embed.addFields([
@@ -20,7 +20,6 @@ async function errorLog(err: any, message?: Message) {
             {name: "message id", value: `${message.id}`},
             {name: "server name:", value: `${message.guild.name}`},
             {name: "server owner id:", value: `${message.guild.ownerId}`},
-
         ])
         
     }

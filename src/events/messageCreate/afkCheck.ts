@@ -1,4 +1,4 @@
-import { EmbedBuilder, User, TimestampStyles, Message, Client } from "discord.js";
+import { EmbedBuilder, User, TimestampStyles, Message, Client, Guild } from "discord.js";
 import { errorLog } from "../../utils/sendLog";
 
 var afkDoc = require('../../model/afkModel');
@@ -193,7 +193,8 @@ async function afkCheckOnRepliedMessage(message: any) {
 async function setDefaultUserName(message: any, queryResult: any, client: Client,): Promise<void> {
 
     const clientPerms = message.guild.members.me.permissions.has("ManageNicknames");
-
+    
+    let changeNick = queryResult.hasChangedNick;
 
     if (!clientPerms) {
 
@@ -202,7 +203,6 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
 
     }
 
-    let changeNick = true;
 
     if (message.member?.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) {
         changeNick = false;
@@ -210,13 +210,19 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
         const note = await message.channel.send(`Auto AFK Nickname Feature wont work. Please Put my role Above yours to make it workable.`);
         setTimeout(() => note.delete(), 7000);
 
+        return;
     }
     
-    console.log(queryResult.oldServerNickname)
 
     try {
         if (changeNick) {
-            await message.member?.setNickname(queryResult.oldServerNickname);
+            let guild = client.guilds.cache.get(queryResult.afkGuildId);
+            if(!guild) return;
+
+            let member = guild.members.cache.get(message.author.id);
+
+
+            await member?.setNickname(queryResult.oldServerNickname);
         }
 
     } catch (err) {
@@ -224,6 +230,8 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
         setTimeout(() => note.delete(), 7000);
 
     }
+
+
     return
 }
 

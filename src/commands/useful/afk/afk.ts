@@ -22,16 +22,16 @@ module.exports = {
 
         if (clientPerms.has("ManageNicknames")) {
             changeNick = true;
-    
+
             if (message.member?.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) {
                 changeNick = false;
-    
+
                 const note = await message.channel.send(`Auto AFK Nickname Feature wont work. Please Put my role Above yours to make it workable.`);
                 setTimeout(() => note.delete(), 7000);
-    
+
             }
-            
-        }else{
+
+        } else {
             changeNick = false;
             message.channel.send('I don\'t have permission to change your nickname!');
         }
@@ -69,14 +69,19 @@ module.exports = {
 
         if (message.member.nickname) {
             authorName = message.member.nickname;
-
-            console.log(authorName)
-            
         }
+
 
         try {
             await afkDoc.deleteMany({ userId: userid });
-            const newDoc = new afkDoc({ userId: userid, reason: _reason, afkStartTime: timeStamp, oldServerNickname: message.member.nickname });
+            const newDoc = new afkDoc({
+                userId: userid,
+                reason: _reason, afkStartTime: timeStamp,
+                oldServerNickname: message.member.nickname,
+                afkGuildId: message.guild.id,
+                hasChangedNick: changeNick    
+            });
+            
             await newDoc.save();
         } catch (err) {
             console.log("Error in afk.js " + err);
