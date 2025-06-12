@@ -37,7 +37,6 @@ module.exports = {
 
         const commitData = await getLatestCommit();
         
-
         if(commitData){
             const commitDate = new Date(commitData.commit.author.date).toLocaleDateString();
             Embed.setFields([
@@ -68,13 +67,7 @@ async function getLatestCommit(): Promise<GitHubCommitResponse | null>{
         
             return data[0] as GitHubCommitResponse;
         } catch (error) {
-            console.error("Error fetching latest commit:", error);
+            console.error(error);
             return null;
         }
 }
-
-// The getRepoData function was not used, so it's removed.
-// If you plan to use it, you can add it back with proper typing.
-// async function getRepoData(): Promise<any | null>{
-// ...
-// }
