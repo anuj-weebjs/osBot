@@ -31,22 +31,21 @@ module.exports = {
         const Embed: EmbedBuilder = new EmbedBuilder();
         Embed.setColor(config.embedColor.primary);
         // Embed.setAuthor({name: client.user.tag, iconURL: client.user.displayAvatarURL(), url: `https://github.com/anuj-weebjs/osBot`})
-        Embed.setTitle(client.user.displayName);
+        // Embed.setTitle(client.user.displayName);
+        Embed.setTitle("comming soon")
         Embed.setThumbnail(client.user.displayAvatarURL());
         
 
-        const commitData = await getLatestCommit();
-        
-        if(commitData){
-            const commitDate = new Date(commitData.commit.author.date).toLocaleDateString();
-            Embed.setFields([
-                {name: "Latest Commit Message:", value: `\`${commitData.commit.message}\``},
-                {name: "Latest Commit Author:", value: `\`${commitData.commit.author.name}\``},
-                {name: "Latest Commit Date:", value: `\`${commitDate}\``}
-            ])
-        }else{
-            Embed.setDescription("Could not retrieve latest commit details from GitHub.")
-        }
+        // if(commitData){
+        //     const commitDate = new Date(commitData.commit.author.date).toLocaleDateString();
+        //     Embed.setFields([
+        //         {name: "Latest Commit Message:", value: `\`${commitData.commit.message}\``},
+        //         {name: "Latest Commit Author:", value: `\`${commitData.commit.author.name}\``},
+        //         {name: "Latest Commit Date:", value: `\`${commitDate}\``}
+        //     ])
+        // }else{
+        //     Embed.setDescription("Could not retrieve latest commit details from GitHub.")
+        // }
 
 
        
