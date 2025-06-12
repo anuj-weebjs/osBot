@@ -1,19 +1,30 @@
 import { Client, EmbedBuilder, Message } from "discord.js";
 
-var fs = require('node:fs');
-var path = require('node:path');
-var config = require('../../../../config.json');
-var userDoc = require('../../../model/userModel');
-var prefix = config.PREFIX;
+const config = require('../../../../config.json');
+const prefix = config.PREFIX;
 
+// Define interfaces for better type safety with GitHub API responses
+interface GitHubCommitAuthor {
+    name: string;
+    date: string;
+}
+
+interface GitHubCommit {
+    message: string;
+    author: GitHubCommitAuthor;
+}
+
+interface GitHubCommitResponse {
+    commit: GitHubCommit;
+}
 
 module.exports = {
     structure: {
-        name: "help",
-        description: "Get Help",
-        usage: `${prefix}help`
+        name: "about",
+        description: "Displays information about the bot and its latest commit.",
+        usage: `${prefix}about`
     },
-    execute: async (message: Message, client: Client, args: string[]) => {
+    execute: async (message: Message, client: Client) => {
         if(!message.channel.isSendable() || !client.user)return;
        
 
@@ -24,19 +35,18 @@ module.exports = {
         Embed.setThumbnail(client.user.displayAvatarURL());
         
 
-        let commitData = await getLatestCommit();
-        let repoData = await getRepoData();
-        console.log(commitData)
+        const commitData = await getLatestCommit();
         
 
-        if(commitData && repoData){
+        if(commitData){
+            const commitDate = new Date(commitData.commit.author.date).toLocaleDateString();
             Embed.setFields([
                 {name: "Latest Commit Message:", value: `\`${commitData.commit.message}\``},
                 {name: "Latest Commit Author:", value: `\`${commitData.commit.author.name}\``},
-                {name: "Latest Commit Date:", value: `\`${commitData.commit.author.date}\``}
+                {name: "Latest Commit Date:", value: `\`${commitDate}\``}
             ])
         }else{
-            Embed.setDescription("Could not retrieve latest commit details.")
+            Embed.setDescription("Could not retrieve latest commit details from GitHub.")
         }
 
 
@@ -45,33 +55,26 @@ module.exports = {
     }
 }
 
-async function getLatestCommit(): Promise<any | null>{
+async function getLatestCommit(): Promise<GitHubCommitResponse | null>{
     const url = `https://api.github.com/repos/anuj-weebjs/osBot/commits?per_page=1`;
         try {
             const response = await fetch(url);
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                console.error(`GitHub API error! Status: ${response.status}`);
+                return null;
             }
             const data = await response.json();
-            // The API returns an array of commits, so the first element is the latest.
-            return data[0];
+        
+            return data[0] as GitHubCommitResponse;
         } catch (error) {
             console.error("Error fetching latest commit:", error);
             return null;
         }
 }
 
-async function getRepoData(): Promise<any | null>{
-    const url = `https://api.github.com/repos/anuj-weebjs/osBot`;
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error("Error fetching latest commit:", error);
-            return null;
-        }
-}
+// The getRepoData function was not used, so it's removed.
+// If you plan to use it, you can add it back with proper typing.
+// async function getRepoData(): Promise<any | null>{
+// ...
+// }
