@@ -1,31 +1,53 @@
 import { Connection } from "mongoose";
-import { Client, GatewayIntentBits, Collection, EmbedBuilder} from 'discord.js';
+import { Client as DiscordClient, GatewayIntentBits, Collection, EmbedBuilder, TextChannel, Message } from 'discord.js';
 
 // Imports
-require('dotenv').config();
-var path = require('node:path');
-var fs = require('node:fs');
-const express = require('express');
-var mongoose = require('mongoose');
-var config = require('./../config.json');
+import 'dotenv/config';
+import path from 'node:path';
+import fs from 'node:fs';
+import express from 'express';
+import mongoose from 'mongoose';
+import config from './../config.json';
+
+// Define Command structure for better typing
+interface Command {
+    structure: {
+        name: string;
+        description: string;
+        usage: string;
+        [key: string]: any; // Allow other properties
+    };
+    execute: (message: Message, client?: ExtendedClient, args?: string[]) => Promise<void> | void;
+}
+
+// Extend Discord Client for custom properties and methods
+class ExtendedClient extends DiscordClient {
+    commands: Collection<string, Command>;
+    handleEvents!: () => Promise<void>;   // To be assigned by eventHandler
+    handleCommands!: () => Promise<void>; // To be assigned by commandHandler (via ready event)
+
+    constructor(options: any) {
+        super(options);
+        this.commands = new Collection();
+    }
+}
 
 // Defining Variables
-var client: any = new Client({
+const client: ExtendedClient = new ExtendedClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.DirectMessages,
-    ]
+    ],
 });
 
-exports.client = client;
-client.commands = new Collection();
+exports.client = client; // Export for CommonJS modules that might require it
 
 const token = process.env.TOKEN;
 const dbConnectionString = process.env.MONGO_DB_CONNECTION_STRING;
-var developerId = config.developerId;
+const developerId = config.developerId; // Used in some commands, but not directly here.
 
 
 // Keep Alive
@@ -39,51 +61,133 @@ app.get('/', (req: any, res: any) => {
 app.listen(port);
 
 // Connecting To Db
+let db: Connection;
 
-var db = connect(dbConnectionString);
-
-async function connect(connectionString: string | undefined): Promise<Connection> {
+async function connectToDatabase(connectionString: string): Promise<Connection> {
     try {
-        var connection = await mongoose.connect(connectionString);
+        await mongoose.connect(connectionString);
+        console.log("Connected to DataBase");
+        return mongoose.connection;
     } catch (err) {
-        console.log("Failed to connect Database " + err);
+        console.error("Failed to connect to Database:", err);
+        process.exit(1);
+    }
+}
+
+async function main() {
+    // Validate essential environment variables
+    if (!token) {
+        console.error("TOKEN is not defined in environment variables. Please check your .env file or environment configuration.");
+        process.exit(1);
+    }
+    if (!dbConnectionString) {
+        console.error("MONGO_DB_CONNECTION_STRING is not defined. Please check your .env file or environment configuration.");
         process.exit(1);
     }
 
+    // Connect to MongoDB
+    db = await connectToDatabase(dbConnectionString);
+    exports.db = db; // Export for CommonJS modules that might require it
 
-    console.log("Connected to DataBase");
-    return connection;
-}
-exports.db = db;
+    // Load Handlers (Command, Event)
+    const handlersPath = path.join(__dirname, 'handler');
+    const handlerFiles = fs.readdirSync(handlersPath).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
-// Handeling
-const handlersPath = path.join(__dirname, 'handler');
-const handlers = fs.readdirSync(handlersPath);
-
-for (const handler of handlers) {
-    require(path.join(handlersPath, handler))(client);
-}
-
-client.handleEvents(client); 
-client.login(token);
-
-
-let channel;     
-
-process.on('uncaughtException', async function (err, ori) {
-    console.error(err);
-
-    channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-    if (!channel) {
-        channel = await client.channels.cache.get(config.log.uncaughtExceptionChannelId);
-        if (!channel) {
-            return;
+    for (const file of handlerFiles) {
+        try {
+            const handlerModule = require(path.join(handlersPath, file));
+            if (typeof handlerModule === 'function') {
+                handlerModule(client); // Assumes handler exports a function that takes the client
+            } else if (handlerModule.default && typeof handlerModule.default === 'function') {
+                handlerModule.default(client); // Support for ES module default exports
+            } else {
+                console.warn(`Handler file ${file} does not export a function or a default function.`);
+            }
+        } catch (error) {
+            console.error(`Error loading handler ${file}:`, error);
         }
     }
 
-    const logEmbed = new EmbedBuilder()
-        .setColor("Red")
-        .setDescription(`Cause: ${err.cause?.toString()}\nName: ${err.name.toString()}\nStack: ${err.stack?.toString()}`);
+    // Initialize event handling
+    // The eventHandler.ts should have assigned client.handleEvents
+    if (typeof client.handleEvents === 'function') {
+        await client.handleEvents(); // Sets up event listeners
+    } else {
+        console.error("client.handleEvents is not defined. Ensure eventHandler.ts correctly assigns it.");
+        process.exit(1);
+    }
+    // Note: client.handleCommands() is typically called within the 'ready' event (see clientLoginLogger.ts)
 
-    channel?.send({embeds: [logEmbed]});
+    // Login to Discord
+    await client.login(token);
+}
+
+// Global Error Handlers
+process.on('uncaughtException', async (err: Error, origin: string) => {
+    console.error('Uncaught Exception:', err);
+    console.error('Origin:', origin);
+
+    if (!client.isReady() || !config.log.uncaughtExceptionChannelId) {
+        console.error("Client not ready or logging channel ID not configured for uncaughtException.");
+        return;
+    }
+
+    try {
+        const channel = await client.channels.fetch(config.log.uncaughtExceptionChannelId) as TextChannel | null;
+        if (channel && channel.isTextBased()) {
+            const logEmbed = new EmbedBuilder()
+                .setColor("Red")
+                .setTitle("Uncaught Exception Occurred")
+                .addFields(
+                    { name: "Name", value: err.name || "N/A" },
+                    { name: "Message", value: err.message || "N/A" },
+                    { name: "Origin", value: origin }
+                )
+                .setTimestamp();
+
+            if (err.cause) {
+                logEmbed.addFields({ name: "Cause", value: String(err.cause).substring(0, 1020) });
+            }
+            if (err.stack) {
+                logEmbed.setDescription(`\`\`\`${err.stack.substring(0, 4000)}\`\`\``);
+            }
+            await channel.send({ embeds: [logEmbed] });
+        } else {
+            console.error(`Could not find or access channel for uncaughtException: ${config.log.uncaughtExceptionChannelId}`);
+        }
+    } catch (logError) {
+        console.error("Failed to send uncaught exception to Discord:", logError);
+    }
+});
+
+process.on('unhandledRejection', async (reason: any, promise: Promise<any>) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    if (!client.isReady() || !config.log.uncaughtExceptionChannelId) { // Using same channel for now
+        console.error("Client not ready or logging channel ID not configured for unhandledRejection.");
+        return;
+    }
+    try {
+        const channel = await client.channels.fetch(config.log.uncaughtExceptionChannelId) as TextChannel | null;
+        if (channel && channel.isTextBased()) {
+            const embed = new EmbedBuilder()
+                .setColor("Orange")
+                .setTitle("Unhandled Rejection Occurred")
+                .addFields(
+                    { name: "Reason", value: String(reason).substring(0, 1020) }
+                )
+                .setDescription(`Promise details might be available in console logs.`)
+                .setTimestamp();
+            await channel.send({ embeds: [embed] });
+        } else {
+            console.error(`Could not find or access channel for unhandledRejection: ${config.log.uncaughtExceptionChannelId}`);
+        }
+    } catch (logError) {
+        console.error("Failed to send unhandledRejection to Discord:", logError);
+    }
+});
+
+// Start the bot
+main().catch(error => {
+    console.error("Error during bot initialization or runtime:", error);
+    process.exit(1);
 });
