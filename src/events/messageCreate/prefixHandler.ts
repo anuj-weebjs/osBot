@@ -10,7 +10,7 @@ const cooldowns = new Map();
 module.exports = {
     execute: async (message: Message, client: any) => {
         var prefix = null;
-        if (!message || message.author.bot || !message.channel.isSendable() || message.channel.isDMBased() || !message.guild) return;
+        if (!message || message.author.bot || !message.channel.isSendable() || message.channel.isDMBased() || !message.guild || !client.user?.id ) return;
 
         const guildId = message.guild.id;
         const guildName = message.guild.name;

@@ -9,18 +9,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import config from './../config.json';
 
-// Define Command structure for better typing
-interface Command {
-    structure: {
-        name: string;
-        description: string;
-        usage: string;
-        [key: string]: any; // Allow other properties
-    };
-    execute: (message: Message, client?: ExtendedClient, args?: string[]) => Promise<void> | void;
-}
 
-// Extend Discord Client for custom properties and methods
 class ExtendedClient extends DiscordClient {
     commands: Collection<string, Command>;
     handleEvents!: () => Promise<void>;   // To be assigned by eventHandler
@@ -33,7 +22,7 @@ class ExtendedClient extends DiscordClient {
 }
 
 // Defining Variables
-const client: ExtendedClient = new ExtendedClient({
+const client: _Client = new ExtendedClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
@@ -87,7 +76,7 @@ async function main() {
 
     // Connect to MongoDB
     db = await connectToDatabase(dbConnectionString);
-    exports.db = db; // Export for CommonJS modules that might require it
+    exports.db = db;
 
     // Load Handlers (Command, Event)
     const handlersPath = path.join(__dirname, 'handler');
@@ -108,21 +97,16 @@ async function main() {
         }
     }
 
-    // Initialize event handling
-    // The eventHandler.ts should have assigned client.handleEvents
     if (typeof client.handleEvents === 'function') {
-        await client.handleEvents(); // Sets up event listeners
+        await client.handleEvents(); 
     } else {
         console.error("client.handleEvents is not defined. Ensure eventHandler.ts correctly assigns it.");
         process.exit(1);
     }
-    // Note: client.handleCommands() is typically called within the 'ready' event (see clientLoginLogger.ts)
 
-    // Login to Discord
     await client.login(token);
 }
 
-// Global Error Handlers
 process.on('uncaughtException', async (err: Error, origin: string) => {
     console.error('Uncaught Exception:', err);
     console.error('Origin:', origin);
@@ -186,7 +170,6 @@ process.on('unhandledRejection', async (reason: any, promise: Promise<any>) => {
     }
 });
 
-// Start the bot
 main().catch(error => {
     console.error("Error during bot initialization or runtime:", error);
     process.exit(1);

@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 
-module.exports = (client: any) => {
+module.exports = (client: _Client) => {
     client.handleCommands = async () => {
         const commandFolderPath = path.join(__dirname, '..', 'commands');
         const commandCategories = fs.readdirSync(commandFolderPath);

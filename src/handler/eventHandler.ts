@@ -1,7 +1,7 @@
 var fs = require('node:fs');
 var path = require('node:path');
 
-module.exports = (client: any) => {
+module.exports = (client: _Client) => {
     client.handleEvents = async () => {
         const eventFolderPath = path.join(__dirname, '..', 'events');
         const events = fs.readdirSync(eventFolderPath);
