@@ -1,14 +1,16 @@
+import { Channel } from "diagnostics_channel";
+import { Message, Client, GuildChannel, TextChannelType, GuildMessageManager, Webhook, TextChannel, ChannelType, NewsChannel, ClientUser } from "discord.js";
 import { evaluate } from "mathjs";
 
-var { WebhookClient, Message } = require('discord.js');
+var { WebhookClient } = require('discord.js');
 var config = require('../../../config.json');
 var guildModel = require('../../model/guildModel');
 var countingDoc = require('../../model/countingModel');
 var prefix = config.PREFIX;
 
 module.exports = {
-    execute: async (message: typeof Message, client: any) => {
-        if (!message || message.author.bot || message.content.toLowerCase().startsWith(prefix)) return;
+    execute: async (message: Message, client: Client) => {
+        if (!message || message.author.bot || message.content.toLowerCase().startsWith(prefix) || !message.guild?.id) return;
 
         const { guild, channel, author, content } = message;
         const guildId = guild.id;
@@ -24,7 +26,7 @@ module.exports = {
         try {
             number = evaluate(content); // checks for mathematical expression
         } catch {  // If it throws err which means its not a vaild expression, therefore number is Not a Number.
-            number = NaN; 
+            number = NaN;
         }
 
         if (Number.isNaN(number)) { // Checks if its NaN
@@ -42,28 +44,30 @@ module.exports = {
             return;
         }
 
-         await processCorrectNumber(message, client, queryResult);
+        await processCorrectNumber(message, client, queryResult);
 
-         return;
+        return;
     }
 }
 
 
 
-async function warn(message: typeof Message, warningMessage: string) {
+async function warn(message: Message, warningMessage: string): Promise<void> {
+    if (message.channel.isDMBased()) return;
     const warning = await message.channel.send(`\`\`\`${warningMessage}\`\`\``);
     setTimeout(() => warning.delete(), 3000);
 }
 
 
-async function processCorrectNumber(message: typeof Message, client: any, doc: typeof countingDoc): Promise<void> {
+async function processCorrectNumber(message: Message, client: Client, doc: typeof countingDoc): Promise<void> {
+    if (!client.user ||message.channel.isDMBased() || !message.channel.isSendable() || !message.channel.isTextBased() || message.channel.isVoiceBased() || message.channel.isThread()) return;
     const { author, channel, content } = message;
     const bot = client.user;
 
-    
+
     let guild = await guildModel.findOne({ guildId: channel.guild.id });
-    
-    let webhook;
+
+    let webhook: Webhook;
     if (!guild || !guild.webhook || !guild.webhook.id || !guild.webhook.token) {
         webhook = await createAndStoreWebhook(channel, bot);
     } else {
@@ -72,25 +76,25 @@ async function processCorrectNumber(message: typeof Message, client: any, doc: t
             token: guild.webhook.token,
         });
     }
-    
+
     await webhook.send({
         content,
         username: author.globalName || author.username,
-        avatarURL: author.displayAvatarURL({ format: 'png', dynamic: true }),
+        avatarURL: author.displayAvatarURL({ forceStatic: false, extension: "png" })
     });
 
     doc.lastNumber += 1;
     doc.lastUserId = author.id;
     await doc.save();
-    
+
     await message.channel.setTopic(`Count to your heart's content! by OS Bot! The next number is ${doc.lastNumber + 1}`);
     return;
 }
 
-async function createAndStoreWebhook(channel: any, bot: any) {
+async function createAndStoreWebhook(channel: TextChannel | NewsChannel, bot: ClientUser): Promise<Webhook> {
     const webhook = await channel.createWebhook({
         name: bot.username,
-        avatar: bot.displayAvatarURL({ format: 'png', dynamic: true }),
+        avatar: bot.displayAvatarURL({ forceStatic: false, extension: "png" })
     });
 
     await guildModel.findOneAndUpdate(
