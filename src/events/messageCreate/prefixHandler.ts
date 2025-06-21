@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder } from "discord.js";
+import { Message, EmbedBuilder, Client, Channel, GuildChannel, User } from "discord.js";
 
 var guildDoc = require("../../model/guildModel");
 var userDoc = require('../../model/userModel');
@@ -8,15 +8,20 @@ var developerId = config.developerId;
 
 const cooldowns = new Map();
 module.exports = {
-    execute: async (message: Message, client: any) => {
+    execute: async (message: Message, client: _Client) => {
         var prefix = null;
-        if (!message || message.author.bot || !message.channel.isSendable() || message.channel.isDMBased() || !message.guild || !client.user?.id ) return;
+        if (!message || message.author.bot || !message.channel.isSendable() || message.channel.isDMBased() || !message.guild || !client.user?.id) return;
 
         const guildId = message.guild.id;
         const guildName = message.guild.name;
         const authorId = message.author.id;
         const authorUsername = message.author.username;
         const msgContent = message.content;
+        const channel: Channel = message.channel;
+        const clientPerms = channel.permissionsFor(client.user.id);
+        if (!clientPerms) {
+            throw new Error("Client Permissions are Null");
+        }
 
         if (msgContent == `<@${config.clientId}>`) {
             let embed = new EmbedBuilder();
@@ -90,15 +95,17 @@ module.exports = {
         const msgCommand = args.shift().toLowerCase();
 
 
-        if (!message.channel.permissionsFor(client.user.id).has("SendMessages")) { //You can do the same for EmbedLinks, ReadMessageHistory and so on
-            client.users.fetch(authorId, false).then((user: any) => {
-                if (!message.guild) return;
-                user.send(`I don't Have Permissions To Send Messages In ${guildName}`);
-            });
+        if (!clientPerms.has("SendMessages")) {
+
+            client.users.fetch(authorId, { cache: false })
+                .then((user: User) => {
+                    user.send(`I don't ahve permissoins to send messages in ${guildName}`);
+                })
+
             return;
         };
 
-        if (!message.channel.permissionsFor(client.user.id).has("EmbedLinks")) {
+        if (!clientPerms.has("EmbedLinks")) {
             message.channel.send(`❌I don't Have Permissions To Send EmbedLinks!`);
             return;
         };
@@ -128,21 +135,24 @@ module.exports = {
         try {
             await command.execute(message, client, args,)
         } catch (err: any) {
-            let channel = await client.channels.cache.get(config.log.errorChannelId);
+            const channel = client.channels.cache.get(config.log.errorChannelId);
+            // const channel = client.channels.fetch(config.log.errorChannelId);
+            if(!channel || !channel.isSendable()) return;
             channel.send(`
-    Error: ${err.toString()}
-    Stack: ${err.stack}
-    Raw Message: ${msgContent}
-    Command: ${msgCommand}
-    Args: ${args.join(' ')}
-    Guild: ${guildName} | ${guildId}
-    User: ${authorUsername} | ${authorId}
-`);
+            Error: ${err.toString()}
+            Stack: ${err.stack}
+            Raw Message: ${msgContent}
+            Command: ${msgCommand}
+            Args: ${args.join(' ')}
+            Guild: ${guildName} | ${guildId}
+            User: ${authorUsername} | ${authorId}
+            `);
             console.log(err);
 
             message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
         } finally {
-            let channel = await client.channels.cache.get(config.log.executeChannelId);
+            const channel =  client.channels.cache.get(config.log.executeChannelId);
+            if(!channel || !channel.isSendable()) throw new Error("Unable to Fetch executeChannel in prefixHandler.ts");
             const logEmbed = new EmbedBuilder()
                 .setColor('Green')
                 .setAuthor({ name: `${authorUsername}`, iconURL: validateIconURL(message.author.avatarURL()) })
@@ -158,7 +168,6 @@ module.exports = {
                     { name: 'Gulid Id', value: guildId, inline: true },
                 )
                 .setTimestamp();
-            // channel.send(`-----------------\nRaw Message: ${msgContent}\nCommand Name: ${msgCommand}\nGuild: ${guildName} | ${guildId}\nUser: ${authorUsername} | ${authorId}\n-----------------`);
             channel.send({ embeds: [logEmbed] });
             userData.lastUsedPrefix = prefix;
             await userData.save();

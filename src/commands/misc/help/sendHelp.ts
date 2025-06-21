@@ -25,7 +25,7 @@ module.exports = {
         description: "Get Help",
         usage: `${prefix}help`
     },
-    execute: async (message: Message, client: any, args: string[]) => {
+    execute: async (message: Message, client: _Client, args: string[]) => {
         if(!message.channel.isSendable())return;
 
         const Embed: EmbedBuilder = new EmbedBuilder();

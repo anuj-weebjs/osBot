@@ -25,7 +25,6 @@ module.exports = {
             .setFooter({text: `Server Count: ${serverCount}`})
 
             channel.send({embeds: [logEmbed]});
-        // channel.send(`Joined ${guild.name}, Server Count: ${serverCount}`);
 
 
     }

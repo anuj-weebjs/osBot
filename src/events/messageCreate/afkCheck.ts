@@ -1,4 +1,4 @@
-import { EmbedBuilder, User, TimestampStyles, Message, Client, Guild } from "discord.js";
+import { EmbedBuilder, User, TimestampStyles, Message, Client, Guild, GuildMessageManager, Role } from "discord.js";
 import { errorLog } from "../../utils/sendLog";
 
 var afkDoc = require('../../model/afkModel');
@@ -6,7 +6,7 @@ var getUserById = require('../../utils/getUserById');
 var config = require('../../../config.json');
 
 module.exports = {
-    execute: async (message: any, client: any) => {
+    execute: async (message: Message, client: Client) => {
 
         if (!message) return;
         if (message.author.bot) return;
@@ -18,7 +18,7 @@ module.exports = {
     }
 }
 
-async function afkCheckOnEveryMessage(message: any, client: any) {
+async function afkCheckOnEveryMessage(message: Message, client: Client) {
     if (!message) return;
     if (message.author.bot) return;
     const userid = message.author.id;
@@ -56,7 +56,7 @@ async function afkCheckOnEveryMessage(message: any, client: any) {
     return;
 }
 
-async function afkCheckOnMentionMessage(message: any) {
+async function afkCheckOnMentionMessage(message: Message) {
     if (!message) return;
     if (message.author.bot) return;
     const messageString = message.content;
@@ -101,13 +101,13 @@ async function afkCheckOnMentionMessage(message: any) {
             }
 
             embed.setColor(config.embedColor.primary);
-            
+
             let titleStr = `${name} is AFK`
-            
+
             if (queryResult.reason != 'none') {
                 titleStr = `${name} is ${reason}`
             }
-            
+
             embed.setAuthor({ name: titleStr, iconURL: validateIconURL(userData.avatarURL()) });
             // embed.setImage('https://c.tenor.com/w4wGt0MgpjMAAAAd/tenor.gif')
             await safeReply(message, { embeds: [embed] });
@@ -138,7 +138,7 @@ async function afkCheckOnMentionMessage(message: any) {
 }
 
 
-async function afkCheckOnRepliedMessage(message: any) {
+async function afkCheckOnRepliedMessage(message: Message) {
     if (!message) return;
     if (message.author.bot) return;
     if (message?.reference?.messageId) {
@@ -158,7 +158,7 @@ async function afkCheckOnRepliedMessage(message: any) {
             if (queryResult.length < 1) return;
 
             const reason = queryResult.reason;
-            
+
             if (message.author.id == queryResult.userId) return;
 
 
@@ -190,21 +190,30 @@ async function afkCheckOnRepliedMessage(message: any) {
     return;
 }
 
-async function setDefaultUserName(message: any, queryResult: any, client: Client,): Promise<void> {
+async function setDefaultUserName(message: Message, queryResult: any, client: Client,): Promise<void> {
+    if (!message || !message.guild || !message.channel.isSendable()) return;
 
-    const clientPerms = message.guild.members.me.permissions.has("ManageNicknames");
-    
+    const guildMembers = message.guild.members;
+
+    if (!guildMembers.me || !guildMembers) return;
+
+    const clientPerms = guildMembers.me.permissions.has("ManageNicknames");
     let changeNick = queryResult.hasChangedNick;
 
-    if (!clientPerms) {
+    if (!message.member || !clientPerms || !message?.member.roles.highest || !client.user) {
 
         message.channel.send('I don\'t have permission to change your nickname!');
-        return
+        return;
 
     }
+    const authorHighestRolePos = message?.member?.roles.highest.position;
+    const clientHighestRolePos = guildMembers.resolve(client.user)?.roles.highest.position;
 
+    if (!clientHighestRolePos) {
+        throw new Error(`Unable to fetch Client's Highest role position in afkCheck.ts`);
+    }
 
-    if (message.member?.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) {
+    if (authorHighestRolePos > clientHighestRolePos) {
         changeNick = false;
 
         const note = await message.channel.send(`Auto AFK Nickname Feature wont work. Please Put my role Above yours to make it workable.`);
@@ -212,12 +221,12 @@ async function setDefaultUserName(message: any, queryResult: any, client: Client
 
         return;
     }
-    
+
 
     try {
         if (changeNick) {
             let guild = client.guilds.cache.get(queryResult.afkGuildId);
-            if(!guild) return;
+            if (!guild) return;
 
             let member = guild.members.cache.get(message.author.id);
 
@@ -240,25 +249,23 @@ function validateIconURL(url: string | null): string | undefined {
     try {
         new URL(url);
         return url;
-    } catch(err) {
+    } catch (err) {
         errorLog(err);
         return undefined;
     }
 }
 
-async function safeReply(message: any, options: any): Promise<void> {
+async function safeReply(message: Message, options: any): Promise<void> {
     try {
         if (message.reference?.messageId) {
-            
+
             await message.channel.messages.fetch(message.reference.messageId);
         }
         await message.reply(options);
     } catch (error: any) {
-        if (error.code === 10008) { // Unknown Message
-            await message.channel.send(options);
-        } else {
-            errorLog(`safeReply function in events/messageCreate/afkCheck.ts\nError: ${error}`, message);
-            console.error('Error sending reply:', error);
+        if(!message.channel.isSendable()){
+            throw new Error(error)
         }
+        await message.channel.send(options);
     }
 }
