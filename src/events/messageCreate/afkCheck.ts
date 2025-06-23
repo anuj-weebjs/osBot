@@ -263,9 +263,8 @@ async function safeReply(message: Message, options: any): Promise<void> {
         }
         await message.reply(options);
     } catch (error: any) {
-        if(!message.channel.isSendable()){
-            throw new Error(error)
-        }
+        if(!message.channel.isSendable())return;
+        
         await message.channel.send(options);
     }
 }
