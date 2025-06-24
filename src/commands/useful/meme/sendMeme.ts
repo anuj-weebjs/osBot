@@ -1,10 +1,8 @@
 import { Message, ChannelType, EmbedBuilder } from "discord.js";
 import { errorLog } from "../../../utils/sendLog";
+import 'dotenv/config';
 
-var config = require('../../../../config.json');
-var prefix = config.PREFIX;
-var index = require('../../../index');
-var developerId = config.developerId;
+var prefix: string = process.env.PREFIX || "o!";
 
 async function fetchMeme(subreddit: string): Promise<Meme> {
     let data: any;
@@ -35,8 +33,8 @@ module.exports = {
         usage: `${prefix}meme <subreddit>`
     },
     execute: async (message: Message) => {
-        if(!message.channel.isSendable()) return;
-        
+        if (!message.channel.isSendable()) return;
+
         if (message.channel.type !== ChannelType.GuildText) {
             message.channel.send("This command Can Only be used in Server.")
             return;
@@ -47,7 +45,9 @@ module.exports = {
         args.shift();
 
         const Embed: EmbedBuilder = new EmbedBuilder();
-        Embed.setColor(config.embedColor.primary)
+        const embedColor: any = process.env.PRIMARY_EMBED_COLOR || "#FFC5D3"
+
+        Embed.setColor(embedColor)
         if (args.length == 0) {
             Embed.setTitle(`Loading...(hint: You can also specify subreddit by ${prefix} meme [subreddit]`);
         } else {

@@ -1,10 +1,18 @@
-
 import { Client, EmbedBuilder, Message, MessageFlagsBitField } from "discord.js";
+import 'dotenv/config';
+
 const client: Client = require('../index').client;
-const config = require('../../config.json');
 
 async function errorLog(err: any, message?: Message) {
-    const errChannel = await client.channels.cache.get(config.log.errorChannelId);
+
+    const errChannelId= process.env.ERROR_LOG_CHANNEL_ID;
+
+    if(!errChannelId){
+        console.warn("Error Log Channel Id is not provided!, please check your .env files and make sure its same as example.env")
+        return;
+    }
+
+    const errChannel = await client.channels.cache.get(errChannelId);
     if (!errChannel?.isSendable()) {
         throw new Error("Error Channel is Not Sendalbe Channel");
     };

@@ -1,8 +1,10 @@
 import { Message } from "discord.js";
 
 var { GuildMember, EmbedBuilder } = require("discord.js");
+import 'dotenv/config'
+let prefix = process.env.PREFIX || "o!";
+
 var config = require('../../../../config.json');
-var prefix = config.PREFIX;
 module.exports = {
     structure: {
         name: "serverinfo",

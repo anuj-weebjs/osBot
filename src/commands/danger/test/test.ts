@@ -1,8 +1,9 @@
 import { Message } from "discord.js";
 import { errorLog } from "../../../utils/sendLog";
-
+import 'dotenv/config'
+let prefix = process.env.PREFIX || "o!";
 var config = require('../../../../config.json');
-var developerId = config.developerId;
+var developerId = process.env.DEV_ID;
 module.exports = {
     structure:{
         name:"test",
@@ -19,7 +20,8 @@ module.exports = {
         }else{
             if(!message.channel.isSendable()) return;
 
-            message.channel.send('only developer can use this command')
+            message.channel.send('https://tenor.com/view/my-honest-reaction-gif-10673976111485284091');
+            message.channel.send('only developer can use this command!')
         };
 
 

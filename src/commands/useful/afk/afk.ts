@@ -1,8 +1,8 @@
 import { Message, EmbedBuilder, TimestampStyles, Client, PermissionsBitField } from "discord.js";
+import 'dotenv/config';
 
 var afkDoc = require('../../../model/afkModel.js');
-var config = require('../../../../config.json')
-var prefix = config.PREFIX;
+var prefix = process.env.PREFIX || "o!";
 
 module.exports = {
     structure: {
@@ -52,9 +52,10 @@ module.exports = {
 
         if (_reason && _reason.length > 220 || hasMatch) {
 
+            const embedColor: any = process.env.ALERT_EMBED_COLOR || "#ff6347";
 
             let embed: EmbedBuilder = new EmbedBuilder()
-                .setColor(config.embedColor.alert)
+                .setColor(embedColor)
                 .setDescription(`The Length of Reason Must be less than 220 letters(including spaces) and also it shouldn't be containing any mentions`)
                 .setTimestamp();
             message.reply({ embeds: [embed] });
@@ -84,9 +85,11 @@ module.exports = {
             
             await newDoc.save();
         } catch (err) {
+            let embedColor: any = process.env.ALERT_EMBED_COLOR || "#ff6347";
+
             console.log("Error in afk.js " + err);
             let embed: EmbedBuilder = new EmbedBuilder()
-                .setColor(config.embedColor.alert)
+                .setColor(embedColor)
                 .setDescription(`[500] Internal Server Error`)
                 .setTimestamp();
             message.channel.send({ embeds: [embed] });

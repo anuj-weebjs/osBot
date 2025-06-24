@@ -1,6 +1,7 @@
 import { ChannelType, Client, Message } from "discord.js";
+import 'dotenv/config'
+let prefix = process.env.PREFIX || "o!";
 
-var { PREFIX } = require("../../../../config.json");
 var countingDoc = require('../../../model/countingModel');
 var guildModel = require('../../../model/guildModel');
 
@@ -15,7 +16,7 @@ module.exports = {
     structure: {
         name: "counting",
         description: "Start Counting In Current Channel!",
-        usage: `${PREFIX}counting enable`
+        usage: `${prefix}counting enable`
     },
     execute: async (message: Message, client: Client, args: string[]) => {
         if (!message || !message.channel.isSendable()) return;
@@ -40,7 +41,7 @@ module.exports = {
 
 
         if (args.length < 1) {
-            message.channel.send(`Invalid option. Use \`${PREFIX}counting enable\` to enable counting activity in this channel.`);
+            message.channel.send(`Invalid option. Use \`${prefix}counting enable\` to enable counting activity in this channel.`);
             return
         }
 
@@ -66,7 +67,7 @@ module.exports = {
                 channelId,
             });
 
-            await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${PREFIX}counting disable", next number is 1`);
+            await message.channel.setTopic(`Count to your heart's content! by OS Bot! [Admins] To disable it type "${prefix}counting disable", next number is 1`);
             message.channel.send(`Enabled counting activity in this server. Enjoy!`);
             await newDoc.save();
 
@@ -91,7 +92,7 @@ module.exports = {
             );
 
         } else if(option === -1) {
-            message.channel.send(`Invalid option. Use \`${PREFIX}counting [on|enable|start]\` to enable counting activity in this channel.`);
+            message.channel.send(`Invalid option. Use \`${prefix}counting [on|enable|start]\` to enable counting activity in this channel.`);
         }
     }
 };

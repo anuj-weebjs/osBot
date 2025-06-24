@@ -1,15 +1,24 @@
-import { EmbedBuilder, User, TimestampStyles, Message, Client, Guild, GuildMessageManager, Role } from "discord.js";
+import { EmbedBuilder, User, TimestampStyles, Message, Client, Guild, GuildMessageManager, Role, ColorResolvable } from "discord.js";
 import { errorLog } from "../../utils/sendLog";
+import 'dotenv/config'
 
 var afkDoc = require('../../model/afkModel');
 var getUserById = require('../../utils/getUserById');
-var config = require('../../../config.json');
+
+const prefix: any = process.env.PREFIX || "o!";
 
 module.exports = {
     execute: async (message: Message, client: Client) => {
 
         if (!message) return;
         if (message.author.bot) return;
+        const userid = message.author.id;
+        var queryResult = await afkDoc.findOne({ userId: userid });
+
+        if (message.content.toLowerCase().startsWith(`${prefix.toLocaleLowerCase()}afk`) && queryResult) {
+            safeReply(message, "You are already AFK, chill.")
+            return;
+        }
 
         afkCheckOnEveryMessage(message, client);
         afkCheckOnMentionMessage(message);
@@ -25,10 +34,11 @@ async function afkCheckOnEveryMessage(message: Message, client: Client) {
     var queryResult = await afkDoc.findOne({ userId: userid });
     if (queryResult == null) return;
 
+    const embedColor: any = process.env.PRIMARY_EMBED_COLOR || "#FFC5D3"
 
     if (queryResult.userId == userid) {
         const Embed = new EmbedBuilder();
-        Embed.setColor(config.embedColor.primary);
+        Embed.setColor(embedColor);
         Embed.setAuthor({ name: `Yo ${message.author.globalName}` });
         if (queryResult.pingedBy.length == 0) {
             // Embed.setDescription(`You were AFK From <t:${queryResult.afkStartTime}:R>`)
@@ -100,7 +110,9 @@ async function afkCheckOnMentionMessage(message: Message) {
                 name = userData.username;
             }
 
-            embed.setColor(config.embedColor.primary);
+            const embedColor: any = process.env.PRIMARY_EMBED_COLOR || "#FFC5D3"
+
+            embed.setColor(embedColor);
 
             let titleStr = `${name} is AFK`
 
@@ -173,7 +185,8 @@ async function afkCheckOnRepliedMessage(message: Message) {
                 } else {
                     name = userData.username;
                 }
-                embed.setColor(config.embedColor.primary);
+                const embedColor: any = process.env.PRIMARY_EMBED_COLOR || "#FFC5D3"
+                embed.setColor(embedColor);
                 let titleStr = `${name} is AFK`;
                 // embed.setTitle(`From <t:${queryResult.afkStartTime}:${TimestampStyles.LongTime}>(<t:${queryResult.afkStartTime}:${TimestampStyles.RelativeTime}>)`);
                 if (queryResult.reason != 'none') {
@@ -263,8 +276,8 @@ async function safeReply(message: Message, options: any): Promise<void> {
         }
         await message.reply(options);
     } catch (error: any) {
-        if(!message.channel.isSendable())return;
-        
+        if (!message.channel.isSendable()) return;
+
         await message.channel.send(options);
     }
 }

@@ -1,7 +1,8 @@
 import { Client, EmbedBuilder, Message } from "discord.js";
+import 'dotenv/config';
 
 const config = require('../../../../config.json');
-const prefix = config.PREFIX;
+const prefix = process.env.PREFIX || "o!";
 
 // Define interfaces for better type safety with GitHub API responses
 interface GitHubCommitAuthor {
@@ -26,10 +27,12 @@ module.exports = {
     },
     execute: async (message: Message, client: Client) => {
         if(!message.channel.isSendable() || !client.user)return;
+
+        let primaryEmbedColor: any = process.env.PRIMARY_EMBED_COLOR || "#FFC5D3";
        
 
         const Embed: EmbedBuilder = new EmbedBuilder();
-        Embed.setColor(config.embedColor.primary);
+        Embed.setColor(primaryEmbedColor);
         // Embed.setAuthor({name: client.user.tag, iconURL: client.user.displayAvatarURL(), url: `https://github.com/anuj-weebjs/osBot`})
         // Embed.setTitle(client.user.displayName);
         Embed.setTitle("comming soon")

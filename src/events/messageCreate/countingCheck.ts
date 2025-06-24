@@ -1,12 +1,12 @@
 import { Channel } from "diagnostics_channel";
 import { Message, Client, GuildChannel, TextChannelType, GuildMessageManager, Webhook, TextChannel, ChannelType, NewsChannel, ClientUser } from "discord.js";
 import { evaluate } from "mathjs";
+import 'dotenv/config';
 
 var { WebhookClient } = require('discord.js');
-var config = require('../../../config.json');
 var guildModel = require('../../model/guildModel');
 var countingDoc = require('../../model/countingModel');
-var prefix = config.PREFIX;
+var prefix = process.env.PREFIX || 'o!';
 
 module.exports = {
     execute: async (message: Message, client: Client) => {

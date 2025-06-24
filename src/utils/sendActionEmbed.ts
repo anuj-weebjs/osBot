@@ -1,10 +1,11 @@
 import { Message } from "discord.js";
 import { errorLog } from "./sendLog";
+import 'dotenv/config';
 
 var { EmbedBuilder } = require('discord.js');
 var { fetchAction } = require('./fetchAction');
-var {developerId, embedColor} = require('../../config.json')
-var client = require('../index').client;
+// var {developerId, embedColor} = {process.env}
+const embedColor = process.env.PRIMARY_EMBED_COLOR;
 
 async function sendEmbed(message: Message, endpoint: string, title: string) {
     if(!message || !message.channel.isSendable()){
@@ -17,7 +18,7 @@ async function sendEmbed(message: Message, endpoint: string, title: string) {
         }
 
         const Embed = new EmbedBuilder()
-            .setColor(embedColor.primary)
+            .setColor(embedColor)
             .setAuthor({ name: title, iconURL: message.author.displayAvatarURL(), url: gifData.url })
             .setImage(gifData.url);
 

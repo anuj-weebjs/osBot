@@ -7,6 +7,8 @@ module.exports = {
     execute: async (guild: Guild, client: Client) => {
         if(!guild || !client)return;
 
+        
+
         const guildId = guild.id;
 
         await guildModel.findOneAndDelete({guildId: guildId});

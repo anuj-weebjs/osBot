@@ -1,10 +1,17 @@
 import { Guild, Client, Channel, EmbedBuilder, GuildInviteManager } from 'discord.js';
-var config = require('../../../config.json');
+import 'dotenv/config';
+
 
 module.exports = {
     execute: async (guild: Guild, client: Client) => {
 
-        const channel: Channel | null = await client.channels.fetch(config.log.guildJoinChannelId);
+        let logChannelId = process.env.JOIN_LOG_CHANNEL_ID;
+        if (!logChannelId) {
+            console.warn("JOIN_LOG_CHANNEL_ID does not exist in .env");
+            return;
+        }
+
+        const channel: Channel | null = await client.channels.fetch(logChannelId);
         if (!channel || !channel.isSendable()) return;
         const serverCount = client.guilds.cache.size;
         if (!channel.isTextBased()) return;
@@ -22,9 +29,9 @@ module.exports = {
                 { name: 'Owner', value: `${await guild.fetchOwner()}`, inline: false },
             )
             .setTimestamp()
-            .setFooter({text: `Server Count: ${serverCount}`})
+            .setFooter({ text: `Server Count: ${serverCount}` })
 
-            channel.send({embeds: [logEmbed]});
+        channel.send({ embeds: [logEmbed] });
 
 
     }

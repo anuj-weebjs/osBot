@@ -1,9 +1,8 @@
 import { Message, EmbedBuilder, Client, Channel, GuildChannel, User } from "discord.js";
+import 'dotenv/config';
 
 var guildDoc = require("../../model/guildModel");
 var userDoc = require('../../model/userModel');
-var config = require('../../../config.json');
-var developerId = config.developerId;
 
 
 const cooldowns = new Map();
@@ -23,9 +22,9 @@ module.exports = {
             throw new Error("Client Permissions are Null");
         }
 
-        if (msgContent == `<@${config.clientId}>`) {
+        if (msgContent == `<@${process.env.CLIENT_ID}>`) {
             let embed = new EmbedBuilder();
-            embed.setDescription(`My default Prefix is \`${config.PREFIX}\`\nUse \`${config.PREFIX}help\`for help`);
+            embed.setDescription(`My default Prefix is \`${process.env.PREFIX}\`\nUse \`${process.env.PREFIX}help\`for help`);
             message.channel.send({ embeds: [embed] });
             return;
         }
@@ -65,7 +64,7 @@ module.exports = {
 
         // let prefixes = userData.customPrefixes.concat(guildData.customPrefixes, {prefix: `<@${config.clientId}>`});
         var prefixes = [];
-        prefixes.push(`<@${config.clientId}>`, config.PREFIX, 'os');
+        prefixes.push(`<@${process.env.CLIENT_ID}>`, process.env.PREFIX, 'os');
         for (let i = 0; i < userData.customPrefixes.length; i++) {
             prefixes.push(userData.customPrefixes[i].prefix);
         }
@@ -135,7 +134,13 @@ module.exports = {
         try {
             await command.execute(message, client, args,)
         } catch (err: any) {
-            const channel = client.channels.cache.get(config.log.errorChannelId);
+            const errChannelId= process.env.ERROR_LOG_CHANNEL_ID;
+    
+            if(!errChannelId){
+                throw new Error("ERROR_LOG_CHANNEL_ID is not provided in .env file!")
+            }
+
+            const channel = client.channels.cache.get(errChannelId);
             // const channel = client.channels.fetch(config.log.errorChannelId);
             if(!channel || !channel.isSendable()) return;
             channel.send(`
@@ -151,7 +156,15 @@ module.exports = {
 
             message.channel.send(`There was an error while executing \`${msgCommand}\` command. Data has Been Sent to Devlopers! The issue will be fixed soon`);
         } finally {
-            const channel =  client.channels.cache.get(config.log.executeChannelId);
+
+            const logChannelId = process.env.COMMAND_EXECUTION_LOG_CHANNEL_ID;
+
+            if(!logChannelId){
+                throw new Error('COMMAND_EXECUTION_LOG_CHANNEL_ID is not provided in .env file');
+            }
+
+
+            const channel =  client.channels.cache.get(logChannelId);
             if(!channel || !channel.isSendable()) throw new Error("Unable to Fetch executeChannel in prefixHandler.ts");
             const logEmbed = new EmbedBuilder()
                 .setColor('Green')

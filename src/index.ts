@@ -7,7 +7,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import express from 'express';
 import mongoose from 'mongoose';
-import config from './../config.json';
+
 
 
 class ExtendedClient extends DiscordClient {
@@ -36,7 +36,6 @@ exports.client = client; // Export for CommonJS modules that might require it
 
 const token = process.env.TOKEN;
 const dbConnectionString = process.env.MONGO_DB_CONNECTION_STRING;
-const developerId = config.developerId; // Used in some commands, but not directly here.
 
 
 // Keep Alive
@@ -111,13 +110,13 @@ process.on('uncaughtException', async (err: Error, origin: string) => {
     console.error('Uncaught Exception:', err);
     console.error('Origin:', origin);
 
-    if (!client.isReady() || !config.log.uncaughtExceptionChannelId) {
+    if (!client.isReady() || !process.env.CRASH_LOG_CHANNEL_ID) {
         console.error("Client not ready or logging channel ID not configured for uncaughtException.");
         return;
     }
 
     try {
-        const channel = await client.channels.fetch(config.log.uncaughtExceptionChannelId) as TextChannel | null;
+        const channel = await client.channels.fetch(process.env.CRASH_LOG_CHANNEL_ID) as TextChannel | null;
         if (channel && channel.isTextBased()) {
             const logEmbed = new EmbedBuilder()
                 .setColor("Red")
@@ -137,7 +136,7 @@ process.on('uncaughtException', async (err: Error, origin: string) => {
             }
             await channel.send({ embeds: [logEmbed] });
         } else {
-            console.error(`Could not find or access channel for uncaughtException: ${config.log.uncaughtExceptionChannelId}`);
+            console.error(`Could not find or access channel for uncaughtException: ${process.env.CRASH_LOG_CHANNEL_ID}`);
         }
     } catch (logError) {
         console.error("Failed to send uncaught exception to Discord:", logError);
@@ -146,12 +145,12 @@ process.on('uncaughtException', async (err: Error, origin: string) => {
 
 process.on('unhandledRejection', async (reason: any, promise: Promise<any>) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-    if (!client.isReady() || !config.log.uncaughtExceptionChannelId) { // Using same channel for now
+    if (!client.isReady() || !process.env.CRASH_LOG_CHANNEL_ID) { // Using same channel for now
         console.error("Client not ready or logging channel ID not configured for unhandledRejection.");
         return;
     }
     try {
-        const channel = await client.channels.fetch(config.log.uncaughtExceptionChannelId) as TextChannel | null;
+        const channel = await client.channels.fetch(process.env.CRASH_LOG_CHANNEL_ID) as TextChannel | null;
         if (channel && channel.isTextBased()) {
             const embed = new EmbedBuilder()
                 .setColor("Orange")
@@ -163,7 +162,7 @@ process.on('unhandledRejection', async (reason: any, promise: Promise<any>) => {
                 .setTimestamp();
             await channel.send({ embeds: [embed] });
         } else {
-            console.error(`Could not find or access channel for unhandledRejection: ${config.log.uncaughtExceptionChannelId}`);
+            console.error(`Could not find or access channel for unhandledRejection: ${process.env.CRASH_LOG_CHANNEL_ID}`);
         }
     } catch (logError) {
         console.error("Failed to send unhandledRejection to Discord:", logError);

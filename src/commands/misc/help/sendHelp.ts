@@ -1,10 +1,11 @@
 import { Client, EmbedBuilder, Message } from "discord.js";
+import 'dotenv/config';
 
 var fs = require('node:fs');
 var path = require('node:path');
 var config = require('../../../../config.json');
 var userDoc = require('../../../model/userModel');
-var prefix = config.PREFIX;
+var prefix = process.env.PREFIX || "o!";
 
 let actionsDir = path.join(__dirname, '..', '..', 'actions');
 let countingDir = path.join(__dirname, '..', '..', 'fun');
@@ -26,10 +27,13 @@ module.exports = {
         usage: `${prefix}help`
     },
     execute: async (message: Message, client: _Client, args: string[]) => {
-        if(!message.channel.isSendable())return;
+        if (!message.channel.isSendable()) return;
+
+        let primaryEmbedColor: any = process.env.PRIMARY_EMBED_COLOR || "#FFC5D3";
+        let alertEmbedColor: any = process.env.ALERT_EMBED_COLOR || "#ff6347";
 
         const Embed: EmbedBuilder = new EmbedBuilder();
-        Embed.setColor(config.embedColor.primary);
+        Embed.setColor(primaryEmbedColor);
         if (args.length < 1) {
 
             Embed.setTitle(`h-here's the list of commands and categories :3`);
@@ -54,28 +58,28 @@ module.exports = {
             Embed.addFields({ name: '\u200B', value: '\u200B' },)
             Embed.addFields(
                 {
-                        name: `written in typescript `, value: `Help us by contributing the project on [github](https://github.com/anuj-weebjs/osBot) *pwease~*`
+                    name: `written in typescript `, value: `Help us by contributing the project on [github](https://github.com/anuj-weebjs/osBot) *pwease~*`
                 }
             )
 
-            Embed.setFooter({ text: `Type "${config.PREFIX}help <command>" To Get Info of That Particular command` });
+            Embed.setFooter({ text: `Type "${prefix}help <command>" To Get Info of That Particular command` });
             Embed.setThumbnail("https://c.tenor.com/IaHOpRGFFNwAAAAC/tenor.gif")
 
         } else {
             const { commands } = client;
             const command = commands.get(args.shift()?.toLowerCase());
             if (!command) {
-                Embed.setColor(config.embedColor.alert);
+                Embed.setColor(alertEmbedColor);
                 Embed.setTitle(`Command Not Found`);
                 Embed.setDescription(`Type ${prefix}help for list of available commands`);
-            }else{
-                
+            } else {
+
                 Embed.setTitle(`**${command.structure.name}**`);
                 Embed.addFields(
-                    {name: 'Description:', value: `\`\`\`${command.structure.description}\`\`\``}
+                    { name: 'Description:', value: `\`\`\`${command.structure.description}\`\`\`` }
                 );
                 Embed.addFields(
-                    {name: 'Usage:', value: `\`\`\`${command.structure.usage}\`\`\``}
+                    { name: 'Usage:', value: `\`\`\`${command.structure.usage}\`\`\`` }
                 );
             }
         }

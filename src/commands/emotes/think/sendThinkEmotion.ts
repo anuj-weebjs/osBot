@@ -1,8 +1,8 @@
 import { Message } from "discord.js";
 
 var send = require('../../../utils/sendActionEmbed');
-var config = require('../../../../config.json');
-var prefix = config.PREFIX;
+import 'dotenv/config'
+let prefix = process.env.PREFIX || "o!";
 module.exports = {
     structure: {
         name: "think",

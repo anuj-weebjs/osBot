@@ -1,12 +1,12 @@
-require('dotenv').config();
+import 'dotenv/config'
 import { EmbedBuilder, Message, Client } from "discord.js";
 var { MongoClient } = require('mongodb');
-var config = require('../../../../config.json');
-var prefix = config.PREFIX;
+var prefix = process.env.PREFIX || "o!";
 var url = process.env.MONGO_DB_CONNECTION_STRING;
 let previousTime = new Date().getTime();
 let previousUsage = process.cpuUsage();
 let lastUsage: any;
+let invisibleEmbedColor: any = process.env.INVISIBLE_EMBED_COLOR || "#2B2D31";
 
 function getCpuUsage() {
     const currentUsage = process.cpuUsage(previousUsage);
@@ -23,6 +23,7 @@ function getCpuUsage() {
 
     return lastUsage;
 }
+
 
 module.exports = {
     structure: {
@@ -47,7 +48,7 @@ module.exports = {
 
         
         const pingEmbed = new EmbedBuilder()
-        .setColor(config.embedColor.invisible)
+        .setColor(invisibleEmbedColor)
         .setTitle('Loading...');
 
         message.channel.send({ embeds: [pingEmbed] }).then(async (sentMessage: any) => {

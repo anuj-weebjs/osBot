@@ -1,9 +1,15 @@
 import {Guild, Client, Channel} from 'discord.js';
-var config = require('../../../config.json');
+import 'dotenv/config'
 
 module.exports = {
     execute: async (guild: Guild, client: Client) => {
-        const channel: Channel | null = await client.channels.fetch(config.log.guildLeaveChannelId);
+        let logChannelId = process.env.LEAVE_LOG_CHANNEL_ID;
+        if(!logChannelId){
+            console.warn("LEAVE_LOG_CHANNEL_ID does not exist in .env");
+            return;
+        }
+
+        const channel: Channel | null = await client.channels.fetch(logChannelId);
         if(!channel || !channel.isSendable()) return;
         const serverCount = client.guilds.cache.size;
 

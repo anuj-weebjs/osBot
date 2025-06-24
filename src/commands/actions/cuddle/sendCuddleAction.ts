@@ -1,10 +1,10 @@
 import { Message } from "discord.js";
 
 var send = require('../../../utils/sendActionEmbed');
-var getUserById = require('../../../utils/getUserByRawMessage');
 
 var config = require('../../../../config.json');
-var prefix = config.PREFIX;
+import 'dotenv/config'
+let prefix = process.env.PREFIX || "o!";
 
 module.exports = {
     structure:{
@@ -22,7 +22,7 @@ module.exports = {
             return;
         }
 
-        send(message, 'cuddle', `${message.author.globalName} nestles into ${mentionedUser.globalName} with a cozy cuddle`);
+        send(message, 'cuddle', `${message.author.displayName} nestles into ${mentionedUser.displayName} with a cozy cuddle`);
 
     }
 }

@@ -1,8 +1,9 @@
 import { GuildMember, Message, User } from "discord.js";
+import 'dotenv/config'
+let prefix = process.env.PREFIX || "o!";
 
 var { EmbedBuilder } = require('discord.js')
 var config = require('../../../../config.json');
-var prefix = config.PREFIX;
 module.exports = {
     structure: {
         name: "userinfo",
