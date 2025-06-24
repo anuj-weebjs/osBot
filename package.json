@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "bun": "^1.2.7",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "encodeurl": "^2.0.0",

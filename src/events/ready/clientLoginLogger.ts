@@ -1,11 +1,13 @@
 import 'dotenv/config';
+const prefix = process.env.PREFIX || "o!";
+
 
 module.exports = {
     once:true,
     execute(client: _Client){
 
-        const activityName = process.env.ACTIVITY_NAME;
-        const activityStatus: any = process.env.ACTIVITY_STATUS || 'online';
+        const activityName = process.env.ACTIVITY_NAME || `Type ${prefix}help`;
+        const activityStatus: any = process.env.ACTIVITY_STATUS || 'dnd';
 
         if(!activityName || !activityStatus){
             console.error("Make sure you have filled ACTIVITY_NAME and ACTIVITY_STATUS in your .env file");
