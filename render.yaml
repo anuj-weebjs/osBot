@@ -1,0 +1,47 @@
+# Exported from Render on 2025-06-26T15:15:31Z
+services:
+- type: web
+  name: osBot
+  runtime: node
+  repo: https://github.com/notcorefr/osBot
+  plan: free
+  envVars:
+  - key: TOKEN
+    sync: false
+  - key: ALERT_EMBED_COLOR
+    sync: false
+  - key: INVISIBLE_EMBED_COLOR
+    sync: false
+  - key: PRIMARY_EMBED_COLOR
+    sync: false
+  - key: ERROR_LOG_CHANNEL_ID
+    sync: false
+  - key: CRASH_LOG_CHANNEL_ID
+    sync: false
+  - key: COMMAND_EXECUTION_LOG_CHANNEL_ID
+    sync: false
+  - key: LEAVE_LOG_CHANNEL_ID
+    sync: false
+  - key: JOIN_LOG_CHANNEL_ID
+    sync: false
+  - key: DEV_GUILD_ID
+    sync: false
+  - key: DEV_ID
+    sync: false
+  - key: CLIENT_ID
+    sync: false
+  - key: ACTIVITY_STATUS
+    sync: false
+  - key: ACTIVITY_NAME
+    sync: false
+  - key: PREFIX
+    sync: false
+  - key: PORT
+    sync: false
+  - key: MONGO_DB_CONNECTION_STRING
+    sync: false
+  region: oregon
+  buildCommand: npm i && tsc
+  startCommand: node dist/index.js
+  autoDeployTrigger: commit
+version: "1"
