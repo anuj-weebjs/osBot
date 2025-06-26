@@ -153,7 +153,7 @@ process.on('unhandledRejection', async (reason: any, promise: Promise<any>) => {
         const channel = await client.channels.fetch(process.env.CRASH_LOG_CHANNEL_ID) as TextChannel | null;
         if (channel && channel.isTextBased()) {
             const embed = new EmbedBuilder()
-                .setColor("Orange")
+                .setColor("Red")
                 .setTitle("Unhandled Rejection Occurred")
                 .addFields(
                     { name: "Reason", value: String(reason).substring(0, 1020) }
