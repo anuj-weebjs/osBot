@@ -1,5 +1,6 @@
 import { Message, EmbedBuilder, TimestampStyles, Client, PermissionsBitField } from "discord.js";
 import 'dotenv/config';
+import { boolean } from "mathjs";
 
 var afkDoc = require('../../../model/afkModel.js');
 var prefix = process.env.PREFIX || "o!";
@@ -22,6 +23,10 @@ module.exports = {
 
         if (clientPerms.has("ManageNicknames")) {
             changeNick = true;
+
+
+            console.log(`1: ${message.member?.roles.highest.position}`);
+            console.log(`2: ${message.guild.members.resolve(client.user).roles.highest.position}`);
 
             if (message.member?.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) {
                 changeNick = false;
@@ -50,16 +55,30 @@ module.exports = {
             hasMatch = regex.test(_reason);
         }
 
-        if (_reason && _reason.length > 220 || hasMatch) {
+
+
+        if (_reason && _reason.length > 220 || hasMatch || _reason && !isValidAscii(_reason)) {
 
             const embedColor: any = process.env.ALERT_EMBED_COLOR || "#ff6347";
 
             let embed: EmbedBuilder = new EmbedBuilder()
                 .setColor(embedColor)
-                .setDescription(`The Length of Reason Must be less than 220 letters(including spaces) and also it shouldn't be containing any mentions`)
+                // .setDescription(`The Length of Reason Must be less than 220 letters(including spaces) and also it shouldn't be containing any mentions`)
+                .addFields({ name: `Reason String contains invaild character`, value: `- It's length must be less than 220 letters(including spaces)\n- It shouldn't be containing any mentions\n- It must only contain ASCII letters.` })
                 .setTimestamp();
-            message.reply({ embeds: [embed] });
-            return;
+
+
+            const msg = await message.reply({ embeds: [embed] });
+
+
+
+            setTimeout(() => {
+                if(msg.deletable){
+                    msg.delete();
+                }
+            }, 10000);
+
+            _reason = undefined;
         }
 
         const a = message.createdTimestamp;
@@ -80,9 +99,9 @@ module.exports = {
                 reason: _reason, afkStartTime: timeStamp,
                 oldServerNickname: message.member.nickname,
                 afkGuildId: message.guild.id,
-                hasChangedNick: changeNick    
+                hasChangedNick: changeNick
             });
-            
+
             await newDoc.save();
         } catch (err) {
             let embedColor: any = process.env.ALERT_EMBED_COLOR || "#ff6347";
@@ -134,4 +153,15 @@ module.exports = {
     }
 
 
+}
+
+function isValidAscii(str: string): boolean {
+    for (let i = 0; i < str.length; i++) {
+        const charCode = str.charCodeAt(i);
+        if (charCode < 0 || charCode > 127) {
+            return false;
+        }
+    }
+
+    return true;
 }

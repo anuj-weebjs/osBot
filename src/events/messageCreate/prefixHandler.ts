@@ -128,8 +128,8 @@ module.exports = {
 
 
 
-        const { commands } = client;
-        const command = commands.get(msgCommand);
+        const { prefixCommands } = client;
+        const command = prefixCommands.get(msgCommand);
         if (!command) return;
         try {
             await command.execute(message, client, args,)

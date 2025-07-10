@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 
-export {}
+export { }
 
 declare global {
     interface Command {
@@ -14,9 +14,13 @@ declare global {
     }
 
     interface _Client extends Client {
-         commands: Collection<string, Command>;
-    handleEvents: () => Promise<void>;   // To be assigned by eventHandler
-    handleCommands: () => Promise<void>;
+        prefixCommands: Collection<string, Command>;
+        slashCommands: Collection<string, Command>;
+        
+        // To be assigned by eventHandler
+        handleEvents: () => Promise<void>;
+        handlePrefixCommands: () => Promise<void>;
+        handleSlashCommands: () => Promise<void>;
     }
 
 }

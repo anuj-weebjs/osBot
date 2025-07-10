@@ -1,6 +1,5 @@
-var fs = require('node:fs');
-var path = require('node:path');
-
+import fs from 'node:fs'
+import path from 'path';
 module.exports = (client: _Client) => {
     client.handleEvents = async () => {
         const eventFolderPath = path.join(__dirname, '..', 'events');

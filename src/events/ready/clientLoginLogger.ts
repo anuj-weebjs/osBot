@@ -14,7 +14,8 @@ module.exports = {
             process.exit(1);
         }
 
-        client.handleCommands();
+        client.handlePrefixCommands();
+        client.handleSlashCommands();
 
         if(!client.user){
             console.error("client.user is null!")

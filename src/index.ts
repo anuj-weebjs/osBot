@@ -1,23 +1,27 @@
+// Imports
 import { Connection } from "mongoose";
 import { Client as DiscordClient, GatewayIntentBits, Collection, EmbedBuilder, TextChannel, Message } from 'discord.js';
 
-// Imports
 import 'dotenv/config';
 import path from 'node:path';
 import fs from 'node:fs';
 import express from 'express';
 import mongoose from 'mongoose';
+import {deployCommands} from  "./utils/deployCommands";
 
 
 
 class ExtendedClient extends DiscordClient {
-    commands: Collection<string, Command>;
+    prefixCommands: Collection<string, Command>;
+    slashCommands: Collection<string, Command>;
     handleEvents!: () => Promise<void>;   // To be assigned by eventHandler
-    handleCommands!: () => Promise<void>; // To be assigned by commandHandler (via ready event)
+    handlePrefixCommands!: () => Promise<void>;
+    handleSlashCommands!: () => Promise<void>; 
 
     constructor(options: any) {
         super(options);
-        this.commands = new Collection();
+        this.prefixCommands = new Collection();
+        this.slashCommands = new Collection();
     }
 }
 
@@ -32,9 +36,10 @@ const client: _Client = new ExtendedClient({
     ],
 });
 
-exports.client = client; // Export for CommonJS modules that might require it
+exports.client = client;
 
 const token = process.env.TOKEN;
+const clientId = process.env.CLIENT_ID;
 const dbConnectionString = process.env.MONGO_DB_CONNECTION_STRING;
 
 
@@ -64,8 +69,8 @@ async function connectToDatabase(connectionString: string): Promise<Connection> 
 
 async function main() {
     // Validate essential environment variables
-    if (!token) {
-        console.error("TOKEN is not defined in environment variables. Please check your .env file or environment configuration.");
+    if (!token || !clientId ) {
+        console.error("TOKEN or CLIENT_ID is not defined in environment variables. Please check your .env file or environment configuration.");
         process.exit(1);
     }
     if (!dbConnectionString) {
@@ -76,6 +81,10 @@ async function main() {
     // Connect to MongoDB
     db = await connectToDatabase(dbConnectionString);
     exports.db = db;
+
+    // Deploy Commands
+
+    deployCommands(clientId, token)
 
     // Load Handlers (Command, Event)
     const handlersPath = path.join(__dirname, 'handler');

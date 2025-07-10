@@ -1,12 +1,12 @@
-var fs = require('fs');
-var path = require('path');
+import fs from'node:fs'
+import path from 'node:path'
 
 module.exports = (client: _Client) => {
-    client.handleCommands = async () => {
-        const commandFolderPath = path.join(__dirname, '..', 'commands');
+    client.handlePrefixCommands = async () => {
+        const commandFolderPath = path.join(__dirname, '..', 'prefixCommands');
         const commandCategories = fs.readdirSync(commandFolderPath);
 
-        const { commands } = client;
+        const { prefixCommands } = client;
 
         for (const commandCategory of commandCategories) {
             const commandCategoryPath = path.join(commandFolderPath, commandCategory);
@@ -17,7 +17,7 @@ module.exports = (client: _Client) => {
                 for(const commandFile of commandFiles){
                     const commandFilePath = path.join(commandNamePath, commandFile);
                     const command = require(commandFilePath);
-                    commands.set(commandName, command);
+                    prefixCommands.set(commandName, command);
                     console.log(`✅ ${commandName}`);
                 }
             }

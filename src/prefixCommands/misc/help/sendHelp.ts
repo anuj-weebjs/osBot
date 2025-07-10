@@ -58,7 +58,7 @@ module.exports = {
             Embed.addFields({ name: '\u200B', value: '\u200B' },)
             Embed.addFields(
                 {
-                    name: `written in typescript `, value: `Help us by contributing the project on [github](https://github.com/anuj-weebjs/osBot) *pwease~*`
+                    name: `written in typescript `, value: `Help us by contributing the project on [github](https://github.com/cores-basement/osBot) *pwease~*`
                 }
             )
 
@@ -66,8 +66,8 @@ module.exports = {
             Embed.setThumbnail("https://c.tenor.com/IaHOpRGFFNwAAAAC/tenor.gif")
 
         } else {
-            const { commands } = client;
-            const command = commands.get(args.shift()?.toLowerCase());
+            const { prefixCommands } = client;
+            const command = prefixCommands.get(args.shift()?.toLowerCase());
             if (!command) {
                 Embed.setColor(alertEmbedColor);
                 Embed.setTitle(`Command Not Found`);
