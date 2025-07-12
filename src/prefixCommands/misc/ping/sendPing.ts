@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { EmbedBuilder, Message, Client } from "discord.js";
-var { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 var prefix = process.env.PREFIX || "o!";
 var url = process.env.MONGO_DB_CONNECTION_STRING;
 let previousTime = new Date().getTime();
@@ -32,7 +32,7 @@ module.exports = {
         usage: `${prefix}ping`
     },
     execute: async (message: Message, client: Client) => {
-        if(!message || !message.channel.isSendable())return;
+        if(!message || !message.channel.isSendable() || !url)return;
 
         let uptime: string | undefined;
         if(client.uptime){
@@ -44,6 +44,8 @@ module.exports = {
             let minutes = Math.floor(totalSeconds / 60);
             let seconds = Math.floor(totalSeconds % 60);
             uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
+        }else{
+            uptime = `Unable to calculate Uptime`;
         }
 
         
@@ -84,7 +86,13 @@ module.exports = {
     }
 }
 
-async function measurePing(uri: string | undefined) {
+async function measurePing(uri: string | undefined ):Promise<number | undefined> {
+
+    if(!uri){
+        throw new Error("DataBase Connection string is missing from .env file");
+        return undefined;
+    }
+
     let latency: number | undefined;
     const client = new MongoClient(uri);
 
